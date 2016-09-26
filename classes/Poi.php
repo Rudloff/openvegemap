@@ -6,7 +6,6 @@ use Location\Coordinate;
 
 class Poi
 {
-
     public $name;
     public $coords;
     public $tags;
