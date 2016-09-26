@@ -10,7 +10,7 @@ class Poi
     public $coords;
     public $tags;
 
-    public function __construct($name, Coordinate $coords, $tags)
+    public function __construct($name, Coordinate $coords, array $tags)
     {
         $this->name = $name;
         $this->coords = $coords;
