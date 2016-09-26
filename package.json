@@ -1,0 +1,26 @@
+{
+  "name": "openvegemap",
+  "description": "Find vegetarian and vegan restaurants in you city",
+  "version": "0.1.0",
+  "author": "Pierre Rudloff",
+  "bugs": "https://github.com/Rudloff/openvegemap/issues",
+  "devDependencies": {
+    "grunt": "~1.0.1",
+    "grunt-fixpack": "~0.1.0",
+    "grunt-jslint": "~1.1.14",
+    "grunt-jsonlint": "~1.1.0",
+    "grunt-phpcs": "~0.4.0",
+    "grunt-phpunit": "~0.3.6"
+  },
+  "homepage": "https://github.com/Rudloff/openvegemap",
+  "keywords": [
+    "map",
+    "openstreemap"
+  ],
+  "license": "GPL-3.0",
+  "main": "index.php",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rudloff/openvegemap.git"
+  }
+}
