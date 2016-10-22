@@ -86,9 +86,14 @@ var openvegemap = (function () {
                     {
                         collapsed: false,
                         geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
-                        position: 'topleft'
+                        position: 'topleft',
+                        defaultMarkGeocode: false
                     }
-                )
+                ).on('markgeocode', function (e) {
+                    var circle = L.circle(e.geocode.center, 10);
+                    circle.addTo(map);
+                    map.fitBounds(circle.getBounds());
+                })
             );
 
             L.control.locate({ position: 'topright' }).addTo(map);
