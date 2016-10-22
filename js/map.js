@@ -3,7 +3,11 @@
 var openvegemap = (function () {
     'use strict';
 
-    var geojsonLayer = L.geoJson.ajax(),
+    function addMarker(feature, layer) {
+        layer.bindPopup(feature.properties.name);
+    }
+
+    var geojsonLayer = L.geoJson.ajax(null, { onEachFeature: addMarker }),
         map;
 
     function updateGeoJson() {
