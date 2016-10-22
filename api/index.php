@@ -10,6 +10,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 $app = new \Slim\App();
 $app->get('/{south}/{west}/{north}/{east}', function (Request $request, Response $response) {
     $api = new OsmApi();
+
     return $response->withJson(
         $api->getPoiWithTags(
             ['diet:vegan'],
