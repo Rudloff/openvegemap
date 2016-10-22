@@ -107,7 +107,6 @@ var openvegemap = (function () {
             map.addControl(
                 new L.Control.Geocoder(
                     {
-                        collapsed: false,
                         geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
                         position: 'topleft',
                         defaultMarkGeocode: false
