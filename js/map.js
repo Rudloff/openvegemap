@@ -14,7 +14,7 @@ var openvegemap = (function () {
 
     function updateGeoJson() {
         var bounds = map.getBounds();
-        if (!curBounds || !curBounds.contains(bounds)) {
+        if (!curBounds || !curBounds.pad(0.2).contains(bounds)) {
             controlLoader.show();
             geojsonLayer.refresh('./api/' + bounds.getSouth() + '/' + bounds.getWest() + '/' + bounds.getNorth() + '/' + bounds.getEast());
             curBounds = bounds;
@@ -31,7 +31,7 @@ var openvegemap = (function () {
                 'map',
                 {
                     center: [48.5789, 7.7490],
-                    zoom: 13,
+                    zoom: 16,
                     minZoom: 13
                 }
             );
@@ -42,6 +42,18 @@ var openvegemap = (function () {
 
             geojsonLayer.addTo(map);
             geojsonLayer.on('data:loaded', hideLoader);
+
+            map.addControl(
+                new L.Control.Geocoder(
+                    {
+                        collapsed: false,
+                        geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
+                        position: 'topleft'
+                    }
+                )
+            );
+
+            L.control.locate({ position: 'topright' }).addTo(map);
 
             controlLoader = L.control.loader().addTo(map);
 
