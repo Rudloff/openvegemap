@@ -147,6 +147,14 @@ var openvegemap = (function () {
         geocodeDialog.show();
     }
 
+    function addGeocodeMarker(e) {
+        var circle = L.circle(e.geocode.center, 10);
+        circle.addTo(map);
+        map.fitBounds(circle.getBounds());
+        geocodeDialog.hide();
+        menu.close();
+    }
+
     return {
         init: function () {
             menu = L.DomUtil.get('menu');
@@ -172,13 +180,7 @@ var openvegemap = (function () {
                     position: 'topleft',
                     defaultMarkGeocode: false
                 }
-            ).on('markgeocode', function (e) {
-                var circle = L.circle(e.geocode.center, 10);
-                circle.addTo(map);
-                map.fitBounds(circle.getBounds());
-                geocodeDialog.hide();
-                menu.close();
-            });
+            ).on('markgeocode', addGeocodeMarker);
             geocoder._alts = L.DomUtil.get('geocodeAlt');
             geocoder._container = geocodeDialog;
             geocoder._errorElement = L.DomUtil.create('div');
