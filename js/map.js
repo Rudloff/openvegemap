@@ -1,12 +1,16 @@
-/*jslint browser: true*/
-/*global L*/
+/*jslint browser: true, nomen: true*/
+/*global L, ons*/
 var openvegemap = (function () {
     'use strict';
 
     var map,
         curBounds,
         controlLoader,
-        curFeatures = [];
+        curFeatures = [],
+        menu,
+        geocodeDialog,
+        locate,
+        geocoder;
 
     function isDiet(diet, properties) {
         var key = 'diet:' + diet;
@@ -26,15 +30,32 @@ var openvegemap = (function () {
 
     function getPropertyRow(name, value) {
         if (value) {
-            return '<tr><th>' + name + '</th><td>' + value + '</td></tr>';
+            return '<ons-list-item><div class="left">' + name + '</div> <div class="right">' + value + '</div></ons-list-item>';
         }
         return '';
     }
 
+    function showPopup(e) {
+        var popup = '';
+        popup += getPropertyRow('Take away', e.target.feature.properties.takeaway);
+        if (e.target.feature.properties.phone) {
+            popup += getPropertyRow('Phone number', '<a href="tel:' + e.target.feature.properties.phone + '">' + e.target.feature.properties.phone + '</a>');
+        }
+        if (e.target.feature.properties.website) {
+            popup += getPropertyRow('Website', '<a target="_blank" href="' + e.target.feature.properties.website + '">' + e.target.feature.properties.website + '</a>');
+        }
+        if (!e.target.feature.properties.name) {
+            e.target.feature.properties.name = '';
+        }
+        document.getElementById('mapPopupTitle').innerHTML = e.target.feature.properties.name;
+        document.getElementById('mapPopupList').innerHTML = popup;
+        document.getElementById('osmLink').setAttribute('href', 'http://www.openstreetmap.org/node/' + e.target.feature.id);
+        document.getElementById('mapPopup').show();
+    }
+
     function addMarker(feature, layer) {
         var color = 'gray',
-            icon,
-            popup = '';
+            icon;
         if (isDiet('vegan', feature.properties)) {
             color = 'green';
         } else if (isDiet('vegetarian', feature.properties)) {
@@ -63,20 +84,7 @@ var openvegemap = (function () {
             prefix: 'fa',
             markerColor: color
         }));
-        if (feature.properties.name) {
-            popup += feature.properties.name;
-        }
-        popup += '<table>';
-        popup += getPropertyRow('Take away', feature.properties.takeaway);
-        if (feature.properties.phone) {
-            popup += getPropertyRow('Phone number', '<a href="tel:' + feature.properties.phone + '">' + feature.properties.phone + '</a>');
-        }
-        if (feature.properties.website) {
-            popup += getPropertyRow('Website', '<a target="_blank" href="' + feature.properties.website + '">' + feature.properties.website + '</a>');
-        }
-        popup += '</table>';
-        popup += '<br/><a target="_blank" href="http://www.openstreetmap.org/node/' + feature.id + '">See on OSM</a>';
-        layer.bindPopup(popup);
+        layer.on('click', showPopup);
     }
 
     function removeDuplicates(data) {
@@ -119,8 +127,34 @@ var openvegemap = (function () {
         return div;
     }
 
+    function openMenu() {
+        menu.open();
+    }
+
+    function locateMe() {
+        locate._layer = new L.LayerGroup();
+        locate._layer.addTo(map);
+        locate._map = map;
+        locate.start();
+        menu.close();
+    }
+
+    function geocode() {
+        geocoder._geocode();
+        //menu.close();
+        //geocodeDialog.hide();
+    }
+
+    function openGeocodeDialog() {
+        geocodeDialog.show();
+    }
+
     return {
         init: function () {
+            menu = document.getElementById('menu');
+            geocodeDialog = document.getElementById('geocodeDialog');
+            document.getElementById('menuBtn').addEventListener('click', openMenu, false);
+            document.getElementById('geocodeDialogBtn').addEventListener('click', geocode, false);
             map = L.map(
                 'map',
                 {
@@ -134,25 +168,30 @@ var openvegemap = (function () {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
+            geocoder = new L.Control.Geocoder(
+                {
+                    geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
+                    position: 'topleft',
+                    defaultMarkGeocode: false
+                }
+            ).on('markgeocode', function (e) {
+                var circle = L.circle(e.geocode.center, 10);
+                circle.addTo(map);
+                map.fitBounds(circle.getBounds());
+                geocodeDialog.hide();
+                menu.close();
+            });
+            geocoder._alts = document.getElementById('geocodeAlt');
+            geocoder._container = geocodeDialog;
+            geocoder._errorElement = L.DomUtil.create('div');
+            geocoder._input = document.getElementById('geocodeInput');
 
+            document.getElementById('geocodeMenuItem').addEventListener('click', openGeocodeDialog, false);
 
-            map.addControl(
-                new L.Control.Geocoder(
-                    {
-                        geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
-                        position: 'topleft',
-                        defaultMarkGeocode: false
-                    }
-                ).on('markgeocode', function (e) {
-                    var circle = L.circle(e.geocode.center, 10);
-                    circle.addTo(map);
-                    map.fitBounds(circle.getBounds());
-                })
-            );
+            locate = L.control.locate({ position: 'topright' });
+            document.getElementById('locateMenuItem').addEventListener('click', locateMe, false);
 
-            L.control.locate({ position: 'topright' }).addTo(map);
-
-            map.addControl(new L.Control.Permalink({ useLocation: true}));
+            map.addControl(new L.Control.Permalink({ useLocation: true, text: null}));
 
             controlLoader = L.control.loader().addTo(map);
 
@@ -166,4 +205,4 @@ var openvegemap = (function () {
     };
 }());
 
-window.addEventListener('load', openvegemap.init, false);
+ons.ready(openvegemap.init);

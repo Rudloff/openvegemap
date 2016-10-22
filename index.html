@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="bower_components/leaflet-control-geocoder/Control.Geocoder.css" />
         <link rel="stylesheet" href="bower_components/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
         <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css">
+        <link rel="stylesheet" href="bower_components/onsenui/css/onsenui.css"/>
+        <link rel="stylesheet" href="bower_components/onsenui/css/onsen-css-components.css"/>
         <script src="bower_components/leaflet/dist/leaflet.js"></script>
         <script src="bower_components/leaflet-ajax/dist/leaflet.ajax.js"></script>
         <script src="bower_components/leaflet-loader/leaflet-loader.js"></script>
@@ -17,11 +19,68 @@
         <script src="bower_components/leaflet.locatecontrol/dist/L.Control.Locate.min.js"></script>
         <script src="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.min.js"></script>
         <script src="bower_components/leaflet-plugins/control/Permalink.js"></script>
+        <script src="bower_components/onsenui/js/onsenui.min.js"></script>
         <script src="js/map.js"></script>
         <link rel="stylesheet" href="css/map.css" />
         <link rel="manifest" href="manifest.json" />
     </head>
     <body>
-        <div id="map" class="map"></div>
+        <ons-splitter>
+            <ons-splitter-side id="menu" side="left" width="220px" collapse>
+                <ons-page>
+                  <ons-list>
+                    <ons-list-item tappable id="geocodeMenuItem">
+                        <div class="left">
+                          <ons-icon icon="fa-search" fixed-width></ons-icon>
+                        </div>
+                        <div class="center">Search</div>
+                    </ons-list-item>
+                    <ons-list-item tappable id="locateMenuItem">
+                        <div class="left">
+                            <ons-icon icon="fa-map-marker" fixed-width></ons-icon>
+                        </div>
+                        <div class="center">Locate me</div>
+                    </ons-list-item>
+                    <ons-list-item tappable>
+                        <div class="left">
+                            <ons-icon icon="fa-plus-circle" fixed-width></ons-icon>
+                        </div>
+                        <div class="center">Add</div>
+                    </ons-list-item>
+                  </ons-list>
+                </ons-page>
+            </ons-splitter-side>
+            <ons-splitter-content id="content">
+                <ons-page>
+                    <ons-toolbar>
+                        <div class="left">
+                            <ons-toolbar-button id="menuBtn">
+                                <ons-icon icon="fa-navicon"></ons-icon>
+                            </ons-toolbar-button>
+                        </div>
+                        <div class="center">OpenVegeMap</div>
+                    </ons-toolbar>
+                    <div id="map" class="map"></div>
+                </ons-page>
+            </ons-splitter-content>
+        </ons-splitter>
+        <ons-alert-dialog id="mapPopup" cancelable>
+          <div class="alert-dialog-title" id="mapPopupTitle"></div>
+          <ons-list id="mapPopupList"></ons-list>
+          <div class="alert-dialog-footer">
+            <a target="_blank" class="alert-dialog-button" id="osmLink">See on OSM</a>
+            <a class="alert-dialog-button">Edit</a>
+          </div>
+        </ons-alert-dialog>
+        <ons-alert-dialog id="geocodeDialog" cancelable>
+          <div class="alert-dialog-title">Search</div>
+          <div class="alert-dialog-content">
+              <ons-input id="geocodeInput" type="search" placeholder="Address or name"></ons-input>
+              <ons-list id="geocodeAlt"></ons-list>
+          </div>
+          <div class="alert-dialog-footer">
+            <button class="alert-dialog-button" id="geocodeDialogBtn">Search</button>
+          </div>
+        </ons-alert-dialog>
     </body>
 </html>
