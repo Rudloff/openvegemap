@@ -135,6 +135,8 @@ var openvegemap = (function () {
         locate._layer = new L.LayerGroup();
         locate._layer.addTo(map);
         locate._map = map;
+        locate._container = L.DomUtil.create('div');
+        locate._icon = L.DomUtil.create('div');
         locate.start();
         menu.close();
     }
