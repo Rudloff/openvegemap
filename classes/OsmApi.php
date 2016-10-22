@@ -28,7 +28,7 @@ class OsmApi
         $result = json_decode($q->whereInBBox($bbox)->get()->getBody()->getContents());
         $pois = [];
         foreach ($result->elements as $node) {
-            $pois[] = new Feature(new Point([$node->lon, $node->lat]), (array)$node->tags);
+            $pois[] = new Feature(new Point([$node->lon, $node->lat]), (array) $node->tags);
         }
 
         return new FeatureCollection($pois);
