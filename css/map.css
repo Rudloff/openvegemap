@@ -3,3 +3,7 @@
     width: 100%;
     margin: 0;
 }
+
+.leaflet-control-loader {
+    z-index: 2000;
+}
