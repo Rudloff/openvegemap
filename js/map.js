@@ -42,12 +42,20 @@ var openvegemap = (function () {
         } else if (isNotDiet('vegetarian', feature.properties)) {
             color = 'red';
         }
+        if (feature.properties.shop) {
+            icon = 'shopping-cart';
+        }
         switch (feature.properties.amenity) {
+        case 'fast_food':
         case 'restaurant':
             icon = 'cutlery';
             break;
         case 'cafe':
             icon = 'coffee';
+            break;
+        case 'bar':
+        case 'pub':
+            icon = 'beer';
             break;
         }
         layer.setIcon(L.AwesomeMarkers.icon({
@@ -55,11 +63,16 @@ var openvegemap = (function () {
             prefix: 'fa',
             markerColor: color
         }));
-        popup += feature.properties.name;
+        if (feature.properties.name) {
+            popup += feature.properties.name;
+        }
         popup += '<table>';
         popup += getPropertyRow('Take away', feature.properties.takeaway);
         if (feature.properties.phone) {
             popup += getPropertyRow('Phone number', '<a href="tel:' + feature.properties.phone + '">' + feature.properties.phone + '</a>');
+        }
+        if (feature.properties.website) {
+            popup += getPropertyRow('Website', '<a target="_blank" href="' + feature.properties.website + '">' + feature.properties.website + '</a>');
         }
         popup += '</table>';
         popup += '<br/><a target="_blank" href="http://www.openstreetmap.org/node/' + feature.id + '">See on OSM</a>';
