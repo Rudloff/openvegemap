@@ -53,7 +53,9 @@ var openvegemap = (function () {
         popup += feature.properties.name;
         popup += '<table>';
         popup += getPropertyRow('Take away', feature.properties.takeaway);
-        popup += getPropertyRow('Phone number', feature.properties.phone);
+        if (feature.properties.phone) {
+            popup += getPropertyRow('Phone number', '<a href="tel:' + feature.properties.phone + '">' + feature.properties.phone + '</a>');
+        }
         popup += '</table>';
         popup += '<br/><a target="_blank" href="http://www.openstreetmap.org/node/' + feature.id + '">See on OSM</a>';
         layer.bindPopup(popup);
