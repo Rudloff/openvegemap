@@ -3,6 +3,11 @@
 var openvegemap = (function () {
     'use strict';
 
+    var map,
+        curBounds,
+        controlLoader,
+        curFeatures = [];
+
     function isDiet(diet, properties) {
         var key = 'diet:' + diet;
         if (properties[key] && (properties[key] === 'yes' || properties[key] === 'only')) {
@@ -61,22 +66,35 @@ var openvegemap = (function () {
         layer.bindPopup(popup);
     }
 
-    var geojsonLayer = L.geoJson.ajax(null, { onEachFeature: addMarker }),
-        map,
-        curBounds,
-        controlLoader;
+    function removeDuplicates(data) {
+        var newData = [];
+        data.features.forEach(function (feature) {
+            if (curFeatures.indexOf(feature.id) === -1) {
+                curFeatures.push(feature.id);
+                newData.push(feature);
+            }
+        });
+        data.features = newData;
+        return data;
+    }
+
+    function hideLoader() {
+        controlLoader.hide();
+    }
 
     function updateGeoJson() {
         var bounds = map.getBounds();
         if (!curBounds || !curBounds.pad(0.2).contains(bounds)) {
             controlLoader.show();
-            geojsonLayer.refresh('./api/' + bounds.getSouth() + '/' + bounds.getWest() + '/' + bounds.getNorth() + '/' + bounds.getEast());
+            L.geoJson.ajax(
+                './api/' + bounds.getSouth() + '/' + bounds.getWest() + '/' + bounds.getNorth() + '/' + bounds.getEast(),
+                {
+                    onEachFeature: addMarker,
+                    middleware: removeDuplicates
+                }
+            ).addTo(map).on('data:loaded', hideLoader);
             curBounds = bounds;
         }
-    }
-
-    function hideLoader() {
-        controlLoader.hide();
     }
 
     function addLegend() {
@@ -103,8 +121,7 @@ var openvegemap = (function () {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            geojsonLayer.addTo(map);
-            geojsonLayer.on('data:loaded', hideLoader);
+
 
             map.addControl(
                 new L.Control.Geocoder(
