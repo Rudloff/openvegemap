@@ -37,6 +37,7 @@ var openvegemap = (function () {
 
     function showPopup(e) {
         var popup = '';
+        popup += getPropertyRow('Cuisine', e.target.feature.properties.cuisine);
         popup += getPropertyRow('Take away', e.target.feature.properties.takeaway);
         if (e.target.feature.properties.phone) {
             popup += getPropertyRow('Phone number', '<a href="tel:' + e.target.feature.properties.phone + '">' + e.target.feature.properties.phone + '</a>');
