@@ -47,10 +47,10 @@ var openvegemap = (function () {
         if (!e.target.feature.properties.name) {
             e.target.feature.properties.name = '';
         }
-        document.getElementById('mapPopupTitle').innerHTML = e.target.feature.properties.name;
-        document.getElementById('mapPopupList').innerHTML = popup;
-        document.getElementById('osmLink').setAttribute('href', 'http://www.openstreetmap.org/node/' + e.target.feature.id);
-        document.getElementById('mapPopup').show();
+        L.DomUtil.get('mapPopupTitle').innerHTML = e.target.feature.properties.name;
+        L.DomUtil.get('mapPopupList').innerHTML = popup;
+        L.DomUtil.get('osmLink').setAttribute('href', 'http://www.openstreetmap.org/node/' + e.target.feature.id);
+        L.DomUtil.get('mapPopup').show();
     }
 
     function addMarker(feature, layer) {
@@ -151,10 +151,10 @@ var openvegemap = (function () {
 
     return {
         init: function () {
-            menu = document.getElementById('menu');
-            geocodeDialog = document.getElementById('geocodeDialog');
-            document.getElementById('menuBtn').addEventListener('click', openMenu, false);
-            document.getElementById('geocodeDialogBtn').addEventListener('click', geocode, false);
+            menu = L.DomUtil.get('menu');
+            geocodeDialog = L.DomUtil.get('geocodeDialog');
+            L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
+            L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
             map = L.map(
                 'map',
                 {
@@ -181,15 +181,15 @@ var openvegemap = (function () {
                 geocodeDialog.hide();
                 menu.close();
             });
-            geocoder._alts = document.getElementById('geocodeAlt');
+            geocoder._alts = L.DomUtil.get('geocodeAlt');
             geocoder._container = geocodeDialog;
             geocoder._errorElement = L.DomUtil.create('div');
-            geocoder._input = document.getElementById('geocodeInput');
+            geocoder._input = L.DomUtil.get('geocodeInput');
 
-            document.getElementById('geocodeMenuItem').addEventListener('click', openGeocodeDialog, false);
+            L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openGeocodeDialog);
 
             locate = L.control.locate({ position: 'topright' });
-            document.getElementById('locateMenuItem').addEventListener('click', locateMe, false);
+            L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
 
             map.addControl(new L.Control.Permalink({ useLocation: true, text: null}));
 
