@@ -1,10 +1,25 @@
 <?php
 
+use KageNoNeko\OSM\BoundingBox;
 use OpenVegeMap\OsmApi;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-$api = new OsmApi();
-
-header('Content-Type: application/json');
-echo json_encode($api->getPoiWithTags(['diet:vegan']));
+$app = new \Slim\App();
+$app->get('/{south}/{west}/{north}/{east}', function (Request $request, Response $response) {
+    $api = new OsmApi();
+    return $response->withJson(
+        $api->getPoiWithTags(
+            ['diet:vegan'],
+            new BoundingBox(
+                $request->getAttribute('south'),
+                $request->getAttribute('west'),
+                $request->getAttribute('north'),
+                $request->getAttribute('east')
+            )
+        )
+    );
+});
+$app->run();

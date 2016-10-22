@@ -10,10 +10,8 @@ use KageNoNeko\OSM\OverpassConnection;
 
 class OsmApi
 {
-    public function getPoiWithTags(array $tags)
+    public function getPoiWithTags(array $tags, BoundingBox $bbox)
     {
-        $bbox = new BoundingBox(48.5712, 7.7273, 48.5931, 7.7708);
-
         $osm = new OverpassConnection(['interpreter' => 'http://overpass-api.de/api/interpreter']);
 
         $q = $osm->element('node')->asJson();

@@ -7,7 +7,8 @@ var openvegemap = (function () {
         map;
 
     function updateGeoJson() {
-        geojsonLayer.refresh('./api/?' + map.getBounds().toBBoxString());
+        var bounds = map.getBounds();
+        geojsonLayer.refresh('./api/' + bounds.getSouth() + '/' + bounds.getWest() + '/' + bounds.getNorth() + '/' + bounds.getEast());
     }
 
     return {
@@ -20,7 +21,7 @@ var openvegemap = (function () {
 
             geojsonLayer.addTo(map);
 
-            geojsonLayer.refresh("./api/");
+            updateGeoJson();
 
             map.on('moveend', updateGeoJson);
 

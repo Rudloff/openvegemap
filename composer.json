@@ -4,7 +4,8 @@
   "license": "GPL-3.0",
   "require": {
     "kage-no-neko/osm": "~0.2.3",
-    "jmikola/geojson": "~1.0.2"
+    "jmikola/geojson": "~1.0.2",
+    "slim/slim": "~3.5.0"
   },
   "require-dev": {
     "symfony/var-dumper": "~3.1.0",
