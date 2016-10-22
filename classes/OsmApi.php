@@ -36,6 +36,7 @@ class OsmApi
     {
         $q = $this->q->element('node')->asJson()->whereId($id);
         $result = json_decode($q->get()->getBody()->getContents());
+
         return new Feature(
             new Point([$result->elements[0]->lon, $result->elements[0]->lat]),
             (array) $result->elements[0]->tags,
