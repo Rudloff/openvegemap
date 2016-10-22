@@ -51,6 +51,7 @@ var openvegemap = (function () {
         L.DomUtil.get('mapPopupTitle').innerHTML = e.target.feature.properties.name;
         L.DomUtil.get('mapPopupList').innerHTML = popup;
         L.DomUtil.get('osmLink').setAttribute('href', 'http://www.openstreetmap.org/node/' + e.target.feature.id);
+        L.DomUtil.get('editLink').setAttribute('href', './editor/' + e.target.feature.id);
         L.DomUtil.get('mapPopup').show();
     }
 

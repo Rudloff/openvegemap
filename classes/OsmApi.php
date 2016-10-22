@@ -10,12 +10,18 @@ use KageNoNeko\OSM\OverpassConnection;
 
 class OsmApi
 {
-    public function getPoisWithTag($tag, BoundingBox $bbox)
+    private $q;
+
+    public function __construct()
     {
         $osm = new OverpassConnection(['interpreter' => 'http://overpass-api.de/api/interpreter']);
         $osm->setQueryGrammar(new OverpassGrammar());
-        $q = new OverpassBuilder($osm, $osm->getQueryGrammar());
-        $q = $q->element('node')->asJson()->whereTagStartsWith($tag);
+        $this->q = new OverpassBuilder($osm, $osm->getQueryGrammar());
+    }
+
+    public function getPoisWithTag($tag, BoundingBox $bbox)
+    {
+        $q = $this->q->element('node')->asJson()->whereTagStartsWith($tag);
 
         $result = json_decode($q->whereInBBox($bbox)->get()->getBody()->getContents());
         $pois = [];
@@ -24,5 +30,16 @@ class OsmApi
         }
 
         return new FeatureCollection($pois);
+    }
+
+    public function getById($id)
+    {
+        $q = $this->q->element('node')->asJson()->whereId($id);
+        $result = json_decode($q->get()->getBody()->getContents());
+        return new Feature(
+            new Point([$result->elements[0]->lon, $result->elements[0]->lat]),
+            (array) $result->elements[0]->tags,
+            $result->elements[0]->id
+        );
     }
 }
