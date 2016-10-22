@@ -1,0 +1,7 @@
+{
+  "name": "openvegemap",
+  "dependencies": {
+    "leaflet": "~1.0.0",
+    "leaflet-ajax": "~2.1.0"
+  }
+}

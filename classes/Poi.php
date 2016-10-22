@@ -3,17 +3,9 @@
 namespace OpenVegeMap;
 
 use Location\Coordinate;
+use GeoJson\Feature\Feature;
 
-class Poi
+class Poi extends Feature
 {
-    public $name;
-    public $coords;
-    public $tags;
 
-    public function __construct($name, Coordinate $coords, array $tags)
-    {
-        $this->name = $name;
-        $this->coords = $coords;
-        $this->tags = $tags;
-    }
 }

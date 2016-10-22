@@ -4,7 +4,9 @@ namespace OpenVegeMap;
 
 use KageNoNeko\OSM\BoundingBox;
 use KageNoNeko\OSM\OverpassConnection;
-use Location\Coordinate;
+use GeoJson\Geometry\Point;
+use GeoJson\Feature\Feature;
+use GeoJson\Feature\FeatureCollection;
 
 class OsmApi
 {
@@ -26,9 +28,9 @@ class OsmApi
         $result = json_decode($q->whereInBBox($bbox)->get()->getBody()->getContents());
         $pois = [];
         foreach ($result->elements as $node) {
-            $pois[] = new Poi($node->tags->name, new Coordinate($node->lat, $node->lon), (array)$node->tags);
+            $pois[] = new Feature(new Point([$node->lon, $node->lat]), (array)$node->tags);
         }
 
-        return $pois;
+        return new FeatureCollection($pois);
     }
 }

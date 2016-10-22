@@ -18,6 +18,9 @@ module.exports = function (grunt) {
             jslint: {
                 Gruntfile: {
                     src: ['Gruntfile.js']
+                },
+                js: {
+                    src: 'js/*.js'
                 }
             },
             phpunit: {
