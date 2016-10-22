@@ -141,8 +141,6 @@ var openvegemap = (function () {
 
     function geocode() {
         geocoder._geocode();
-        //menu.close();
-        //geocodeDialog.hide();
     }
 
     function openGeocodeDialog() {
