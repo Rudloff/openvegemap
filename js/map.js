@@ -3,7 +3,45 @@
 var openvegemap = (function () {
     'use strict';
 
+    function isDiet(diet, properties) {
+        var key = 'diet:' + diet;
+        if (properties[key] && (properties[key] === 'yes' || properties[key] === 'only')) {
+            return true;
+        }
+        return false;
+    }
+
+    function isNotDiet(diet, properties) {
+        var key = 'diet:' + diet;
+        if (properties[key] && properties[key] === 'no') {
+            return true;
+        }
+        return false;
+    }
+
     function addMarker(feature, layer) {
+        var color = 'gray',
+            icon;
+        if (isDiet('vegan', feature.properties)) {
+            color = 'green';
+        } else if (isDiet('vegetarian', feature.properties)) {
+            color = 'darkgreen';
+        } else if (isNotDiet('vegetarian', feature.properties)) {
+            color = 'red';
+        }
+        switch (feature.properties.amenity) {
+        case 'restaurant':
+            icon = 'cutlery';
+            break;
+        case 'cafe':
+            icon = 'coffee';
+            break;
+        }
+        layer.setIcon(L.AwesomeMarkers.icon({
+            icon: icon,
+            prefix: 'fa',
+            markerColor: color
+        }));
         layer.bindPopup(feature.properties.name);
     }
 

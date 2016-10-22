@@ -5,7 +5,8 @@
     "leaflet-ajax": "~2.1.0",
     "leaflet-loader": "~0.0.1",
     "leaflet.locatecontrol": "~0.45.0",
-    "leaflet-control-geocoder": "~1.2.1"
+    "leaflet-control-geocoder": "~1.2.1",
+    "Leaflet.awesome-markers": "~2.0.2"
   },
   "resolutions": {
     "leaflet": "~1.0.0"
