@@ -46,6 +46,40 @@ module.exports = function (grunt) {
                 package: {
                     src: 'package.json'
                 }
+            },
+            bower_concat: {
+                css: {
+                    dest: {
+                        'css': 'dist/_bower.css'
+                    },
+                    exclude: ['leaflet-loader', 'Leaflet.awesome-markers', 'onsenui']
+                },
+                js: {
+                    dest: {
+                        'js': 'dist/_bower.js'
+                    },
+                    exclude: [],
+                    dependencies: {
+                        'Leaflet.awesome-markers': 'leaflet'
+                    },
+                    mainFiles: {
+                        'leaflet-control-geocoder': 'dist/Control.Geocoder.js'
+                    }
+                }
+            },
+            uglify: {
+                dist: {
+                    files: {
+                        'dist/bower.js': 'dist/_bower.js'
+                    }
+                }
+            },
+            cssmin: {
+                dist: {
+                    files: {
+                        'dist/bower.css': 'dist/_bower.css'
+                    }
+                }
             }
         }
     );
@@ -55,7 +89,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-jsonlint');
     grunt.loadNpmTasks('grunt-fixpack');
+    grunt.loadNpmTasks('grunt-bower-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'phpcs']);
     grunt.registerTask('test', ['phpunit']);
+    grunt.registerTask('default', ['bower_concat', 'uglify', 'cssmin']);
 };
