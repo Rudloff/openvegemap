@@ -2,11 +2,11 @@
 
 namespace OpenVegeMap;
 
-use KageNoNeko\OSM\BoundingBox;
-use KageNoNeko\OSM\OverpassConnection;
-use GeoJson\Geometry\Point;
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
+use GeoJson\Geometry\Point;
+use KageNoNeko\OSM\BoundingBox;
+use KageNoNeko\OSM\OverpassConnection;
 
 class OsmApi
 {
