@@ -77,6 +77,15 @@ var openvegemap = (function () {
         controlLoader.hide();
     }
 
+    function addLegend() {
+        var div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML = '<i style="background-color: #72AF26"></i> Vegan<br/>'
+            + '<i style="background-color: #728224"></i> Vegetarian<br/>'
+            + '<i style="background-color: #D63E2A"></i> Meat only<br/>'
+            + '<i style="background-color: #575757"></i> Unknown<br/>';
+        return div;
+    }
+
     return {
         init: function () {
             map = L.map(
@@ -115,6 +124,10 @@ var openvegemap = (function () {
             map.addControl(new L.Control.Permalink({ useLocation: true}));
 
             controlLoader = L.control.loader().addTo(map);
+
+            var legend = L.control({position: 'bottomright'});
+            legend.onAdd = addLegend;
+            legend.addTo(map);
 
             map.on('moveend', updateGeoJson);
             updateGeoJson();
