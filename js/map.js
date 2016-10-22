@@ -93,6 +93,8 @@ var openvegemap = (function () {
 
             L.control.locate({ position: 'topright' }).addTo(map);
 
+            map.addControl(new L.Control.Permalink({ useLocation: true}));
+
             controlLoader = L.control.loader().addTo(map);
 
             map.on('moveend', updateGeoJson);

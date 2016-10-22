@@ -6,7 +6,8 @@
     "leaflet-loader": "~0.0.1",
     "leaflet.locatecontrol": "~0.55.0",
     "leaflet-control-geocoder": "~1.5.3",
-    "Leaflet.awesome-markers": "~2.0.2"
+    "Leaflet.awesome-markers": "~2.0.2",
+    "leaflet-plugins": "~1.3.3"
   },
   "resolutions": {
     "leaflet": "~1.0.0"
