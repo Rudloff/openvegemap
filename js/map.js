@@ -19,9 +19,17 @@ var openvegemap = (function () {
         return false;
     }
 
+    function getPropertyRow(name, value) {
+        if (value) {
+            return '<tr><th>' + name + '</th><td>' + value + '</td></tr>';
+        }
+        return '';
+    }
+
     function addMarker(feature, layer) {
         var color = 'gray',
-            icon;
+            icon,
+            popup = '';
         if (isDiet('vegan', feature.properties)) {
             color = 'green';
         } else if (isDiet('vegetarian', feature.properties)) {
@@ -42,7 +50,13 @@ var openvegemap = (function () {
             prefix: 'fa',
             markerColor: color
         }));
-        layer.bindPopup(feature.properties.name);
+        popup += feature.properties.name;
+        popup += '<table>';
+        popup += getPropertyRow('Take away', feature.properties.takeaway);
+        popup += getPropertyRow('Phone number', feature.properties.phone);
+        popup += '</table>';
+        popup += '<br/><a target="_blank" href="http://www.openstreetmap.org/node/' + feature.id + '">See on OSM</a>';
+        layer.bindPopup(popup);
     }
 
     var geojsonLayer = L.geoJson.ajax(null, { onEachFeature: addMarker }),

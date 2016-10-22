@@ -15,13 +15,12 @@ class OsmApi
         $osm = new OverpassConnection(['interpreter' => 'http://overpass-api.de/api/interpreter']);
         $osm->setQueryGrammar(new OverpassGrammar());
         $q = new OverpassBuilder($osm, $osm->getQueryGrammar());
-        $q = $q->element('node')->asJson();
-        $q->whereTagStartsWith($tag);
+        $q = $q->element('node')->asJson()->whereTagStartsWith($tag);
 
         $result = json_decode($q->whereInBBox($bbox)->get()->getBody()->getContents());
         $pois = [];
         foreach ($result->elements as $node) {
-            $pois[] = new Feature(new Point([$node->lon, $node->lat]), (array) $node->tags);
+            $pois[] = new Feature(new Point([$node->lon, $node->lat]), (array) $node->tags, $node->id);
         }
 
         return new FeatureCollection($pois);
