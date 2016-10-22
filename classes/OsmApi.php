@@ -10,18 +10,13 @@ use KageNoNeko\OSM\OverpassConnection;
 
 class OsmApi
 {
-    public function getPoiWithTags(array $tags, BoundingBox $bbox)
+    public function getPoisWithTag($tag, BoundingBox $bbox)
     {
         $osm = new OverpassConnection(['interpreter' => 'http://overpass-api.de/api/interpreter']);
-
-        $q = $osm->element('node')->asJson();
-        foreach ($tags as $key => $value) {
-            if (is_int($key)) {
-                $q->whereTagExists($value);
-            } else {
-                $q->whereTag($key, $value);
-            }
-        }
+        $osm->setQueryGrammar(new OverpassGrammar());
+        $q = new OverpassBuilder($osm, $osm->getQueryGrammar());
+        $q = $q->element('node')->asJson();
+        $q->whereTagStartsWith($tag);
 
         $result = json_decode($q->whereInBBox($bbox)->get()->getBody()->getContents());
         $pois = [];

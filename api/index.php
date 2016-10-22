@@ -12,8 +12,8 @@ $app->get('/{south}/{west}/{north}/{east}', function (Request $request, Response
     $api = new OsmApi();
 
     return $response->withJson(
-        $api->getPoiWithTags(
-            ['diet:vegan'],
+        $api->getPoisWithTag(
+            'diet',
             new BoundingBox(
                 $request->getAttribute('south'),
                 $request->getAttribute('west'),
