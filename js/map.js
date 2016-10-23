@@ -109,11 +109,12 @@ var openvegemap = (function () {
     }
 
     function updateGeoJson() {
-        var bounds = map.getBounds();
+        var bounds = map.getBounds(),
+            largerBounds = bounds.pad(0.2);
         if (!curBounds || !curBounds.pad(0.2).contains(bounds)) {
             controlLoader.show();
             L.geoJson.ajax(
-                './api/' + bounds.getSouth() + '/' + bounds.getWest() + '/' + bounds.getNorth() + '/' + bounds.getEast(),
+                './api/' + largerBounds.getSouth() + '/' + largerBounds.getWest() + '/' + largerBounds.getNorth() + '/' + largerBounds.getEast(),
                 {
                     onEachFeature: addMarker,
                     middleware: removeDuplicates
