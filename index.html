@@ -18,28 +18,29 @@
         <ons-splitter>
             <ons-splitter-side id="menu" side="left" width="220px" collapse>
                 <ons-page>
-                  <ons-list>
-                    <ons-list-item tappable id="geocodeMenuItem">
-                        <div class="left">
-                          <ons-icon icon="fa-search" fixed-width></ons-icon>
-                        </div>
-                        <div class="center">Search</div>
-                    </ons-list-item>
-                    <ons-list-item tappable id="locateMenuItem">
-                        <div class="left">
-                            <ons-icon icon="fa-map-marker" fixed-width></ons-icon>
-                        </div>
-                        <div class="center">Locate me</div>
-                    </ons-list-item>
-                    <a href="./editor/" target="_blank">
-                        <ons-list-item tappable>
+                    <ons-list>
+                        <ons-list-header>Menu</ons-list-header>
+                        <ons-list-item tappable id="geocodeMenuItem">
                             <div class="left">
-                                <ons-icon icon="fa-plus-circle" fixed-width></ons-icon>
+                                <ons-icon icon="fa-search" fixed-width></ons-icon>
                             </div>
-                            <div class="center">Add a restaurant</div>
+                            <div class="center">Search</div>
                         </ons-list-item>
-                    </a>
-                  </ons-list>
+                        <ons-list-item tappable id="locateMenuItem">
+                            <div class="left">
+                                <ons-icon icon="fa-map-marker" fixed-width></ons-icon>
+                            </div>
+                            <div class="center">Locate me</div>
+                        </ons-list-item>
+                        <a href="./editor/" target="_blank">
+                            <ons-list-item tappable>
+                                <div class="left">
+                                    <ons-icon icon="fa-plus-circle" fixed-width></ons-icon>
+                                </div>
+                                <div class="center">Add a restaurant</div>
+                            </ons-list-item>
+                        </a>
+                    </ons-list>
                 </ons-page>
             </ons-splitter-side>
             <ons-splitter-content id="content">
