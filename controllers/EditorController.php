@@ -1,4 +1,5 @@
 <?php
+
 namespace OpenVegeMap\Controller;
 
 use OpenVegeMap\OsmApi;
@@ -8,7 +9,6 @@ use Slim\Container;
 
 class EditorController
 {
-
     public function __construct(Container $container)
     {
         $this->container = $container;
