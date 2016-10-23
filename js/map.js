@@ -172,7 +172,8 @@ var openvegemap = (function () {
                 {
                     center: [48.5789, 7.7490],
                     zoom: 16,
-                    minZoom: 13
+                    minZoom: 13,
+                    attributionControl: false
                 }
             );
             controlLoader = L.control.loader().addTo(map);

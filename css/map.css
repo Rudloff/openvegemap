@@ -28,10 +28,6 @@
     border-radius: 5px;
 }
 
-.leaflet-control-attribution {
-    display: none;
-}
-
 ons-splitter-side a {
     text-decoration: none;
 }
