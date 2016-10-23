@@ -1,9 +1,12 @@
 {include file="head.html"}
 <h2>{$properties.name}</h2>
 <table>
-{foreach $properties as $property=>$value}
-    <tr><th>{$property}</th><td>{$value}</td></tr>
-{/foreach}
+    {if isset($properties.amenity)}
+        <tr><th>Type</th><td>{$properties.amenity}</td></tr>
+    {/if}
+    {if isset($properties.website)}
+        <tr><th>Website</th><td><a href="{$properties.website}">{$properties.website}</a></td></tr>
+    {/if}
 </table>
 <div class="my1">
     <a target="_blank" class="btn--blue" href="../#zoom=18&amp;lat={$coords.1}&amp;lon={$coords.0}">Display on map</a>
