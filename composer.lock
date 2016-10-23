@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "37f9f2beaa75c4250dd40add0e09c0d5",
-    "content-hash": "5f3701d0440331de0b65032dafe04cc1",
+    "hash": "c6e4a4197cadfac460c5081b9380c9c4",
+    "content-hash": "8bf4338ed6c87d4d10a1573592901338",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -447,6 +447,48 @@
             "time": "2015-09-11 15:10:35"
         },
         {
+            "name": "plasticbrain/php-flash-messages",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/plasticbrain/PhpFlashMessages.git",
+                "reference": "b565762619342057ce561de20d0f2f6e14f9aa77"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/plasticbrain/PhpFlashMessages/zipball/b565762619342057ce561de20d0f2f6e14f9aa77",
+                "reference": "b565762619342057ce561de20d0f2f6e14f9aa77",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Plasticbrain\\FlashMessages\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mike Everhart",
+                    "email": "mike@plasticbrain.net"
+                }
+            ],
+            "description": "A modern take on PHP session-based flash messages",
+            "keywords": [
+                "bootstrap",
+                "flash",
+                "messages",
+                "session"
+            ],
+            "time": "2016-04-01 08:39:38"
+        },
+        {
             "name": "psr/http-message",
             "version": "1.0.1",
             "source": {
@@ -495,6 +537,57 @@
                 "response"
             ],
             "time": "2016-08-06 14:39:51"
+        },
+        {
+            "name": "servo/fluidxml",
+            "version": "1.20.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/servo-php/fluidxml.git",
+                "reference": "d5cadee48731c3d3f4f770572b2eca61d26a01a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/servo-php/fluidxml/zipball/d5cadee48731c3d3f4f770572b2eca61d26a01a9",
+                "reference": "d5cadee48731c3d3f4f770572b2eca61d26a01a9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "apigen/apigen": "4.*",
+                "peridot-php/peridot": "1.*",
+                "peridot-php/peridot-code-coverage-reporters": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "./source/FluidXml/fluid.php"
+                ],
+                "psr-4": {
+                    "FluidXml\\": "./source/FluidXml/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Orlando",
+                    "email": "fluidxml@danieleorlando.com",
+                    "homepage": "https://github.com/servo-php/fluidxml",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Concise and fluent XML manipulation library",
+            "homepage": "https://github.com/servo-php/fluidxml",
+            "keywords": [
+                "templating",
+                "xml"
+            ],
+            "time": "2016-07-12 02:08:55"
         },
         {
             "name": "slim/slim",

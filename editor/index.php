@@ -3,6 +3,7 @@
 use OpenVegeMap\Controller\EditorController;
 
 require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/../config.php';
 
 $app = new \Slim\App();
 $container = $app->getContainer();
@@ -16,4 +17,5 @@ $container['view'] = function ($c) {
 };
 $controller = new EditorController($container);
 $app->get('/{id}', [$controller, 'edit']);
+$app->post('/{id}', [$controller, 'submit']);
 $app->run();
