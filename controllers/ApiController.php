@@ -1,14 +1,25 @@
 <?php
-
+/**
+ * ApiController class
+ */
 namespace OpenVegeMap\Controller;
 
 use KageNoNeko\OSM\BoundingBox;
 use OpenVegeMap\OsmApi;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Http\Response as Response;
+use Slim\Http\Request as Request;
 
+/**
+ * Controller for the GeoJSON API
+ */
 class ApiController
 {
+    /**
+     * Return features in the request bounding box
+     * @param  Request  $request  HTTP request
+     * @param  Response $response HTTP response
+     * @return Response JSON response
+     */
     public function bbox(Request $request, Response $response)
     {
         $api = new OsmApi();

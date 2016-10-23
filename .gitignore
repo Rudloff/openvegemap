@@ -7,3 +7,4 @@ config.php
 coverage/
 clover.xml
 config_test.php
+docs/

@@ -1,15 +1,43 @@
 <?php
-
+/**
+ * EditorController class
+ */
 namespace OpenVegeMap\Controller;
 
 use OpenVegeMap\OsmApi;
 use Plasticbrain\FlashMessages\FlashMessages;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Http\Response as Response;
+use Slim\Http\Request as Request;
 use Slim\Container;
 
+/**
+ * Main controller for the editor
+ */
 class EditorController
 {
+
+    /**
+     * Slim container
+     * @var Container
+     */
+    private $container;
+
+    /**
+     * OsmApi instance
+     * @var OsmApi
+     */
+    private $api;
+
+    /**
+     * FlashMessages instance
+     * @var FlashMessages
+     */
+    private $msg;
+
+    /**
+     * EditorController constructor
+     * @param Container $container Slim container
+     */
     public function __construct(Container $container)
     {
         $this->container = $container;
@@ -24,6 +52,12 @@ class EditorController
         ]);
     }
 
+    /**
+     * Display the node edit page
+     * @param  Request  $request  HTTP request
+     * @param  Response $response HTTP response
+     * @return Response
+     */
     public function edit(Request $request, Response $response)
     {
         $feature = $this->api->getById($request->getAttribute('id'));
@@ -43,6 +77,12 @@ class EditorController
         );
     }
 
+    /**
+     * Display the search page
+     * @param  Request  $request  HTTP request
+     * @param  Response $response HTTP response
+     * @return Response
+     */
     public function search(Request $request, Response $response)
     {
         $queryString = $request->getParam('query');
@@ -64,6 +104,12 @@ class EditorController
         );
     }
 
+    /**
+     * Submit an edit query
+     * @param  Request  $request  HTTP request
+     * @param  Response $response HTTP response
+     * @return Response
+     */
     public function submit(Request $request, Response $response)
     {
         try {

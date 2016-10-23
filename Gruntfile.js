@@ -80,6 +80,13 @@ module.exports = function (grunt) {
                         'dist/bower.css': 'dist/_bower.css'
                     }
                 }
+            },
+            phpdocumentor: {
+                doc: {
+                    options: {
+                        directory: 'classes/,controllers/,tests/'
+                    }
+                }
             }
         }
     );
@@ -92,8 +99,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-phpdocumentor');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'phpcs']);
     grunt.registerTask('test', ['phpunit']);
     grunt.registerTask('default', ['bower_concat', 'uglify', 'cssmin']);
+    grunt.registerTask('doc', ['phpdocumentor']);
 };

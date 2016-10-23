@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * OsmApi class
+ */
 namespace OpenVegeMap;
 
 use FluidXml\FluidXml;
@@ -9,12 +11,39 @@ use GeoJson\Geometry\Point;
 use KageNoNeko\OSM\BoundingBox;
 use KageNoNeko\OSM\OverpassConnection;
 
+/**
+ * Manage calls to the various OpenStreetMap APIs
+ */
 class OsmApi
 {
+    /**
+     * Overpass query builder
+     * @var OverpassBuilder
+     */
     private $q;
 
+    /**
+     * Guzzle HTTP client
+     * @var \GuzzleHttp\Client
+     */
+    private $client;
+
+    /**
+     * Main OSM API URL
+     * @var string
+     */
+    private $apiUrl;
+
+    /**
+     * OSM tags that can be edited
+     * @var string[]
+     */
     const ALLOWED_TAGS = ['diet:vegan', 'diet:vegetarian'];
 
+    /**
+     * OsmApi constructor
+     * @param string $apiUrl Main OSM API URL
+     */
     public function __construct($apiUrl = 'http://api.openstreetmap.org/api/0.6/')
     {
         $osm = new OverpassConnection(['interpreter' => 'http://overpass-api.de/api/interpreter']);
@@ -24,6 +53,12 @@ class OsmApi
         $this->apiUrl = $apiUrl;
     }
 
+    /**
+     * Get OSM nodes with specificed tag prefix
+     * @param  string      $tag  Tag prefix to search for
+     * @param  BoundingBox $bbox Bounds to search in
+     * @return FeatureCollection Collection of nodes
+     */
     public function getPoisWithTag($tag, BoundingBox $bbox)
     {
         $q = $this->q->element('node')->asJson()->whereTagStartsWith($tag);
@@ -37,6 +72,11 @@ class OsmApi
         return new FeatureCollection($pois);
     }
 
+    /**
+     * Get OSM node by ID
+     * @param  int $id OSM node ID
+     * @return Feature OSM node
+     */
     public function getById($id)
     {
         $q = $this->q->element('node')->asJson()->whereId($id);
@@ -49,6 +89,11 @@ class OsmApi
         );
     }
 
+    /**
+     * Get new OSM changeset ID
+     *
+     * @return int Changeset ID
+     */
     private function getChangeset()
     {
         $osm = new FluidXml('osm');
@@ -69,6 +114,12 @@ class OsmApi
         return (int) $result->getBody()->getContents();
     }
 
+    /**
+     * Update an OSM node with new tag values
+     * @param  int    $id   OSM node ID
+     * @param  array  $tags Tags
+     * @return void
+     */
     public function updateNode($id, array $tags)
     {
         $baseXml = $this->client->request(
