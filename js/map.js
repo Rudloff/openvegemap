@@ -80,6 +80,8 @@ var openvegemap = (function () {
         case 'pub':
             icon = 'beer';
             break;
+        default:
+            break;
         }
         layer.setIcon(L.AwesomeMarkers.icon({
             icon: icon,
