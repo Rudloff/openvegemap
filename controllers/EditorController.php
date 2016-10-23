@@ -130,11 +130,14 @@ class EditorController
      */
     public function submit(Request $request, Response $response)
     {
-        try {
-            $this->api->updateNode($request->getAttribute('id'), $request->getParsedBody());
-            $this->msg->success('Your edit has been submitted, the map will be updated shortly.', null, true);
-        } catch (\Exception $e) {
-            $this->msg->error($e->getMessage(), null, true);
+        $params = $request->getParsedBody();
+        if (is_array($params)) {
+            try {
+                $this->api->updateNode($request->getAttribute('id'), $params);
+                $this->msg->success('Your edit has been submitted, the map will be updated shortly.', null, true);
+            } catch (\Exception $e) {
+                $this->msg->error($e->getMessage(), null, true);
+            }
         }
 
         return $response->withRedirect($request->getUri());
