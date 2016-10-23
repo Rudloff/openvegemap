@@ -87,6 +87,9 @@ var openvegemap = (function () {
             markerColor: color
         }));
         layer.on('click', showPopup);
+        if (feature.properties.name) {
+            layer.bindTooltip(feature.properties.name, { direction: 'bottom' });
+        }
     }
 
     function removeDuplicates(data) {
