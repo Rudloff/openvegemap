@@ -1,0 +1,11 @@
+language: php
+php:
+    - 5.6
+install:
+    - composer install --no-dev
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
+env:
+    global:
+        - OSM_USER="openvegemap@rudloff.pro"
+        - secure: Pzx4mX6OUhvd4ZbC1b8xLeTIdE6D4vDe3cQ3W832TOEtUAoPeNbqZiEfMwDtXi7ZYIS77A+z3CL4ayli/7vsXGb3gnQuOcThzkrlMZUeJZ9AgyMfmrBMDG2NVT4Mrgu0rhW2zhy38RgIRZ4atzuC8MYZkFE5D4PI6D3frYSqMbfjh5mMbFfk2oXftnIXbh1wUuy9wb4YxB7WP6Ok2u97WEcTbgVzl2GzL/9/4+Zk7/oL7HW74yHT+Rl7SzMawSXqo8oDg++fK/8GOyLioUsxeqPsHJiLmOfQTwWUUvzvGkU+52colLth/wSYMGkchXFdV1ebJ+cJ4cXxm95KlteZtTanHQJH2q+CiuviZbR5+Etf89BOC6o79lF3O4jOdWJc2oDroUb2qIVN0pceb+5wUj66I1mMLM2VlZHDmyt9xZTFXOCfHE0LZ6i6mpcI3YM5+mtqh36ZPZPsOsvIN4fJsHpV+YrwXEMsVXFoc1PxbxQwb5hTWM0ZKB5woB1LZy9Yit17Vdx5XLz6SxCpaXWTP/Aoa/JZdDCyo9pboeVODiykauOlkwutJBkUeqpZQ8i5NaGcnGA8yGnomeB0b2SJtFmoiW/2IPRKUB+f76eHjggH45zR5kD87lyNwY6pkk3IK99r89E0yNqjk6mJxOQVvHpOu+Qk2/4K74wZsMOrWEQ=
