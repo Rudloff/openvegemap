@@ -3,10 +3,10 @@
 namespace OpenVegeMap\Controller;
 
 use OpenVegeMap\OsmApi;
+use Plasticbrain\FlashMessages\FlashMessages;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Container;
-use Plasticbrain\FlashMessages\FlashMessages;
 
 class EditorController
 {
@@ -20,7 +20,7 @@ class EditorController
         $this->msg = new FlashMessages();
         $this->msg->setCssClassMap([
             FlashMessages::SUCCESS => 'brdr--dark-gray p1 fnt--green',
-            FlashMessages::ERROR => 'brdr--dark-gray p1 fnt--red'
+            FlashMessages::ERROR   => 'brdr--dark-gray p1 fnt--red',
         ]);
     }
 
@@ -51,6 +51,7 @@ class EditorController
         } catch (\Exception $e) {
             $this->msg->error($e->getMessage(), null, true);
         }
+
         return $response->withRedirect($request->getUri());
     }
 }

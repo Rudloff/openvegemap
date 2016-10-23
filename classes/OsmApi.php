@@ -2,12 +2,12 @@
 
 namespace OpenVegeMap;
 
+use FluidXml\FluidXml;
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
 use GeoJson\Geometry\Point;
 use KageNoNeko\OSM\BoundingBox;
 use KageNoNeko\OSM\OverpassConnection;
-use FluidXml\FluidXml;
 
 class OsmApi
 {
@@ -54,17 +54,18 @@ class OsmApi
         $osm = new FluidXml('osm');
         $osm->add('changeset');
         $changeset = $osm->query('changeset');
-        $changeset->add('tag', null, ['k'=>'comment', 'v'=>'Edited from openvegemap.netlib.re']);
-        $changeset->add('tag', null, ['k'=>'created_by', 'v'=>'OpenVegeMap']);
+        $changeset->add('tag', null, ['k' => 'comment', 'v' => 'Edited from openvegemap.netlib.re']);
+        $changeset->add('tag', null, ['k' => 'created_by', 'v' => 'OpenVegeMap']);
 
         $result = $this->client->request(
             'PUT',
             self::API.'changeset/create',
             [
                 'auth' => [OSM_USER, OSM_PASS],
-                'body' => $osm
+                'body' => $osm,
             ]
         );
+
         return (int) $result->getBody()->getContents();
     }
 
@@ -74,7 +75,7 @@ class OsmApi
             'GET',
             self::API.'node/'.$id,
             [
-                'auth' => [OSM_USER, OSM_PASS]
+                'auth' => [OSM_USER, OSM_PASS],
             ]
         )->getBody()->getContents();
 
@@ -89,7 +90,7 @@ class OsmApi
                 if ($tag->size() > 0) {
                     $tag->attr('v', $value);
                 } else {
-                    $node->add('tag', null, ['k'=>$key, 'v'=>$value]);
+                    $node->add('tag', null, ['k' => $key, 'v' => $value]);
                 }
             }
         }
@@ -99,7 +100,7 @@ class OsmApi
             self::API.'node/'.$id,
             [
                 'auth' => [OSM_USER, OSM_PASS],
-                'body' => $xml
+                'body' => $xml,
             ]
         );
     }
