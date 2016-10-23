@@ -15,7 +15,8 @@
   },
   "autoload": {
     "psr-4": {
-      "OpenVegeMap\\": "classes/"
+      "OpenVegeMap\\": "classes/",
+      "OpenVegeMap\\Controller\\": "controllers/"
     }
   }
 }

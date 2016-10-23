@@ -1,8 +1,6 @@
 <?php
 
-use OpenVegeMap\OsmApi;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use OpenVegeMap\Controller\EditorController;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -16,21 +14,6 @@ $container['view'] = function ($c) {
 
     return $view;
 };
-$app->get('/{id}', function (Request $request, Response $response) use ($container) {
-    $api = new OsmApi();
-    $feature = $api->getById($request->getAttribute('id'));
-    $container->view->render(
-        $response,
-        'edit.html',
-        [
-            'properties'     => $feature->getProperties(),
-            'coords'         => $feature->getGeometry()->getCoordinates(),
-            'id'             => $feature->getId(),
-            'editProperties' => [
-                'diet:vegan'      => 'Vegan',
-                'diet:vegetarian' => 'Vegetarian',
-            ],
-        ]
-    );
-});
+$controller = new EditorController($container);
+$app->get('/{id}', [$controller, 'edit']);
 $app->run();
