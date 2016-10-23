@@ -4,6 +4,7 @@
  */
 namespace OpenVegeMap\Controller;
 
+use Interop\Container\ContainerInterface;
 use OpenVegeMap\OsmApi;
 use Plasticbrain\FlashMessages\FlashMessages;
 use Slim\Container;
@@ -41,7 +42,7 @@ class EditorController
      *
      * @param Container $container Slim container
      */
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $this->api = new OsmApi();
@@ -66,20 +67,22 @@ class EditorController
     public function edit(Request $request, Response $response)
     {
         $feature = $this->api->getById($request->getAttribute('id'));
-        $this->container->view->render(
-            $response,
-            'editor/edit.tpl',
-            [
-                'properties'     => $feature->getProperties(),
-                'coords'         => $feature->getGeometry()->getCoordinates(),
-                'id'             => $feature->getId(),
-                'msg'            => $this->msg->display(null, false),
-                'editProperties' => [
-                    'diet:vegan'      => 'Vegan',
-                    'diet:vegetarian' => 'Vegetarian',
-                ],
-            ]
-        );
+        if ($this->container instanceof Container) {
+            $this->container->view->render(
+                $response,
+                'editor/edit.tpl',
+                [
+                    'properties'     => $feature->getProperties(),
+                    'coords'         => $feature->getGeometry()->getCoordinates(),
+                    'id'             => $feature->getId(),
+                    'msg'            => $this->msg->display(null, false),
+                    'editProperties' => [
+                        'diet:vegan'      => 'Vegan',
+                        'diet:vegetarian' => 'Vegetarian',
+                    ],
+                ]
+            );
+        }
     }
 
     /**
@@ -101,14 +104,16 @@ class EditorController
             $query->setQuery($queryString);
             $results = $consumer->search($query);
         }
-        $this->container->view->render(
-            $response,
-            'editor/search.tpl',
-            [
-                'query'   => $queryString,
-                'results' => $results,
-            ]
-        );
+        if ($this->container instanceof Container) {
+            $this->container->view->render(
+                $response,
+                'editor/search.tpl',
+                [
+                    'query'   => $queryString,
+                    'results' => $results,
+                ]
+            );
+        }
     }
 
     /**
