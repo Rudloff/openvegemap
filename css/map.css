@@ -31,3 +31,13 @@
 .leaflet-control-attribution {
     display: none;
 }
+
+ons-splitter-side a {
+    text-decoration: none;
+}
+
+.alert-dialog-button,
+ons-list-item[tappable],
+ons-toolbar-button {
+    cursor: pointer;
+}
