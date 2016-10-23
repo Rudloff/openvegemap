@@ -19,7 +19,7 @@ class EditorController
     /**
      * Slim container.
      *
-     * @var Container
+     * @var ContainerInterface
      */
     private $container;
 
