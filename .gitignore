@@ -4,3 +4,6 @@ bower_components/
 dist/
 templates_c/
 config.php
+coverage/
+clover.xml
+config_test.php

@@ -2,26 +2,26 @@
 
 namespace OpenVegeMap;
 
-use FluidXml\FluidXml;
 use GeoJson\Feature\Feature;
 use GeoJson\Feature\FeatureCollection;
 use GeoJson\Geometry\Point;
 use KageNoNeko\OSM\BoundingBox;
 use KageNoNeko\OSM\OverpassConnection;
+use FluidXml\FluidXml;
 
 class OsmApi
 {
     private $q;
 
-    const API = 'http://api.openstreetmap.org/api/0.6/';
     const ALLOWED_TAGS = ['diet:vegan', 'diet:vegetarian'];
 
-    public function __construct()
+    public function __construct($apiUrl = 'http://api.openstreetmap.org/api/0.6/')
     {
         $osm = new OverpassConnection(['interpreter' => 'http://overpass-api.de/api/interpreter']);
         $osm->setQueryGrammar(new OverpassGrammar());
         $this->q = new OverpassBuilder($osm, $osm->getQueryGrammar());
         $this->client = new \GuzzleHttp\Client();
+        $this->apiUrl = $apiUrl;
     }
 
     public function getPoisWithTag($tag, BoundingBox $bbox)
@@ -54,18 +54,17 @@ class OsmApi
         $osm = new FluidXml('osm');
         $osm->add('changeset');
         $changeset = $osm->query('changeset');
-        $changeset->add('tag', null, ['k' => 'comment', 'v' => 'Edited from openvegemap.netlib.re']);
-        $changeset->add('tag', null, ['k' => 'created_by', 'v' => 'OpenVegeMap']);
+        $changeset->add('tag', null, ['k'=>'comment', 'v'=>'Edited from openvegemap.netlib.re']);
+        $changeset->add('tag', null, ['k'=>'created_by', 'v'=>'OpenVegeMap']);
 
         $result = $this->client->request(
             'PUT',
-            self::API.'changeset/create',
+            $this->apiUrl.'changeset/create',
             [
                 'auth' => [OSM_USER, OSM_PASS],
-                'body' => $osm,
+                'body' => $osm
             ]
         );
-
         return (int) $result->getBody()->getContents();
     }
 
@@ -73,9 +72,9 @@ class OsmApi
     {
         $baseXml = $this->client->request(
             'GET',
-            self::API.'node/'.$id,
+            $this->apiUrl.'node/'.$id,
             [
-                'auth' => [OSM_USER, OSM_PASS],
+                'auth' => [OSM_USER, OSM_PASS]
             ]
         )->getBody()->getContents();
 
@@ -90,17 +89,17 @@ class OsmApi
                 if ($tag->size() > 0) {
                     $tag->attr('v', $value);
                 } else {
-                    $node->add('tag', null, ['k' => $key, 'v' => $value]);
+                    $node->add('tag', null, ['k'=>$key, 'v'=>$value]);
                 }
             }
         }
 
         $this->client->request(
             'PUT',
-            self::API.'node/'.$id,
+            $this->apiUrl.'node/'.$id,
             [
                 'auth' => [OSM_USER, OSM_PASS],
-                'body' => $xml,
+                'body' => $xml
             ]
         );
     }
