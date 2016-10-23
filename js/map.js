@@ -171,7 +171,7 @@ var openvegemap = (function () {
             map = L.map(
                 'map',
                 {
-                    center: [48.5789, 7.7490],
+                    center: [48.85661, 2.351499],
                     zoom: 16,
                     minZoom: 13,
                     attributionControl: false
