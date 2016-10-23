@@ -1,41 +1,44 @@
 <?php
 /**
- * EditorController class
+ * EditorController class.
  */
 namespace OpenVegeMap\Controller;
 
 use OpenVegeMap\OsmApi;
 use Plasticbrain\FlashMessages\FlashMessages;
-use Slim\Http\Response as Response;
-use Slim\Http\Request as Request;
 use Slim\Container;
+use Slim\Http\Request as Request;
+use Slim\Http\Response as Response;
 
 /**
- * Main controller for the editor
+ * Main controller for the editor.
  */
 class EditorController
 {
-
     /**
-     * Slim container
+     * Slim container.
+     *
      * @var Container
      */
     private $container;
 
     /**
-     * OsmApi instance
+     * OsmApi instance.
+     *
      * @var OsmApi
      */
     private $api;
 
     /**
-     * FlashMessages instance
+     * FlashMessages instance.
+     *
      * @var FlashMessages
      */
     private $msg;
 
     /**
-     * EditorController constructor
+     * EditorController constructor.
+     *
      * @param Container $container Slim container
      */
     public function __construct(Container $container)
@@ -53,9 +56,11 @@ class EditorController
     }
 
     /**
-     * Display the node edit page
-     * @param  Request  $request  HTTP request
-     * @param  Response $response HTTP response
+     * Display the node edit page.
+     *
+     * @param Request  $request  HTTP request
+     * @param Response $response HTTP response
+     *
      * @return Response
      */
     public function edit(Request $request, Response $response)
@@ -78,9 +83,11 @@ class EditorController
     }
 
     /**
-     * Display the search page
-     * @param  Request  $request  HTTP request
-     * @param  Response $response HTTP response
+     * Display the search page.
+     *
+     * @param Request  $request  HTTP request
+     * @param Response $response HTTP response
+     *
      * @return Response
      */
     public function search(Request $request, Response $response)
@@ -105,9 +112,11 @@ class EditorController
     }
 
     /**
-     * Submit an edit query
-     * @param  Request  $request  HTTP request
-     * @param  Response $response HTTP response
+     * Submit an edit query.
+     *
+     * @param Request  $request  HTTP request
+     * @param Response $response HTTP response
+     *
      * @return Response
      */
     public function submit(Request $request, Response $response)
