@@ -1,6 +1,6 @@
 {
   "name": "OpenVegeMap",
   "start_url": "./index.html",
-  "description": "Find vegetarian and vegan restaurants in you city",
+  "description": "Find vegetarian and vegan restaurants in your city",
   "display": "standalone"
 }

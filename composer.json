@@ -1,6 +1,6 @@
 {
   "name": "rudloff/openvegemap",
-  "description": "Find vegetarian and vegan restaurants in you city",
+  "description": "Find vegetarian and vegan restaurants in your city",
   "license": "GPL-3.0",
   "require": {
     "kage-no-neko/osm": "~0.2.3",

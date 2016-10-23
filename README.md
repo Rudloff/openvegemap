@@ -1,6 +1,6 @@
 # OpenVegeMap
 
-Find vegetarian and vegan restaurants in you city
+Find vegetarian and vegan restaurants in your city
 
 ## Setup
 
