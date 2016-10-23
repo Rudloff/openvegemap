@@ -1,4 +1,4 @@
-{include file="head.html"}
+{include file="head.tpl"}
 <h2>{$properties.name}</h2>
 <table>
     {if isset($properties.amenity)}
@@ -28,3 +28,4 @@
     </div>
     <input type="submit" value="Save" />
 </form>
+{include file="footer.tpl"}

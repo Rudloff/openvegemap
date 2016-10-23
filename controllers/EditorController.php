@@ -20,7 +20,7 @@ class EditorController
         $feature = $api->getById($request->getAttribute('id'));
         $this->container->view->render(
             $response,
-            'edit.html',
+            'edit.tpl',
             [
                 'properties'     => $feature->getProperties(),
                 'coords'         => $feature->getGeometry()->getCoordinates(),
