@@ -14,6 +14,7 @@ class OsmApi
     private $q;
 
     const API = 'http://api.openstreetmap.org/api/0.6/';
+    const ALLOWED_TAGS = ['diet:vegan', 'diet:vegetarian'];
 
     public function __construct()
     {
@@ -83,7 +84,7 @@ class OsmApi
         $node->attr('changeset', $this->getChangeset());
         $node->attr('timestamp', date('c'));
         foreach ($tags as $key => $value) {
-            if (!empty($value)) {
+            if (!empty($value) && in_array($key, self::ALLOWED_TAGS)) {
                 $tag = $node->query('tag[k="'.$key.'"]');
                 if ($tag->size() > 0) {
                     $tag->attr('v', $value);
