@@ -40,7 +40,7 @@ var openvegemap = (function () {
         popup += getPropertyRow('Cuisine', e.target.feature.properties.cuisine);
         popup += getPropertyRow('Take away', e.target.feature.properties.takeaway);
         if (e.target.feature.properties.phone) {
-            popup += getPropertyRow('Phone number', '<a href="tel:' + e.target.feature.properties.phone + '">' + e.target.feature.properties.phone + '</a>');
+            popup += getPropertyRow('Phone number', '<a href="tel:' + e.target.feature.properties.phone + '">' + e.target.feature.properties.phone.replace(/\s/g, '&nbsp;') + '</a>');
         }
         if (e.target.feature.properties.website) {
             popup += getPropertyRow('Website', '<a target="_blank" href="' + e.target.feature.properties.website + '">' + e.target.feature.properties.website + '</a>');
