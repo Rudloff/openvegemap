@@ -164,10 +164,9 @@ var openvegemap = (function () {
 
     return {
         init: function () {
+            //Variables
             menu = L.DomUtil.get('menu');
             geocodeDialog = L.DomUtil.get('geocodeDialog');
-            L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
-            L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
             map = L.map(
                 'map',
                 {
@@ -176,11 +175,20 @@ var openvegemap = (function () {
                     minZoom: 13
                 }
             );
+            controlLoader = L.control.loader().addTo(map);
 
+            //Events
+            L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
+            L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
+            L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openGeocodeDialog);
+            map.on('moveend', updateGeoJson);
+
+            //Tiles
             L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
                 detectRetina: true
             }).addTo(map);
 
+            //Geocoder
             geocoder = new L.Control.Geocoder(
                 {
                     geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
@@ -193,20 +201,19 @@ var openvegemap = (function () {
             geocoder._errorElement = L.DomUtil.create('div');
             geocoder._input = L.DomUtil.get('geocodeInput');
 
-            L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openGeocodeDialog);
-
+            //Geolocation
             locate = L.control.locate({ position: 'topright' });
             L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
 
+            //Permalink
             map.addControl(new L.Control.Permalink({ useLocation: true, text: null}));
 
-            controlLoader = L.control.loader().addTo(map);
-
+            //Legend
             var legend = L.control({position: 'bottomright'});
             legend.onAdd = addLegend;
             legend.addTo(map);
 
-            map.on('moveend', updateGeoJson);
+            //Load initial markers
             updateGeoJson();
         }
     };
