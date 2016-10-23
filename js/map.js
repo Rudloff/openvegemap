@@ -55,20 +55,12 @@ var openvegemap = (function () {
         L.DomUtil.get('mapPopup').show();
     }
 
-    function addMarker(feature, layer) {
-        var color = 'gray',
-            icon;
-        if (isDiet('vegan', feature.properties)) {
-            color = 'green';
-        } else if (isDiet('vegetarian', feature.properties)) {
-            color = 'darkgreen';
-        } else if (isNotDiet('vegetarian', feature.properties)) {
-            color = 'red';
-        }
-        if (feature.properties.shop) {
+    function getIcon(properties) {
+        var icon;
+        if (properties.shop) {
             icon = 'shopping-cart';
         }
-        switch (feature.properties.amenity) {
+        switch (properties.amenity) {
         case 'fast_food':
         case 'restaurant':
             icon = 'cutlery';
@@ -83,10 +75,26 @@ var openvegemap = (function () {
         default:
             break;
         }
+        return icon;
+    }
+
+    function getColor(properties) {
+        var color = 'gray';
+        if (isDiet('vegan', properties)) {
+            color = 'green';
+        } else if (isDiet('vegetarian', properties)) {
+            color = 'darkgreen';
+        } else if (isNotDiet('vegetarian', properties)) {
+            color = 'red';
+        }
+        return color;
+    }
+
+    function addMarker(feature, layer) {
         layer.setIcon(L.AwesomeMarkers.icon({
-            icon: icon,
+            icon: getIcon(feature.properties),
             prefix: 'fa',
-            markerColor: color
+            markerColor: getColor(feature.properties)
         }));
         layer.on('click', showPopup);
         if (feature.properties.name) {
