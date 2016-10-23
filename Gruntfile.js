@@ -70,7 +70,8 @@ module.exports = function (grunt) {
             uglify: {
                 dist: {
                     files: {
-                        'dist/bower.js': 'dist/_bower.js'
+                        'dist/bower.js': 'dist/_bower.js',
+                        'dist/map.js': 'js/map.js'
                     }
                 }
             },
