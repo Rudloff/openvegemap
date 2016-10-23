@@ -1,4 +1,5 @@
 <?php
+
 namespace OpenVegeMap\Controller;
 
 use KageNoNeko\OSM\BoundingBox;
