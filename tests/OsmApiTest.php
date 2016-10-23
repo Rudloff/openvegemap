@@ -30,6 +30,6 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateNode()
     {
-        $this->api->updateNode(4305148851, ['diet:vegan'=>'yes']);
+        $this->api->updateNode(4305148851, ['diet:vegan' => 'yes']);
     }
 }
