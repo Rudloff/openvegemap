@@ -39,6 +39,7 @@ class EditorController
 
     /**
      * Smarty view.
+     *
      * @var \Slim\Views\Smarty
      */
     private $view;
