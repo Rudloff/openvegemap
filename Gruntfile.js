@@ -9,7 +9,7 @@ module.exports = function (grunt) {
                     bin: 'vendor/bin/phpcs'
                 },
                 php: {
-                    src: ['*.php', 'classes/*.php', 'api/*.php']
+                    src: ['*.php', 'classes/*.php', 'api/*.php', 'editor/*.php']
                 },
                 tests: {
                     src: ['tests/']
@@ -58,7 +58,7 @@ module.exports = function (grunt) {
                     dest: {
                         'js': 'dist/_bower.js'
                     },
-                    exclude: [],
+                    exclude: ['furtive'],
                     dependencies: {
                         'Leaflet.awesome-markers': 'leaflet'
                     },
