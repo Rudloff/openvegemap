@@ -58,8 +58,8 @@ class EditorController
             $response,
             'editor/search.tpl',
             [
-                'query'=>$queryString,
-                'results'=>$results
+                'query'   => $queryString,
+                'results' => $results,
             ]
         );
     }
