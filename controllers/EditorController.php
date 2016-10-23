@@ -38,6 +38,12 @@ class EditorController
     private $msg;
 
     /**
+     * Smarty view.
+     * @var \Slim\Views\Smarty
+     */
+    private $view;
+
+    /**
      * EditorController constructor.
      *
      * @param Container $container Slim container
@@ -45,6 +51,7 @@ class EditorController
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->view = $this->container->get('view');
         $this->api = new OsmApi();
         if (!session_id()) {
             session_start();
@@ -67,22 +74,20 @@ class EditorController
     public function edit(Request $request, Response $response)
     {
         $feature = $this->api->getById($request->getAttribute('id'));
-        if ($this->container instanceof Container) {
-            $this->container->view->render(
-                $response,
-                'editor/edit.tpl',
-                [
-                    'properties'     => $feature->getProperties(),
-                    'coords'         => $feature->getGeometry()->getCoordinates(),
-                    'id'             => $feature->getId(),
-                    'msg'            => $this->msg->display(null, false),
-                    'editProperties' => [
-                        'diet:vegan'      => 'Vegan',
-                        'diet:vegetarian' => 'Vegetarian',
-                    ],
-                ]
-            );
-        }
+        $this->view->render(
+            $response,
+            'editor/edit.tpl',
+            [
+                'properties'     => $feature->getProperties(),
+                'coords'         => $feature->getGeometry()->getCoordinates(),
+                'id'             => $feature->getId(),
+                'msg'            => $this->msg->display(null, false),
+                'editProperties' => [
+                    'diet:vegan'      => 'Vegan',
+                    'diet:vegetarian' => 'Vegetarian',
+                ],
+            ]
+        );
     }
 
     /**
@@ -104,16 +109,14 @@ class EditorController
             $query->setQuery($queryString);
             $results = $consumer->search($query);
         }
-        if ($this->container instanceof Container) {
-            $this->container->view->render(
-                $response,
-                'editor/search.tpl',
-                [
-                    'query'   => $queryString,
-                    'results' => $results,
-                ]
-            );
-        }
+        $this->view->render(
+            $response,
+            'editor/search.tpl',
+            [
+                'query'   => $queryString,
+                'results' => $results,
+            ]
+        );
     }
 
     /**
