@@ -14,7 +14,7 @@
         {/if}
     {/foreach}
 </ul>
-{if $query && $i == 0}
+{if $query and $i == 0}
     <div class="brdr--dark-gray p1 fnt--red">No results</div>
 {/if}
 {include file="editor/footer.tpl"}
