@@ -1,6 +1,6 @@
 <?php
 /**
- * OsmApi class
+ * OsmApi class.
  */
 namespace OpenVegeMap;
 
@@ -12,36 +12,41 @@ use KageNoNeko\OSM\BoundingBox;
 use KageNoNeko\OSM\OverpassConnection;
 
 /**
- * Manage calls to the various OpenStreetMap APIs
+ * Manage calls to the various OpenStreetMap APIs.
  */
 class OsmApi
 {
     /**
-     * Overpass query builder
+     * Overpass query builder.
+     *
      * @var OverpassBuilder
      */
     private $q;
 
     /**
-     * Guzzle HTTP client
+     * Guzzle HTTP client.
+     *
      * @var \GuzzleHttp\Client
      */
     private $client;
 
     /**
-     * Main OSM API URL
+     * Main OSM API URL.
+     *
      * @var string
      */
     private $apiUrl;
 
     /**
-     * OSM tags that can be edited
+     * OSM tags that can be edited.
+     *
      * @var string[]
      */
     const ALLOWED_TAGS = ['diet:vegan', 'diet:vegetarian'];
 
     /**
-     * OsmApi constructor
+     * OsmApi constructor.
+     *
      * @param string $apiUrl Main OSM API URL
      */
     public function __construct($apiUrl = 'http://api.openstreetmap.org/api/0.6/')
@@ -54,9 +59,11 @@ class OsmApi
     }
 
     /**
-     * Get OSM nodes with specificed tag prefix
-     * @param  string      $tag  Tag prefix to search for
-     * @param  BoundingBox $bbox Bounds to search in
+     * Get OSM nodes with specificed tag prefix.
+     *
+     * @param string      $tag  Tag prefix to search for
+     * @param BoundingBox $bbox Bounds to search in
+     *
      * @return FeatureCollection Collection of nodes
      */
     public function getPoisWithTag($tag, BoundingBox $bbox)
@@ -73,8 +80,10 @@ class OsmApi
     }
 
     /**
-     * Get OSM node by ID
-     * @param  int $id OSM node ID
+     * Get OSM node by ID.
+     *
+     * @param int $id OSM node ID
+     *
      * @return Feature OSM node
      */
     public function getById($id)
@@ -90,7 +99,7 @@ class OsmApi
     }
 
     /**
-     * Get new OSM changeset ID
+     * Get new OSM changeset ID.
      *
      * @return int Changeset ID
      */
@@ -115,9 +124,11 @@ class OsmApi
     }
 
     /**
-     * Update an OSM node with new tag values
-     * @param  int    $id   OSM node ID
-     * @param  array  $tags Tags
+     * Update an OSM node with new tag values.
+     *
+     * @param int   $id   OSM node ID
+     * @param array $tags Tags
+     *
      * @return void
      */
     public function updateNode($id, array $tags)

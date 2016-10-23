@@ -1,6 +1,6 @@
 <?php
 /**
- * OsmApiTest class
+ * OsmApiTest class.
  */
 namespace OpenVegeMap\Test;
 
@@ -8,19 +8,19 @@ use KageNoNeko\OSM\BoundingBox;
 use OpenVegeMap\OsmApi;
 
 /**
- * Tests for the OsmApi class
+ * Tests for the OsmApi class.
  */
 class OsmApiTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
-     * OsmApi instance
+     * OsmApi instance.
+     *
      * @var OsmApi
      */
     private $api;
 
     /**
-     * Setup properties used in multiple tests
+     * Setup properties used in multiple tests.
      */
     protected function setUp()
     {
@@ -28,7 +28,8 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the getPoisWithTag() function
+     * Test the getPoisWithTag() function.
+     *
      * @return void
      */
     public function testGetPoisWithTag()
@@ -40,7 +41,8 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the getById() function
+     * Test the getById() function.
+     *
      * @return void
      */
     public function testgetById()
@@ -52,7 +54,8 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the updateNode() function
+     * Test the updateNode() function.
+     *
      * @return void
      */
     public function testUpdateNode()
