@@ -29,7 +29,7 @@ class EditorController
         $feature = $this->api->getById($request->getAttribute('id'));
         $this->container->view->render(
             $response,
-            'edit.tpl',
+            'editor/edit.tpl',
             [
                 'properties'     => $feature->getProperties(),
                 'coords'         => $feature->getGeometry()->getCoordinates(),
@@ -39,6 +39,27 @@ class EditorController
                     'diet:vegan'      => 'Vegan',
                     'diet:vegetarian' => 'Vegetarian',
                 ],
+            ]
+        );
+    }
+
+    public function search(Request $request, Response $response)
+    {
+        $queryString = $request->getParam('query');
+        $results = [];
+        if (isset($queryString)) {
+            $client = new \Buzz\Browser(new \Buzz\Client\Curl());
+            $consumer = new \Nominatim\Consumer($client, 'http://nominatim.openstreetmap.org');
+            $query = new \Nominatim\Query();
+            $query->setQuery($queryString);
+            $results = $consumer->search($query);
+        }
+        $this->container->view->render(
+            $response,
+            'editor/search.tpl',
+            [
+                'query'=>$queryString,
+                'results'=>$results
             ]
         );
     }

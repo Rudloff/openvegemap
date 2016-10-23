@@ -17,5 +17,6 @@ $container['view'] = function ($c) {
 };
 $controller = new EditorController($container);
 $app->get('/{id}', [$controller, 'edit']);
+$app->get('/', [$controller, 'search']);
 $app->post('/{id}', [$controller, 'submit']);
 $app->run();

@@ -1,4 +1,4 @@
-{include file="head.tpl"}
+{include file="editor/head.tpl"}
 {$msg}
 <h2>{$properties.name}</h2>
 <table>
@@ -29,4 +29,4 @@
     </div>
     <input type="submit" value="Save" />
 </form>
-{include file="footer.tpl"}
+{include file="editor/footer.tpl"}
