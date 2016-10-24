@@ -8,5 +8,4 @@ Find vegetarian and vegan restaurants in your city
 npm install
 bower install
 grunt
-composer install
 ```

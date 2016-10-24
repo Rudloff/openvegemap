@@ -50,7 +50,7 @@ var openvegemap = (function () {
         L.DomUtil.get('mapPopupTitle').innerHTML = e.target.feature.tags.name;
         L.DomUtil.get('mapPopupList').innerHTML = popup;
         L.DomUtil.get('gmapsLink').setAttribute('href', 'https://www.google.fr/maps/dir//' + e.target.feature.lat + ',' + e.target.feature.lon);
-        L.DomUtil.get('editLink').setAttribute('href', './editor/' + e.target.feature.type + '/' + e.target.feature.id);
+        L.DomUtil.get('editLink').setAttribute('href', 'https://editor.openvegemap.netlib.re/' + e.target.feature.type + '/' + e.target.feature.id);
         L.DomUtil.get('mapPopup').show();
     }
 

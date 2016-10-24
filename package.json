@@ -12,10 +12,7 @@
     "grunt-contrib-watch": "~1.0.0",
     "grunt-fixpack": "~0.1.0",
     "grunt-jslint": "~1.1.14",
-    "grunt-jsonlint": "~1.1.0",
-    "grunt-phpcs": "~0.4.0",
-    "grunt-phpdocumentor": "~0.4.1",
-    "grunt-phpunit": "~0.3.6"
+    "grunt-jsonlint": "~1.1.0"
   },
   "homepage": "https://github.com/Rudloff/openvegemap",
   "keywords": [
@@ -23,7 +20,7 @@
     "openstreemap"
   ],
   "license": "GPL-3.0",
-  "main": "index.php",
+  "main": "index.html",
   "repository": {
     "type": "git",
     "url": "https://github.com/Rudloff/openvegemap.git"

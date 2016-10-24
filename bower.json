@@ -8,8 +8,7 @@
     "Leaflet.awesome-markers": "~2.0.2",
     "leaflet-plugins": "~2.0.0",
     "leaflet-overpass-layer": "~2.2.0",
-    "onsenui": "~2.0.1",
-    "furtive": "~2.2.4"
+    "onsenui": "~2.0.1"
   },
   "resolutions": {
     "leaflet": "~1.0.0"
