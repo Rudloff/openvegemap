@@ -218,6 +218,11 @@ var openvegemap = (function () {
             L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
 
             //Permalink
+            var hash = L.UrlUtil.hash();
+            if (L.UrlUtil.queryParse(hash).lat) {
+                //Don't use localStorage value if we have a hash in the URL
+                window.localStorage.setItem('paramsTemp', hash);
+            }
             map.addControl(new L.Control.Permalink({ useLocation: true, text: null, useLocalStorage: true }));
 
             //Legend
