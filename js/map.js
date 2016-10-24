@@ -35,7 +35,9 @@ var openvegemap = (function () {
 
     function showPopup(e) {
         var popup = '';
-        popup += getPropertyRow('Cuisine', e.target.feature.tags.cuisine);
+        if (e.target.feature.tags.cuisine) {
+            popup += getPropertyRow('Cuisine', e.target.feature.tags.cuisine.replace(/;/g, ', '));
+        }
         popup += getPropertyRow('Take away', e.target.feature.tags.takeaway);
         if (e.target.feature.tags.phone) {
             popup += getPropertyRow('Phone number', '<a href="tel:' + e.target.feature.tags.phone + '">' + e.target.feature.tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
