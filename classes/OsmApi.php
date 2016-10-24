@@ -17,11 +17,11 @@ use KageNoNeko\OSM\OverpassConnection;
 class OsmApi
 {
     /**
-     * Overpass query builder.
+     * Overpass API connection.
      *
-     * @var OverpassBuilder
+     * @var OverpassConnection
      */
-    private $q;
+    private $osm;
 
     /**
      * Guzzle HTTP client.
@@ -51,9 +51,8 @@ class OsmApi
      */
     public function __construct($apiUrl = 'http://api.openstreetmap.org/api/0.6/')
     {
-        $osm = new OverpassConnection(['interpreter' => 'http://overpass-api.de/api/interpreter']);
-        $osm->setQueryGrammar(new OverpassGrammar());
-        $this->q = new OverpassBuilder($osm, $osm->getQueryGrammar());
+        $this->osm = new OverpassConnection(['interpreter' => 'http://overpass-api.de/api/interpreter']);
+        $this->osm->setQueryGrammar(new OverpassGrammar());
         $this->client = new \GuzzleHttp\Client();
         $this->apiUrl = $apiUrl;
     }
@@ -68,10 +67,10 @@ class OsmApi
      */
     public function getPoisWithTag($tag, BoundingBox $bbox)
     {
-        $q = $this->q->element('node')->asJson()->whereTagStartsWith($tag);
-
-        $result = json_decode($q->whereInBBox($bbox)->get()->getBody()->getContents());
         $pois = [];
+        $q = new OverpassBuilder($this->osm, $this->osm->getQueryGrammar());
+        $q->element('node')->whereTagStartsWith($tag)->asJson()->whereInBBox($bbox);
+        $result = json_decode($q->get()->getBody()->getContents());
         foreach ($result->elements as $node) {
             $pois[] = new Feature(new Point([$node->lon, $node->lat]), (array) $node->tags, $node->id);
         }
@@ -88,7 +87,8 @@ class OsmApi
      */
     public function getById($id)
     {
-        $q = $this->q->element('node')->asJson()->whereId($id);
+        $q = new OverpassBuilder($this->osm, $this->osm->getQueryGrammar());
+        $q->element('node')->asJson()->whereId($id);
         $result = json_decode($q->get()->getBody()->getContents());
 
         return new Feature(
