@@ -227,6 +227,7 @@ var openvegemap = (function () {
 
             //Overpass
             new L.OverPassLayer({
+                endPoint: 'https://overpass-api.de/api/',
                 query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
                 beforeRequest: showLoader,
                 afterRequest: hideLoader,
