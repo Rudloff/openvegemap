@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d301866f93197b3c92937c90c2487a6a",
-    "content-hash": "c50335df969350347992c7e97f345554",
+    "hash": "56f5776ea3f78e17d3dfae8a7dcee066",
+    "content-hash": "3487aaddc0b3e0c2b2313b5ee52e6eda",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -257,55 +257,6 @@
                 "geospatial"
             ],
             "time": "2015-09-27 15:35:21"
-        },
-        {
-            "name": "kage-no-neko/osm",
-            "version": "0.2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/KageNoNeko/osm.git",
-                "reference": "90a06fc05ab28887e49e5fe1eb357552c634fd35"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/KageNoNeko/osm/zipball/90a06fc05ab28887e49e5fe1eb357552c634fd35",
-                "reference": "90a06fc05ab28887e49e5fe1eb357552c634fd35",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "~6.0",
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "guzzlehttp/guzzle": "~6.0",
-                "laravel/framework": "5.1.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "KageNoNeko\\OSM\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sergey Yakovlev",
-                    "email": "shadowspawnshadow@gmail.com",
-                    "homepage": "https://github.com/KageNoNeko",
-                    "role": "Developer"
-                }
-            ],
-            "description": "OpenStreetMap API Integration",
-            "homepage": "https://github.com/KageNoNeko/osm",
-            "keywords": [
-                "api",
-                "open street map",
-                "osm"
-            ],
-            "time": "2016-09-20 06:42:53"
         },
         {
             "name": "kriswallsmith/buzz",

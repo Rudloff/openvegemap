@@ -24,20 +24,7 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->api = new OsmApi('http://api06.dev.openstreetmap.org/api/0.6/');
-    }
-
-    /**
-     * Test the getPoisWithTag() function.
-     *
-     * @return void
-     */
-    public function testGetPoisWithTag()
-    {
-        $collection = $this->api->getPoisWithTag('diet', new BoundingBox(48.580811, 7.749373, 48.583553, 7.758986));
-        $this->assertInstanceOf('GeoJson\Feature\FeatureCollection', $collection);
-        $features = $collection->getFeatures();
-        $this->assertInstanceOf('GeoJson\Feature\Feature', $features[0]);
+        $this->api = new OsmApi();
     }
 
     /**

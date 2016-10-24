@@ -51,55 +51,8 @@ class OsmApi
      */
     public function __construct($apiUrl = 'http://api.openstreetmap.org/api/0.6/')
     {
-        $this->osm = new OverpassConnection(['interpreter' => 'http://overpass-api.de/api/interpreter']);
-        $this->osm->setQueryGrammar(new OverpassGrammar());
         $this->client = new \GuzzleHttp\Client();
         $this->apiUrl = $apiUrl;
-    }
-
-    /**
-     * Get OSM data types with specificed tag prefix.
-     *
-     * @param string      $tag  Tag prefix to search for
-     * @param BoundingBox $bbox Bounds to search in
-     * @param string      $type OSM type (node or way)
-     *
-     * @return Feature[]
-     */
-    private function getDataWithTag($tag, BoundingBox $bbox, $type)
-    {
-        $pois = [];
-        $q = new OverpassBuilder($this->osm, $this->osm->getQueryGrammar());
-        $q->element($type)->whereTagStartsWith($tag)->asJson()->whereInBBox($bbox)->getCenter();
-        $result = json_decode($q->get()->getBody()->getContents());
-        foreach ($result->elements as $node) {
-            if ($type == 'way') {
-                $node->lon = $node->center->lon;
-                $node->lat = $node->center->lat;
-            }
-            $node->tags->osm_type = $type;
-            $pois[] = new Feature(new Point([$node->lon, $node->lat]), (array) $node->tags, $node->id);
-        }
-
-        return $pois;
-    }
-
-    /**
-     * Get OSM nodes with specificed tag prefix.
-     *
-     * @param string      $tag  Tag prefix to search for
-     * @param BoundingBox $bbox Bounds to search in
-     *
-     * @return FeatureCollection Collection of nodes
-     */
-    public function getPoisWithTag($tag, BoundingBox $bbox)
-    {
-        $pois = array_merge(
-            $this->getDataWithTag($tag, $bbox, 'node'),
-            $this->getDataWithTag($tag, $bbox, 'way')
-        );
-
-        return new FeatureCollection($pois);
     }
 
     /**
@@ -112,18 +65,24 @@ class OsmApi
      */
     public function getById($type, $id)
     {
-        $q = new OverpassBuilder($this->osm, $this->osm->getQueryGrammar());
-        $q->element($type)->asJson()->whereId($id)->getCenter();
-        $result = json_decode($q->get()->getBody()->getContents());
-        if ($type == 'way') {
-            $result->elements[0]->lon = $result->elements[0]->center->lon;
-            $result->elements[0]->lat = $result->elements[0]->center->lat;
+        $result = $this->client->request(
+            'GET',
+            $this->apiUrl.$type.'/'.$id,
+            [
+                'auth' => [OSM_USER, OSM_PASS]
+            ]
+        );
+        $xml = new FluidXml(null);
+        $xml->addChild($result->getBody()->getContents());
+        $tags = [];
+        foreach ($xml->query('tag') as $tag) {
+            $tags[$tag->getAttribute('k')] = $tag->getAttribute('v');
         }
-
+        $node = $xml->query($type);
         return new Feature(
-            new Point([$result->elements[0]->lon, $result->elements[0]->lat]),
-            (array) $result->elements[0]->tags,
-            $result->elements[0]->id
+            new Point([(int) $node[0]->getAttribute('lon'), (int) $node[0]->getAttribute('lat')]),
+            $tags,
+            $node[0]->getAttribute('id')
         );
     }
 
