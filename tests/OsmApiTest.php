@@ -55,6 +55,7 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the getById() function with a way instead of a node.
+     *
      * @return [type] [description]
      */
     public function testgetByIdWithWay()
