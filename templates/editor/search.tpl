@@ -8,9 +8,9 @@
 <ul>
     {$i = 0}
     {foreach $results as $result}
-        {if $result.osm_type == 'node'}
+        {if $result.osm_type == 'node' || $result.osm_type == 'way'}
             {$i = $i + 1}
-            <li><a href="./{$result.osm_id}">{$result.display_name}</a></li>
+            <li><a href="./{$result.osm_type}/{$result.osm_id}">{$result.display_name}</a></li>
         {/if}
     {/foreach}
 </ul>

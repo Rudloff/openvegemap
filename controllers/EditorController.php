@@ -74,7 +74,8 @@ class EditorController
      */
     public function edit(Request $request, Response $response)
     {
-        $feature = $this->api->getById($request->getAttribute('id'));
+        $type = $request->getAttribute('type');
+        $feature = $this->api->getById($type, $request->getAttribute('id'));
         $this->view->render(
             $response,
             'editor/edit.tpl',
@@ -83,6 +84,7 @@ class EditorController
                 'coords'         => $feature->getGeometry()->getCoordinates(),
                 'id'             => $feature->getId(),
                 'msg'            => $this->msg->display(null, false),
+                'type'           => $type,
                 'editProperties' => [
                     'diet:vegan'      => 'Vegan',
                     'diet:vegetarian' => 'Vegetarian',
@@ -133,7 +135,7 @@ class EditorController
         $params = $request->getParsedBody();
         if (is_array($params)) {
             try {
-                $this->api->updateNode($request->getAttribute('id'), $params);
+                $this->api->updateNode($request->getAttribute('type'), $request->getAttribute('id'), $params);
                 $this->msg->success('Your edit has been submitted, the map will be updated shortly.', null, true);
             } catch (\Exception $e) {
                 $this->msg->error($e->getMessage(), null, true);

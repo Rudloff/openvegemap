@@ -34,7 +34,7 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPoisWithTag()
     {
-        $collection = $this->api->getPoisWithTag('diet', new BoundingBox(48.569474, 7.739739, 48.580445, 7.778191));
+        $collection = $this->api->getPoisWithTag('diet', new BoundingBox(48.580811, 7.749373, 48.583553, 7.758986));
         $this->assertInstanceOf('GeoJson\Feature\FeatureCollection', $collection);
         $features = $collection->getFeatures();
         $this->assertInstanceOf('GeoJson\Feature\Feature', $features[0]);
@@ -48,7 +48,19 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
     public function testgetById()
     {
         $id = 4165743782;
-        $feature = $this->api->getById($id);
+        $feature = $this->api->getById('node', $id);
+        $this->assertInstanceOf('GeoJson\Feature\Feature', $feature);
+        $this->assertEquals($id, $feature->getId());
+    }
+
+    /**
+     * Test the getById() function with a way instead of a node.
+     * @return [type] [description]
+     */
+    public function testgetByIdWithWay()
+    {
+        $id = 39654586;
+        $feature = $this->api->getById('way', $id);
         $this->assertInstanceOf('GeoJson\Feature\Feature', $feature);
         $this->assertEquals($id, $feature->getId());
     }
@@ -60,6 +72,7 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
      */
     public function testUpdateNode()
     {
-        $this->api->updateNode(4305148851, ['diet:vegan' => 'yes']);
+        $this->markTestIncomplete('We need a way to reliably create a node first.');
+        //$this->api->updateNode('node', 305148851, ['diet:vegan' => 'yes']);
     }
 }

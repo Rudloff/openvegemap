@@ -28,4 +28,15 @@ class OverpassBuilder extends \KageNoNeko\OSM\Query\OverpassBuilder
 
         return $this;
     }
+
+    /**
+     * Get the center point of a way
+     * @return OverpassBuilder
+     */
+    public function getCenter()
+    {
+        $this->out['center'] = 'center';
+
+        return $this;
+    }
 }

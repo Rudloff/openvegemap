@@ -58,6 +58,33 @@ class OsmApi
     }
 
     /**
+     * Get OSM data types with specificed tag prefix.
+     *
+     * @param string      $tag  Tag prefix to search for
+     * @param BoundingBox $bbox Bounds to search in
+     * @param string      $type OSM type (node or way)
+     *
+     * @return Feature[]
+     */
+    private function getDataWithTag($tag, BoundingBox $bbox, $type)
+    {
+        $pois = [];
+        $q = new OverpassBuilder($this->osm, $this->osm->getQueryGrammar());
+        $q->element($type)->whereTagStartsWith($tag)->asJson()->whereInBBox($bbox)->getCenter();
+        $result = json_decode($q->get()->getBody()->getContents());
+        foreach ($result->elements as $node) {
+            if ($type == 'way') {
+                $node->lon = $node->center->lon;
+                $node->lat = $node->center->lat;
+            }
+            $node->tags->osm_type = $type;
+            $pois[] = new Feature(new Point([$node->lon, $node->lat]), (array) $node->tags, $node->id);
+        }
+
+        return $pois;
+    }
+
+    /**
      * Get OSM nodes with specificed tag prefix.
      *
      * @param string      $tag  Tag prefix to search for
@@ -67,13 +94,10 @@ class OsmApi
      */
     public function getPoisWithTag($tag, BoundingBox $bbox)
     {
-        $pois = [];
-        $q = new OverpassBuilder($this->osm, $this->osm->getQueryGrammar());
-        $q->element('node')->whereTagStartsWith($tag)->asJson()->whereInBBox($bbox);
-        $result = json_decode($q->get()->getBody()->getContents());
-        foreach ($result->elements as $node) {
-            $pois[] = new Feature(new Point([$node->lon, $node->lat]), (array) $node->tags, $node->id);
-        }
+        $pois = array_merge(
+            $this->getDataWithTag($tag, $bbox, 'node'),
+            $this->getDataWithTag($tag, $bbox, 'way')
+        );
 
         return new FeatureCollection($pois);
     }
@@ -81,15 +105,20 @@ class OsmApi
     /**
      * Get OSM node by ID.
      *
-     * @param int $id OSM node ID
+     * @param string $type OSM type (node or way)
+     * @param int    $id   OSM node ID
      *
      * @return Feature OSM node
      */
-    public function getById($id)
+    public function getById($type, $id)
     {
         $q = new OverpassBuilder($this->osm, $this->osm->getQueryGrammar());
-        $q->element('node')->asJson()->whereId($id);
+        $q->element($type)->asJson()->whereId($id)->getCenter();
         $result = json_decode($q->get()->getBody()->getContents());
+        if ($type == 'way') {
+            $result->elements[0]->lon = $result->elements[0]->center->lon;
+            $result->elements[0]->lat = $result->elements[0]->center->lat;
+        }
 
         return new Feature(
             new Point([$result->elements[0]->lon, $result->elements[0]->lat]),
@@ -126,16 +155,17 @@ class OsmApi
     /**
      * Update an OSM node with new tag values.
      *
-     * @param int   $id   OSM node ID
-     * @param array $tags Tags
+     * @param string $type OSM type (node or way)
+     * @param int    $id   OSM node ID
+     * @param array  $tags Tags
      *
      * @return void
      */
-    public function updateNode($id, array $tags)
+    public function updateNode($type, $id, array $tags)
     {
         $baseXml = $this->client->request(
             'GET',
-            $this->apiUrl.'node/'.$id,
+            $this->apiUrl.$type.'/'.$id,
             [
                 'auth' => [OSM_USER, OSM_PASS],
             ]
@@ -143,7 +173,7 @@ class OsmApi
 
         $xml = new FluidXml(null);
         $xml->addChild($baseXml);
-        $node = $xml->query('node');
+        $node = $xml->query($type);
         $node->attr('changeset', $this->getChangeset());
         $node->attr('timestamp', date('c'));
         foreach ($tags as $key => $value) {
@@ -159,7 +189,7 @@ class OsmApi
 
         $this->client->request(
             'PUT',
-            $this->apiUrl.'node/'.$id,
+            $this->apiUrl.$type.'/'.$id,
             [
                 'auth' => [OSM_USER, OSM_PASS],
                 'body' => $xml,
