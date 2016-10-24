@@ -63,9 +63,14 @@ module.exports = function (grunt) {
                 }
             },
             cssmin: {
-                dist: {
+                bower: {
                     files: {
                         'dist/bower.css': 'dist/_bower.css'
+                    }
+                },
+                css: {
+                    files: {
+                        'dist/map.css': 'css/map.css'
                     }
                 }
             },
@@ -76,7 +81,7 @@ module.exports = function (grunt) {
                 },
                 css: {
                     files: ['css/*.css'],
-                    tasks: ['cssmin']
+                    tasks: ['cssmin:css']
                 }
             }
         }
