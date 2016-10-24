@@ -37,3 +37,10 @@ ons-list-item[tappable],
 ons-toolbar-button {
     cursor: pointer;
 }
+
+.list__item:first-child {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin-top: 1px;
+}
