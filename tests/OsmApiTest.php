@@ -43,27 +43,30 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
     /**
      * Test the getById() function.
      *
+     * @param string $type OSM type (node or way)
+     * @param int    $id   OSM element ID
+     *
      * @return void
+     * @dataProvider nodeProvider
      */
-    public function testgetById()
+    public function testgetById($type, $id)
     {
-        $id = 4165743782;
-        $feature = $this->api->getById('node', $id);
+        $feature = $this->api->getById($type, $id);
         $this->assertInstanceOf('GeoJson\Feature\Feature', $feature);
         $this->assertEquals($id, $feature->getId());
     }
 
     /**
-     * Test the getById() function with a way instead of a node.
+     * Return nodes and ways used in tests.
      *
-     * @return void
+     * @return array[]
      */
-    public function testgetByIdWithWay()
+    public function nodeProvider()
     {
-        $id = 39654586;
-        $feature = $this->api->getById('way', $id);
-        $this->assertInstanceOf('GeoJson\Feature\Feature', $feature);
-        $this->assertEquals($id, $feature->getId());
+        return [
+            ['node', 4165743782],
+            ['way', 39654586],
+        ];
     }
 
     /**
@@ -74,6 +77,5 @@ class OsmApiTest extends \PHPUnit_Framework_TestCase
     public function testUpdateNode()
     {
         $this->markTestIncomplete('We need a way to reliably create a node first.');
-        //$this->api->updateNode('node', 305148851, ['diet:vegan' => 'yes']);
     }
 }
