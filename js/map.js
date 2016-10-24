@@ -218,7 +218,7 @@ var openvegemap = (function () {
             L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
 
             //Permalink
-            map.addControl(new L.Control.Permalink({ useLocation: true, text: null}));
+            map.addControl(new L.Control.Permalink({ useLocation: true, text: null, useLocalStorage: true }));
 
             //Legend
             var legend = L.control({position: 'bottomright'});

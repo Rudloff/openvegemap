@@ -63,7 +63,8 @@ module.exports = function (grunt) {
                         'Leaflet.awesome-markers': 'leaflet'
                     },
                     mainFiles: {
-                        'leaflet-control-geocoder': 'dist/Control.Geocoder.js'
+                        'leaflet-control-geocoder': 'dist/Control.Geocoder.js',
+                        'leaflet-plugins': 'control/Permalink.js'
                     }
                 }
             },
