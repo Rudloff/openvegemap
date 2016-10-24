@@ -48,11 +48,17 @@ module.exports = function (grunt) {
                 bower: {
                     files: {
                         'dist/bower.js': 'dist/_bower.js'
+                    },
+                    options: {
+                        sourceMap: true
                     }
                 },
                 js: {
                     files: {
                         'dist/map.js': 'js/map.js'
+                    },
+                    options: {
+                        sourceMap: true
                     }
                 }
             },

@@ -7,7 +7,6 @@ var openvegemap = (function () {
         controlLoader,
         curFeatures = [],
         menu,
-        geocodeDialog,
         locate,
         geocoder;
 
@@ -146,15 +145,11 @@ var openvegemap = (function () {
         geocoder._geocode();
     }
 
-    function openGeocodeDialog() {
-        geocodeDialog.show();
-    }
-
     function addGeocodeMarker(e) {
         var circle = L.circle(e.geocode.center, 10);
         circle.addTo(map);
         map.fitBounds(circle.getBounds());
-        geocodeDialog.hide();
+        openvegemap.geocodeDialog.hide();
         menu.close();
     }
 
@@ -162,19 +157,36 @@ var openvegemap = (function () {
         data.elements.forEach(addMarker);
     }
 
-    function openAboutDialog() {
-        openvegemap.aboutDialog.show();
+    function openDialog() {
+        openvegemap[this.dialog].show();
     }
 
     function initDialog(dialog) {
         openvegemap[dialog.id] = dialog;
+        var initFunction = dialog.id + 'Init';
+        if (typeof openvegemap[initFunction] === 'function') {
+            openvegemap[initFunction]();
+        }
     }
 
     return {
+        geocodeDialogInit: function () {
+            geocoder = new L.Control.Geocoder(
+                {
+                    geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
+                    position: 'topleft',
+                    defaultMarkGeocode: false
+                }
+            ).on('markgeocode', addGeocodeMarker);
+            geocoder._alts = L.DomUtil.get('geocodeAlt');
+            geocoder._container = openvegemap.geocodeDialog;
+            geocoder._errorElement = L.DomUtil.create('div');
+            geocoder._input = L.DomUtil.get('geocodeInput');
+            L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
+        },
         init: function () {
             //Variables
             menu = L.DomUtil.get('menu');
-            geocodeDialog = L.DomUtil.get('geocodeDialog');
             map = L.map(
                 'map',
                 {
@@ -190,28 +202,14 @@ var openvegemap = (function () {
 
             //Events
             L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
-            L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
-            L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openGeocodeDialog);
+            L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog, { dialog: 'geocodeDialog' });
             L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
-            L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openAboutDialog);
+            L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog, { dialog: 'aboutDialog' });
 
             //Tiles
             L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
                 detectRetina: true
             }).addTo(map);
-
-            //Geocoder
-            geocoder = new L.Control.Geocoder(
-                {
-                    geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
-                    position: 'topleft',
-                    defaultMarkGeocode: false
-                }
-            ).on('markgeocode', addGeocodeMarker);
-            geocoder._alts = L.DomUtil.get('geocodeAlt');
-            geocoder._container = geocodeDialog;
-            geocoder._errorElement = L.DomUtil.create('div');
-            geocoder._input = L.DomUtil.get('geocodeInput');
 
             //Geolocation
             locate = L.control.locate({ position: 'topright' });
@@ -237,6 +235,8 @@ var openvegemap = (function () {
 
             //Dialogs
             ons.createAlertDialog('templates/about.html').then(initDialog);
+            ons.createAlertDialog('templates/geocode.html').then(initDialog);
+            ons.createAlertDialog('templates/popup.html').then(initDialog);
         }
     };
 }());
