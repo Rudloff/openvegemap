@@ -4,7 +4,6 @@
  */
 namespace OpenVegeMap\Test;
 
-use KageNoNeko\OSM\BoundingBox;
 use OpenVegeMap\OsmApi;
 
 /**

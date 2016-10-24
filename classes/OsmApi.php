@@ -6,9 +6,7 @@ namespace OpenVegeMap;
 
 use FluidXml\FluidXml;
 use GeoJson\Feature\Feature;
-use GeoJson\Feature\FeatureCollection;
 use GeoJson\Geometry\Point;
-use KageNoNeko\OSM\BoundingBox;
 use KageNoNeko\OSM\OverpassConnection;
 
 /**
@@ -69,7 +67,7 @@ class OsmApi
             'GET',
             $this->apiUrl.$type.'/'.$id,
             [
-                'auth' => [OSM_USER, OSM_PASS]
+                'auth' => [OSM_USER, OSM_PASS],
             ]
         );
         $xml = new FluidXml(null);
@@ -79,6 +77,7 @@ class OsmApi
             $tags[$tag->getAttribute('k')] = $tag->getAttribute('v');
         }
         $node = $xml->query($type);
+
         return new Feature(
             new Point([(int) $node[0]->getAttribute('lon'), (int) $node[0]->getAttribute('lat')]),
             $tags,
