@@ -88,6 +88,16 @@ module.exports = function (grunt) {
                         directory: 'classes/,controllers/,tests/'
                     }
                 }
+            },
+            watch: {
+                js: {
+                    files: ['js/*.js'],
+                    tasks: ['uglify']
+                },
+                css: {
+                    files: ['css/*.css'],
+                    tasks: ['cssmin']
+                }
             }
         }
     );
@@ -101,6 +111,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-phpdocumentor');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'phpcs']);
     grunt.registerTask('test', ['phpunit']);
