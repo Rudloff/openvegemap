@@ -4,7 +4,6 @@ var openvegemap = (function () {
     'use strict';
 
     var map,
-        curBounds,
         controlLoader,
         curFeatures = [],
         menu,
@@ -12,17 +11,17 @@ var openvegemap = (function () {
         locate,
         geocoder;
 
-    function isDiet(diet, properties) {
+    function isDiet(diet, tags) {
         var key = 'diet:' + diet;
-        if (properties[key] && (properties[key] === 'yes' || properties[key] === 'only')) {
+        if (tags[key] && (tags[key] === 'yes' || tags[key] === 'only')) {
             return true;
         }
         return false;
     }
 
-    function isNotDiet(diet, properties) {
+    function isNotDiet(diet, tags) {
         var key = 'diet:' + diet;
-        if (properties[key] && properties[key] === 'no') {
+        if (tags[key] && tags[key] === 'no') {
             return true;
         }
         return false;
@@ -37,30 +36,30 @@ var openvegemap = (function () {
 
     function showPopup(e) {
         var popup = '';
-        popup += getPropertyRow('Cuisine', e.target.feature.properties.cuisine);
-        popup += getPropertyRow('Take away', e.target.feature.properties.takeaway);
-        if (e.target.feature.properties.phone) {
-            popup += getPropertyRow('Phone number', '<a href="tel:' + e.target.feature.properties.phone + '">' + e.target.feature.properties.phone.replace(/\s/g, '&nbsp;') + '</a>');
+        popup += getPropertyRow('Cuisine', e.target.feature.tags.cuisine);
+        popup += getPropertyRow('Take away', e.target.feature.tags.takeaway);
+        if (e.target.feature.tags.phone) {
+            popup += getPropertyRow('Phone number', '<a href="tel:' + e.target.feature.tags.phone + '">' + e.target.feature.tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
         }
-        if (e.target.feature.properties.website) {
-            popup += getPropertyRow('Website', '<a target="_blank" href="' + e.target.feature.properties.website + '">' + e.target.feature.properties.website + '</a>');
+        if (e.target.feature.tags.website) {
+            popup += getPropertyRow('Website', '<a target="_blank" href="' + e.target.feature.tags.website + '">' + e.target.feature.tags.website + '</a>');
         }
-        if (!e.target.feature.properties.name) {
-            e.target.feature.properties.name = '';
+        if (!e.target.feature.tags.name) {
+            e.target.feature.tags.name = '';
         }
-        L.DomUtil.get('mapPopupTitle').innerHTML = e.target.feature.properties.name;
+        L.DomUtil.get('mapPopupTitle').innerHTML = e.target.feature.tags.name;
         L.DomUtil.get('mapPopupList').innerHTML = popup;
-        L.DomUtil.get('gmapsLink').setAttribute('href', 'https://www.google.fr/maps/dir//' + e.target.feature.geometry.coordinates[1] + ',' + e.target.feature.geometry.coordinates[0]);
-        L.DomUtil.get('editLink').setAttribute('href', './editor/' + e.target.feature.properties.osm_type + '/' + e.target.feature.id);
+        L.DomUtil.get('gmapsLink').setAttribute('href', 'https://www.google.fr/maps/dir//' + e.target.feature.lat + ',' + e.target.feature.lon);
+        L.DomUtil.get('editLink').setAttribute('href', './editor/' + e.target.feature.type + '/' + e.target.feature.id);
         L.DomUtil.get('mapPopup').show();
     }
 
-    function getIcon(properties) {
+    function getIcon(tags) {
         var icon;
-        if (properties.shop) {
+        if (tags.shop) {
             icon = 'shopping-cart';
         }
-        switch (properties.amenity) {
+        switch (tags.amenity) {
         case 'fast_food':
         case 'restaurant':
             icon = 'cutlery';
@@ -78,60 +77,46 @@ var openvegemap = (function () {
         return icon;
     }
 
-    function getColor(properties) {
+    function getColor(tags) {
         var color = 'gray';
-        if (isDiet('vegan', properties)) {
+        if (isDiet('vegan', tags)) {
             color = 'green';
-        } else if (isDiet('vegetarian', properties)) {
+        } else if (isDiet('vegetarian', tags)) {
             color = 'darkgreen';
-        } else if (isNotDiet('vegetarian', properties)) {
+        } else if (isNotDiet('vegetarian', tags)) {
             color = 'red';
         }
         return color;
     }
 
-    function addMarker(feature, layer) {
-        layer.setIcon(L.AwesomeMarkers.icon({
-            icon: getIcon(feature.properties),
-            prefix: 'fa',
-            markerColor: getColor(feature.properties)
-        }));
-        layer.on('click', showPopup);
-        if (feature.properties.name) {
-            layer.bindTooltip(feature.properties.name, { direction: 'bottom' });
-        }
-    }
-
-    function removeDuplicates(data) {
-        var newData = [];
-        data.features.forEach(function (feature) {
-            if (curFeatures.indexOf(feature.id) === -1) {
-                curFeatures.push(feature.id);
-                newData.push(feature);
+    function addMarker(feature) {
+        if (curFeatures.indexOf(feature.id) === -1) {
+            curFeatures.push(feature.id);
+            if (feature.center) {
+                feature.lat = feature.center.lat;
+                feature.lon = feature.center.lon;
             }
-        });
-        data.features = newData;
-        return data;
+            var marker = L.marker([feature.lat, feature.lon]);
+            marker.feature = feature;
+            marker.setIcon(L.AwesomeMarkers.icon({
+                icon: getIcon(feature.tags),
+                prefix: 'fa',
+                markerColor: getColor(feature.tags)
+            }));
+            marker.on('click', showPopup);
+            if (feature.tags.name) {
+                marker.bindTooltip(feature.tags.name, { direction: 'bottom' });
+            }
+            marker.addTo(map);
+        }
     }
 
     function hideLoader() {
         controlLoader.hide();
     }
 
-    function updateGeoJson() {
-        var bounds = map.getBounds(),
-            largerBounds = bounds.pad(0.2);
-        if (!curBounds || !curBounds.pad(0.2).contains(bounds)) {
-            controlLoader.show();
-            L.geoJson.ajax(
-                './api/' + largerBounds.getSouth() + '/' + largerBounds.getWest() + '/' + largerBounds.getNorth() + '/' + largerBounds.getEast(),
-                {
-                    onEachFeature: addMarker,
-                    middleware: removeDuplicates
-                }
-            ).addTo(map).on('data:loaded', hideLoader);
-            curBounds = bounds;
-        }
+    function showLoader() {
+        controlLoader.show();
     }
 
     function addLegend() {
@@ -173,6 +158,10 @@ var openvegemap = (function () {
         menu.close();
     }
 
+    function addMarkers(data) {
+        data.elements.forEach(addMarker);
+    }
+
     return {
         init: function () {
             //Variables
@@ -183,17 +172,18 @@ var openvegemap = (function () {
                 {
                     center: [48.85661, 2.351499],
                     zoom: 16,
-                    minZoom: 13,
+                    minZoom: 15,
                     attributionControl: false
                 }
             );
             controlLoader = L.control.loader().addTo(map);
+            var hash = L.UrlUtil.hash(),
+                legend = L.control({position: 'bottomright'});
 
             //Events
             L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
             L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
             L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openGeocodeDialog);
-            map.on('moveend', updateGeoJson);
 
             //Tiles
             L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
@@ -218,7 +208,6 @@ var openvegemap = (function () {
             L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
 
             //Permalink
-            var hash = L.UrlUtil.hash();
             if (L.UrlUtil.queryParse(hash).lat) {
                 //Don't use localStorage value if we have a hash in the URL
                 window.localStorage.setItem('paramsTemp', hash);
@@ -226,12 +215,15 @@ var openvegemap = (function () {
             map.addControl(new L.Control.Permalink({ useLocation: true, text: null, useLocalStorage: true }));
 
             //Legend
-            var legend = L.control({position: 'bottomright'});
             legend.onAdd = addLegend;
             legend.addTo(map);
 
-            //Load initial markers
-            updateGeoJson();
+            new L.OverPassLayer({
+                query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
+                beforeRequest: showLoader,
+                afterRequest: hideLoader,
+                onSuccess: addMarkers
+            }).addTo(map);
         }
     };
 }());
