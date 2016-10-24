@@ -30,7 +30,8 @@ class OverpassBuilder extends \KageNoNeko\OSM\Query\OverpassBuilder
     }
 
     /**
-     * Get the center point of a way
+     * Get the center point of a way.
+     *
      * @return OverpassBuilder
      */
     public function getCenter()
