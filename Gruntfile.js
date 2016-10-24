@@ -45,9 +45,13 @@ module.exports = function (grunt) {
                 }
             },
             uglify: {
-                dist: {
+                bower: {
                     files: {
-                        'dist/bower.js': 'dist/_bower.js',
+                        'dist/bower.js': 'dist/_bower.js'
+                    }
+                },
+                js: {
+                    files: {
                         'dist/map.js': 'js/map.js'
                     }
                 }
@@ -62,7 +66,7 @@ module.exports = function (grunt) {
             watch: {
                 js: {
                     files: ['js/*.js'],
-                    tasks: ['uglify']
+                    tasks: ['uglify:js']
                 },
                 css: {
                     files: ['css/*.css'],
