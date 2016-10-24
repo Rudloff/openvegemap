@@ -162,6 +162,14 @@ var openvegemap = (function () {
         data.elements.forEach(addMarker);
     }
 
+    function openAboutDialog() {
+        openvegemap.aboutDialog.show();
+    }
+
+    function initDialog(dialog) {
+        openvegemap[dialog.id] = dialog;
+    }
+
     return {
         init: function () {
             //Variables
@@ -184,6 +192,8 @@ var openvegemap = (function () {
             L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
             L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
             L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openGeocodeDialog);
+            L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
+            L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openAboutDialog);
 
             //Tiles
             L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
@@ -205,7 +215,6 @@ var openvegemap = (function () {
 
             //Geolocation
             locate = L.control.locate({ position: 'topright' });
-            L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
 
             //Permalink
             if (L.UrlUtil.queryParse(hash).lat) {
@@ -218,12 +227,16 @@ var openvegemap = (function () {
             legend.onAdd = addLegend;
             legend.addTo(map);
 
+            //Overpass
             new L.OverPassLayer({
                 query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
                 beforeRequest: showLoader,
                 afterRequest: hideLoader,
                 onSuccess: addMarkers
             }).addTo(map);
+
+            //Dialogs
+            ons.createAlertDialog('templates/about.html').then(initDialog);
         }
     };
 }());
