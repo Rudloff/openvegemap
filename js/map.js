@@ -56,43 +56,40 @@ var openvegemap = (function () {
     }
 
     function getIcon(tags) {
-        var icon;
         if (tags.shop) {
-            icon = 'shopping-cart';
+            return 'shopping-cart';
         }
         switch (tags.craft) {
         case 'caterer':
-            icon = 'cutlery';
+            return 'cutlery';
+        default:
             break;
         }
         switch (tags.amenity) {
         case 'fast_food':
         case 'restaurant':
-            icon = 'cutlery';
-            break;
+            return 'cutlery';
         case 'cafe':
-            icon = 'coffee';
-            break;
+            return 'coffee';
         case 'bar':
         case 'pub':
-            icon = 'beer';
-            break;
+            return 'beer';
         default:
             break;
         }
-        return icon;
     }
 
     function getColor(tags) {
-        var color = 'gray';
         if (isDiet('vegan', tags)) {
-            color = 'green';
-        } else if (isDiet('vegetarian', tags)) {
-            color = 'darkgreen';
-        } else if (isNotDiet('vegetarian', tags)) {
-            color = 'red';
+            return 'green';
         }
-        return color;
+        if (isDiet('vegetarian', tags)) {
+            return 'darkgreen';
+        }
+        if (isNotDiet('vegetarian', tags)) {
+            return 'red';
+        }
+        return 'gray';
     }
 
     function addMarker(feature) {
