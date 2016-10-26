@@ -28,7 +28,7 @@ var openvegemap = (function () {
 
     function getPropertyRow(name, value) {
         if (value) {
-            return '<ons-list-item><div class="left">' + name + '</div> <div class="right">' + value.replace(/_/g, ' ') + '</div></ons-list-item>';
+            return '<ons-list-item modifier="nodivider"><div class="left">' + name + '</div> <div class="right">' + value.replace(/_/g, ' ') + '</div></ons-list-item>';
         }
         return '';
     }
