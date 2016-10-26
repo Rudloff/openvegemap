@@ -60,6 +60,11 @@ var openvegemap = (function () {
         if (tags.shop) {
             icon = 'shopping-cart';
         }
+        switch (tags.craft) {
+        case 'caterer':
+            icon = 'cutlery';
+            break;
+        }
         switch (tags.amenity) {
         case 'fast_food':
         case 'restaurant':
