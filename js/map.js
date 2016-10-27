@@ -223,7 +223,7 @@ var openvegemap = (function () {
                 //Don't use localStorage value if we have a hash in the URL
                 window.localStorage.setItem('paramsTemp', hash);
             }
-            map.addControl(new L.Control.Permalink({ useLocation: true, text: null, useLocalStorage: true }));
+            map.addControl(new L.Control.Permalink({ useLocation: true, useLocalStorage: true }));
 
             //Legend
             legend.onAdd = addLegend;

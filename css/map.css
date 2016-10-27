@@ -44,3 +44,7 @@ ons-toolbar-button {
     box-shadow: none;
     margin-top: 1px;
 }
+
+.leaflet-control-permalink {
+    display: none;
+}
