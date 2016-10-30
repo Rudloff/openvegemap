@@ -34,7 +34,8 @@ var openvegemap = (function () {
     }
 
     function showPopup(e) {
-        var popup = '';
+        var popup = '',
+            url = L.DomUtil.create('a');
         if (e.target.feature.tags.cuisine) {
             popup += getPropertyRow('Cuisine', e.target.feature.tags.cuisine.replace(/;/g, ', '));
         }
@@ -43,6 +44,10 @@ var openvegemap = (function () {
             popup += getPropertyRow('Phone number', '<a href="tel:' + e.target.feature.tags.phone + '">' + e.target.feature.tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
         }
         if (e.target.feature.tags.website) {
+            url.href = e.target.feature.tags.website;
+            if (url.hostname === 'localhost') {
+                e.target.feature.tags.website = 'http://' + e.target.feature.tags.website;
+            }
             popup += getPropertyRow('Website', '<a target="_blank" href="' + e.target.feature.tags.website + '">' + e.target.feature.tags.website + '</a>');
         }
         if (!e.target.feature.tags.name) {
