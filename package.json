@@ -12,7 +12,9 @@
     "grunt-contrib-watch": "~1.0.0",
     "grunt-fixpack": "~0.1.0",
     "grunt-jslint": "~1.1.14",
-    "grunt-jsonlint": "~1.1.0"
+    "grunt-jsonlint": "~1.1.0",
+    "grunt-shipit": "~1.0.0",
+    "shipit-git-update": "~0.1.0"
   },
   "homepage": "https://github.com/Rudloff/openvegemap",
   "keywords": [

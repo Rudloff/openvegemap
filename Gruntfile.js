@@ -83,6 +83,13 @@ module.exports = function (grunt) {
                     files: ['css/*.css'],
                     tasks: ['cssmin:css']
                 }
+            },
+            shipit: {
+                prod: {
+                    deployTo: '/var/www/openvegemap/',
+                    servers: 'pierre@dev.rudloff.pro',
+                    postUpdateCmd: './node_modules/.bin/grunt'
+                }
             }
         }
     );
@@ -94,7 +101,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-shipit');
+    grunt.loadNpmTasks('shipit-git-update');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint']);
     grunt.registerTask('default', ['bower_concat', 'uglify', 'cssmin']);
+    grunt.registerTask('prod', ['shipit:prod', 'update']);
 };
