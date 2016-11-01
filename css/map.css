@@ -1,0 +1,50 @@
+.map, body, html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+.leaflet-control-loader {
+    z-index: 2000;
+}
+
+.legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    clear:left;
+}
+
+.info {
+    padding: 6px 8px;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+
+ons-splitter-side a {
+    text-decoration: none;
+}
+
+.alert-dialog-button,
+ons-list-item[tappable],
+ons-toolbar-button {
+    cursor: pointer;
+}
+
+.list__item:first-child {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin-top: 1px;
+}
+
+.leaflet-control-permalink {
+    display: none;
+}
