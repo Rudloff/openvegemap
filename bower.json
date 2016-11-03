@@ -6,7 +6,7 @@
     "leaflet.locatecontrol": "~0.56.0",
     "leaflet-control-geocoder": "~1.5.3",
     "Leaflet.awesome-markers": "~2.0.2",
-    "leaflet-plugins": "~2.0.0",
+    "leaflet-plugins": "~3.0.0",
     "leaflet-overpass-layer": "~2.2.0",
     "onsenui": "~2.0.1"
   },
