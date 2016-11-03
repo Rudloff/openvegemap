@@ -88,7 +88,7 @@ module.exports = function (grunt) {
                 prod: {
                     deployTo: '/var/www/openvegemap/',
                     servers: 'pierre@dev.rudloff.pro',
-                    postUpdateCmd: './node_modules/.bin/grunt'
+                    postUpdateCmd: './node_modules/.bin/bower install; ./node_modules/.bin/bower prune; ./node_modules/.bin/grunt'
                 }
             }
         }
