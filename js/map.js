@@ -201,6 +201,7 @@ var openvegemap = (function () {
                 {
                     center: [48.85661, 2.351499],
                     zoom: 16,
+                    maxZoom: 19,
                     minZoom: 15,
                     attributionControl: false
                 }
@@ -217,7 +218,9 @@ var openvegemap = (function () {
 
             //Tiles
             L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-                detectRetina: true
+                detectRetina: true,
+                maxNativeZoom: 18,
+                maxZoom: 20
             }).addTo(map);
 
             //Geolocation

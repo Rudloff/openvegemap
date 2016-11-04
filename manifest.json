@@ -2,5 +2,21 @@
   "name": "OpenVegeMap",
   "start_url": "./index.html",
   "description": "Find vegetarian and vegan restaurants in your city",
-  "display": "standalone"
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "img/logo_32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "img/logo_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "img/logo.svg",
+      "type": "image/svg+xml"
+    }
+  ]
 }
