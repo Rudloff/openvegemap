@@ -189,7 +189,7 @@ var openvegemap = (function () {
             ).on('markgeocode', addGeocodeMarker);
             geocoder._alts = L.DomUtil.get('geocodeAlt');
             geocoder._container = openvegemap.geocodeDialog;
-            geocoder._errorElement = L.DomUtil.create('div');
+            geocoder._errorElement = L.DomUtil.get('geocodeError');
             geocoder._input = L.DomUtil.get('geocodeInput');
             L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
         },

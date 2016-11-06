@@ -48,3 +48,11 @@ ons-toolbar-button {
 .leaflet-control-permalink {
     display: none;
 }
+
+.leaflet-control-geocoder-no-error {
+    display:none;
+}
+
+.leaflet-control-geocoder-error {
+    display: block;
+}
