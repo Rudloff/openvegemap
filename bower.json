@@ -7,7 +7,7 @@
     "leaflet-control-geocoder": "~1.5.3",
     "Leaflet.awesome-markers": "~2.0.2",
     "leaflet-plugins": "~3.0.0",
-    "leaflet-overpass-layer": "~2.2.0",
+    "leaflet-overpass-layer": "~2.3.0",
     "onsenui": "~2.0.1"
   },
   "resolutions": {
