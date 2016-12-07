@@ -202,8 +202,7 @@ var openvegemap = (function () {
                     center: [48.85661, 2.351499],
                     zoom: 16,
                     maxZoom: 19,
-                    minZoom: 15,
-                    attributionControl: false
+                    minZoom: 15
                 }
             );
             controlLoader = L.control.loader().addTo(map);
@@ -220,7 +219,8 @@ var openvegemap = (function () {
             L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
                 detectRetina: true,
                 maxNativeZoom: 18,
-                maxZoom: 20
+                maxZoom: 20,
+                attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a target="_blank" href="https://maps.wikimedia.org/">Wikimedia maps</a>'
             }).addTo(map);
 
             //Geolocation
