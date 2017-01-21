@@ -36,6 +36,8 @@ var openvegemap = (function () {
     function showPopup(e) {
         var popup = '',
             url = L.DomUtil.create('a');
+        popup += getPropertyRow('Vegan', e.target.feature.tags['diet:vegan']);
+        popup += getPropertyRow('Vegetarian', e.target.feature.tags['diet:vegetarian']);
         if (e.target.feature.tags.cuisine) {
             popup += getPropertyRow('Cuisine', e.target.feature.tags.cuisine.replace(/;/g, ', '));
         }
