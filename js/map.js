@@ -26,6 +26,14 @@ var openvegemap = (function () {
         return false;
     }
 
+    function isOnlyDiet(diet, tags) {
+        var key = 'diet:' + diet;
+        if (tags[key] && tags[key] === 'only') {
+            return true;
+        }
+        return false;
+    }
+
     function getPropertyRow(name, value) {
         if (value) {
             return '<ons-list-item modifier="nodivider"><div class="left">' + name + '</div> <div class="right">' + value.replace(/_/g, ' ') + '</div></ons-list-item>';
@@ -63,27 +71,51 @@ var openvegemap = (function () {
     }
 
     function getIcon(tags) {
+        switch (tags.shop) {
+        case 'bakery':
+            return '🥖';
+        default:
+            break;
+        }
         if (tags.shop) {
-            return 'shopping-cart';
+            return '🛒';
         }
         switch (tags.craft) {
         case 'caterer':
-            return 'cutlery';
+            return '🍴';
         default:
             break;
         }
         switch (tags.amenity) {
         case 'fast_food':
+            return '🍔';
         case 'restaurant':
-            return 'cutlery';
+            return '🍴';
         case 'cafe':
-            return 'coffee';
+            return '🍵';
         case 'bar':
+            return '🍸';
         case 'pub':
-            return 'beer';
+            return '🍺';
         default:
             break;
         }
+    }
+
+    function getMarkerIcon(tags) {
+        if (isOnlyDiet('vegan', tags)) {
+            return 'dot-circle-o';
+        }
+        if (isDiet('vegan', tags)) {
+            return 'circle';
+        }
+        if (isDiet('vegetarian', tags)) {
+            return 'circle-o';
+        }
+        if (isNotDiet('vegetarian', tags)) {
+            return 'ban';
+        }
+        return 'question';
     }
 
     function getColor(tags) {
@@ -109,13 +141,13 @@ var openvegemap = (function () {
             var marker = L.marker([feature.lat, feature.lon]);
             marker.feature = feature;
             marker.setIcon(L.AwesomeMarkers.icon({
-                icon: getIcon(feature.tags),
+                icon: getMarkerIcon(feature.tags),
                 prefix: 'fa',
                 markerColor: getColor(feature.tags)
             }));
             marker.on('click', showPopup);
             if (feature.tags.name) {
-                marker.bindTooltip(feature.tags.name, { direction: 'bottom' });
+                marker.bindTooltip(getIcon(feature.tags) + '&nbsp;' + feature.tags.name, { direction: 'bottom' });
             }
             marker.addTo(map);
         }
@@ -131,10 +163,11 @@ var openvegemap = (function () {
 
     function addLegend() {
         var div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML = '<i style="background-color: #72AF26"></i> Vegan<br/>'
-            + '<i style="background-color: #728224"></i> Vegetarian<br/>'
-            + '<i style="background-color: #D63E2A"></i> Meat only<br/>'
-            + '<i style="background-color: #575757"></i> Unknown<br/>';
+        div.innerHTML = '<i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan<br/>'
+            + '<i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only<br/>'
+            + '<i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian<br/>'
+            + '<i class="fa fa-ban" style="background-color: #D63E2A"></i> Meat only<br/>'
+            + '<i class="fa fa-question" style="background-color: #575757"></i> Unknown<br/>';
         return div;
     }
 

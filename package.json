@@ -1,12 +1,13 @@
 {
   "name": "openvegemap",
   "description": "Find vegetarian and vegan restaurants in your city",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "author": "Pierre Rudloff",
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "devDependencies": {
     "grunt": "~1.0.1",
     "grunt-bower-concat": "~1.0.0",
+    "grunt-contrib-csslint": "~2.0.0",
     "grunt-contrib-cssmin": "~1.0.2",
     "grunt-contrib-uglify": "~2.0.0",
     "grunt-contrib-watch": "~1.0.0",

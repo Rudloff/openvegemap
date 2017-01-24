@@ -11,6 +11,11 @@ module.exports = function (grunt) {
                     src: 'js/*.js'
                 }
             },
+            csslint: {
+                css: {
+                    src: ['css/*.css']
+                }
+            },
             jsonlint: {
                 manifests: {
                     src: ['*.json'],
@@ -103,8 +108,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-shipit');
     grunt.loadNpmTasks('shipit-git-update');
+    grunt.loadNpmTasks('grunt-contrib-csslint');
 
-    grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint']);
+    grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
     grunt.registerTask('default', ['bower_concat', 'uglify', 'cssmin']);
     grunt.registerTask('prod', ['shipit:prod', 'update']);
 };
