@@ -18,6 +18,10 @@
     float: left;
     margin-right: 8px;
     clear:left;
+    color: white;
+    padding: 3px;
+    box-sizing: border-box;
+    text-align:center;
 }
 
 .info {
