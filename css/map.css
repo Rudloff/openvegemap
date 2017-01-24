@@ -1,7 +1,7 @@
 .map, body, html {
     height: 100%;
-    width: 100%;
     margin: 0;
+    width: 100%;
 }
 
 .leaflet-control-loader {
@@ -9,27 +9,26 @@
 }
 
 .legend {
-    line-height: 18px;
     color: #555;
+    line-height: 18px;
 }
 .legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
     clear:left;
     color: white;
-    padding: 3px;
-    box-sizing: border-box;
+    float: left;
+    margin-right: 8px;
+    min-height: 15px;
+    padding-top: 3px;
     text-align:center;
+    width: 18px;
 }
 
 .info {
-    padding: 6px 8px;
     background: white;
     background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
     border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    padding: 6px 8px;
 }
 
 ons-splitter-side a {
