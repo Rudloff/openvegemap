@@ -99,7 +99,6 @@ var openvegemap = (function () {
             return '🍺';
         default:
             return '';
-            break;
         }
     }
 
