@@ -289,4 +289,8 @@ var openvegemap = (function () {
     };
 }());
 
-ons.ready(openvegemap.init);
+if (typeof ons === 'object') {
+    ons.ready(openvegemap.init);
+} else {
+    throw 'Onsen is not loaded';
+}
