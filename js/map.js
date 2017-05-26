@@ -8,7 +8,8 @@ var openvegemap = (function () {
         curFeatures = [],
         menu,
         locate,
-        geocoder;
+        geocoder,
+        layers;
 
     function isDiet(diet, tags) {
         var key = 'diet:' + diet;
@@ -102,6 +103,16 @@ var openvegemap = (function () {
         }
     }
 
+    function getLayer(tags) {
+        if (isDiet('vegan', tags)) {
+            return layers.Vegan;
+        }
+        if (isDiet('vegetarian', tags)) {
+            return layers.Vegetarian;
+        }
+        return layers.Other;
+    }
+
     function getMarkerIcon(tags) {
         if (isOnlyDiet('vegan', tags)) {
             return 'dot-circle-o';
@@ -149,7 +160,7 @@ var openvegemap = (function () {
             if (feature.tags.name) {
                 marker.bindTooltip(getIcon(feature.tags) + '&nbsp;' + feature.tags.name, { direction: 'bottom' });
             }
-            marker.addTo(map);
+            marker.addTo(getLayer(feature.tags));
         }
     }
 
@@ -280,6 +291,16 @@ var openvegemap = (function () {
                 afterRequest: hideLoader,
                 onSuccess: addMarkers
             }).addTo(map);
+
+            //Layers control
+            layers = {
+                Vegan: L.layerGroup(),
+                Vegetarian: L.layerGroup(),
+                Other: L.layerGroup()
+            };
+            layers.Vegan.addTo(map);
+            layers.Vegetarian.addTo(map);
+            L.control.layers({}, layers).addTo(map);
 
             //Dialogs
             ons.createAlertDialog('templates/about.html').then(initDialog);
