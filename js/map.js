@@ -8,7 +8,9 @@ var openvegemap = (function () {
         curFeatures = [],
         menu,
         locate,
-        geocoder;
+        geocoder,
+        layers = {},
+        layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other'];
 
     function isDiet(diet, tags) {
         var key = 'diet:' + diet;
@@ -102,6 +104,22 @@ var openvegemap = (function () {
         }
     }
 
+    function getLayer(tags) {
+        if (isOnlyDiet('vegan', tags)) {
+            return layers['vegan-only'];
+        }
+        if (isOnlyDiet('vegetarian', tags)) {
+            return layers['vegetarian-only'];
+        }
+        if (isDiet('vegan', tags)) {
+            return layers.vegan;
+        }
+        if (isDiet('vegetarian', tags)) {
+            return layers.vegetarian;
+        }
+        return layers.other;
+    }
+
     function getMarkerIcon(tags) {
         if (isOnlyDiet('vegan', tags)) {
             return 'dot-circle-o';
@@ -149,7 +167,7 @@ var openvegemap = (function () {
             if (feature.tags.name) {
                 marker.bindTooltip(getIcon(feature.tags) + '&nbsp;' + feature.tags.name, { direction: 'bottom' });
             }
-            marker.addTo(map);
+            marker.addTo(getLayer(feature.tags));
         }
     }
 
@@ -203,6 +221,10 @@ var openvegemap = (function () {
 
     function openDialog() {
         openvegemap[this.dialog].show();
+        var showFunction = this.dialog + 'Show';
+        if (typeof openvegemap[showFunction] === 'function') {
+            openvegemap[showFunction]();
+        }
     }
 
     function initDialog(dialog) {
@@ -210,6 +232,50 @@ var openvegemap = (function () {
         var initFunction = dialog.id + 'Init';
         if (typeof openvegemap[initFunction] === 'function') {
             openvegemap[initFunction]();
+        }
+    }
+
+    function setFilter(filter) {
+        var i;
+        for (i = 0; i < layerNames.length; i += 1) {
+            layers[layerNames[i]].removeFrom(map);
+        }
+        for (i = 0; i < layerNames.length; i += 1) {
+            if (!filter.endsWith('-only') || layerNames[i].endsWith('-only')) {
+                layers[layerNames[i]].addTo(map);
+            }
+            if (layerNames[i] === filter) {
+                break;
+            }
+        }
+        window.localStorage.setItem('filter', filter);
+    }
+
+    function applyFilter() {
+        var radios = document.getElementsByName('filter'),
+            i;
+        for (i = 0; i < radios.length; i += 1) {
+            if (radios[i].checked) {
+                setFilter(radios[i].getAttribute('input-id'));
+                break;
+            }
+        }
+        openvegemap.filtersDialog.hide();
+        menu.close();
+    }
+
+    function getCurFilter() {
+        var curFilter = window.localStorage.getItem('filter');
+        if (!curFilter) {
+            curFilter = 'vegetarian';
+        }
+        return curFilter;
+    }
+
+    function createLayers() {
+        var i;
+        for (i = 0; i < layerNames.length; i += 1) {
+            layers[layerNames[i]] = L.layerGroup();
         }
     }
 
@@ -227,6 +293,12 @@ var openvegemap = (function () {
             geocoder._errorElement = L.DomUtil.get('geocodeError');
             geocoder._input = L.DomUtil.get('geocodeInput');
             L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
+        },
+        filtersDialogInit: function () {
+            L.DomEvent.on(L.DomUtil.get('filtersDialogBtn'), 'click', applyFilter);
+        },
+        filtersDialogShow: function () {
+            L.DomUtil.get(getCurFilter()).checked = true;
         },
         init: function () {
             //Variables
@@ -247,6 +319,7 @@ var openvegemap = (function () {
             //Events
             L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
             L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog, { dialog: 'geocodeDialog' });
+            L.DomEvent.on(L.DomUtil.get('filtersMenuItem'), 'click', openDialog, { dialog: 'filtersDialog' });
             L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
             L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog, { dialog: 'aboutDialog' });
 
@@ -281,12 +354,21 @@ var openvegemap = (function () {
                 onSuccess: addMarkers
             }).addTo(map);
 
+            //Layers control
+            createLayers();
+            setFilter(getCurFilter());
+
             //Dialogs
             ons.createAlertDialog('templates/about.html').then(initDialog);
             ons.createAlertDialog('templates/geocode.html').then(initDialog);
+            ons.createAlertDialog('templates/filters.html').then(initDialog);
             ons.createAlertDialog('templates/popup.html').then(initDialog);
         }
     };
 }());
 
-ons.ready(openvegemap.init);
+if (typeof ons === 'object') {
+    ons.ready(openvegemap.init);
+} else {
+    throw 'Onsen is not loaded';
+}

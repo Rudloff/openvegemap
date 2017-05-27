@@ -5,8 +5,6 @@
         <title>OpenVegeMap</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
         <link rel="stylesheet" href="dist/bower.css" />
-        <link rel="stylesheet" href="bower_components/leaflet-loader/leaflet-loader.css" />
-        <link rel="stylesheet" href="bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css">
         <link rel="stylesheet" href="bower_components/onsenui/css/onsenui.css"/>
         <link rel="stylesheet" href="bower_components/onsenui/css/onsen-css-components.min.css"/>
         <script src="dist/bower.js"></script>
@@ -28,6 +26,12 @@
                                 <ons-icon icon="fa-search" fixed-width></ons-icon>
                             </div>
                             <div class="center">Search</div>
+                        </ons-list-item>
+                        <ons-list-item tappable id="filtersMenuItem">
+                            <div class="left">
+                                <ons-icon icon="fa-filter" fixed-width></ons-icon>
+                            </div>
+                            <div class="center">Filters</div>
                         </ons-list-item>
                         <ons-list-item tappable id="locateMenuItem">
                             <div class="left">
@@ -64,7 +68,7 @@
                 <ons-page>
                     <ons-toolbar>
                         <div class="left">
-                            <ons-toolbar-button id="menuBtn">
+                            <ons-toolbar-button title="Menu" id="menuBtn">
                                 <ons-icon icon="fa-navicon"></ons-icon>
                             </ons-toolbar-button>
                         </div>
