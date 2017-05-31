@@ -10,7 +10,8 @@ var openvegemap = (function () {
         locate,
         geocoder,
         layers = {},
-        layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other'];
+        layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other'],
+        dialogs = {};
 
     function isDiet(diet, tags) {
         var key = 'diet:' + diet;
@@ -201,7 +202,7 @@ var openvegemap = (function () {
         var circle = L.circle(e.geocode.center, 10);
         circle.addTo(map);
         map.fitBounds(circle.getBounds());
-        openvegemap.geocodeDialog.hide();
+        dialogs.geocodeDialog.hide();
         menu.close();
     }
 
@@ -210,7 +211,7 @@ var openvegemap = (function () {
     }
 
     function openDialog() {
-        openvegemap[this.dialog].show();
+        dialogs[this.dialog].show();
         var showFunction = this.dialog + 'Show';
         if (typeof openvegemap[showFunction] === 'function') {
             openvegemap[showFunction]();
@@ -218,7 +219,7 @@ var openvegemap = (function () {
     }
 
     function initDialog(dialog) {
-        openvegemap[dialog.id] = dialog;
+        dialogs[dialog.id] = dialog;
         var initFunction = dialog.id + 'Init';
         if (typeof openvegemap[initFunction] === 'function') {
             openvegemap[initFunction]();
@@ -250,7 +251,7 @@ var openvegemap = (function () {
                 break;
             }
         }
-        openvegemap.filtersDialog.hide();
+        dialogs.filtersDialog.hide();
         menu.close();
     }
 
@@ -271,9 +272,9 @@ var openvegemap = (function () {
 
     function checkZoomLevel(e) {
         if (e.target.getZoom() >= 15) {
-            openvegemap.zoomToast.hide();
-        } else if (!openvegemap.zoomToast.visible) {
-            openvegemap.zoomToast.show();
+            dialogs.zoomToast.hide();
+        } else if (!dialogs.zoomToast.visible) {
+            dialogs.zoomToast.show();
         }
     }
 
@@ -286,7 +287,7 @@ var openvegemap = (function () {
             }
         ).on('markgeocode', addGeocodeMarker);
         geocoder._alts = L.DomUtil.get('geocodeAlt');
-        geocoder._container = openvegemap.geocodeDialog;
+        geocoder._container = dialogs.geocodeDialog;
         geocoder._errorElement = L.DomUtil.get('geocodeError');
         geocoder._input = L.DomUtil.get('geocodeInput');
         L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
