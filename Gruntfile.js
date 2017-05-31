@@ -95,6 +95,17 @@ module.exports = function (grunt) {
                     servers: 'pierre@dev.rudloff.pro',
                     postUpdateCmd: './node_modules/.bin/bower install; ./node_modules/.bin/bower prune; ./node_modules/.bin/grunt'
                 }
+            },
+            imagemin: {
+                dependencies: {
+                    files: {
+                        'dist/images/leaflet-loader.gif': 'bower_components/leaflet-loader/images/leaflet-loader.gif',
+                        'dist/images/markers-shadow.png': 'bower_components/Leaflet.awesome-markers/dist/images/markers-shadow.png',
+                        'dist/images/markers-shadow@2x.png': 'bower_components/Leaflet.awesome-markers/dist/images/markers-shadow@2x.png',
+                        'dist/images/markers-soft.png': 'bower_components/Leaflet.awesome-markers/dist/images/markers-soft.png',
+                        'dist/images/markers-soft@2x.png': 'bower_components/Leaflet.awesome-markers/dist/images/markers-soft@2x.png'
+                    }
+                }
             }
         }
     );
@@ -109,8 +120,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-shipit');
     grunt.loadNpmTasks('shipit-git-update');
     grunt.loadNpmTasks('grunt-contrib-csslint');
+    grunt.loadNpmTasks('grunt-contrib-imagemin');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
-    grunt.registerTask('default', ['bower_concat', 'uglify', 'cssmin']);
+    grunt.registerTask('default', ['bower_concat', 'uglify', 'cssmin', 'imagemin']);
     grunt.registerTask('prod', ['shipit:prod', 'update']);
 };
