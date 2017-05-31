@@ -277,110 +277,120 @@ var openvegemap = (function () {
         }
     }
 
-    return {
-        geocodeDialogInit: function () {
-            geocoder = new L.Control.Geocoder(
-                {
-                    geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
-                    position: 'topleft',
-                    defaultMarkGeocode: false
-                }
-            ).on('markgeocode', addGeocodeMarker);
-            geocoder._alts = L.DomUtil.get('geocodeAlt');
-            geocoder._container = openvegemap.geocodeDialog;
-            geocoder._errorElement = L.DomUtil.get('geocodeError');
-            geocoder._input = L.DomUtil.get('geocodeInput');
-            L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
-        },
-        filtersDialogInit: function () {
-            L.DomEvent.on(L.DomUtil.get('filtersDialogBtn'), 'click', applyFilter);
-        },
-        filtersDialogShow: function () {
-            L.DomUtil.get(getCurFilter()).checked = true;
-        },
-        zoomToastInit: function () {
-            checkZoomLevel({target: map});
-        },
-        init: function () {
-            //Variables
-            menu = L.DomUtil.get('menu');
-            map = L.map(
-                'map',
-                {
-                    center: [48.85661, 2.351499],
-                    zoom: 16,
-                    maxZoom: 19,
-                    minZoom: 3,
-                    maxBounds: [[-90, -180], [90, 180]],
-                    maxBoundsViscosity: 1
-                }
-            );
-            controlLoader = L.control.loader().addTo(map);
-            var hash = L.UrlUtil.hash();
-
-            //Events
-            L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
-            L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog, { dialog: 'geocodeDialog' });
-            L.DomEvent.on(L.DomUtil.get('filtersMenuItem'), 'click', openDialog, { dialog: 'filtersDialog' });
-            L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
-            L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog, { dialog: 'aboutDialog' });
-
-            //Tiles
-            L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-                detectRetina: true,
-                maxNativeZoom: 18,
-                maxZoom: 20,
-                attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a target="_blank" href="https://maps.wikimedia.org/">Wikimedia maps</a>'
-            }).addTo(map);
-
-            //Geolocation
-            locate = L.control.locate({ position: 'topright' });
-
-            //Permalink
-            if (L.UrlUtil.queryParse(hash).lat) {
-                //Don't use localStorage value if we have a hash in the URL
-                window.localStorage.setItem('paramsTemp', hash);
+    function geocodeDialogInit() {
+        geocoder = new L.Control.Geocoder(
+            {
+                geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
+                position: 'topleft',
+                defaultMarkGeocode: false
             }
-            map.addControl(new L.Control.Permalink({ useLocation: true, useLocalStorage: true }));
+        ).on('markgeocode', addGeocodeMarker);
+        geocoder._alts = L.DomUtil.get('geocodeAlt');
+        geocoder._container = openvegemap.geocodeDialog;
+        geocoder._errorElement = L.DomUtil.get('geocodeError');
+        geocoder._input = L.DomUtil.get('geocodeInput');
+        L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
+    }
 
-            //Legend
-            map.addControl(
-                new InfoControl(
-                    {
-                        position: 'bottomright',
-                        content: '<i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan<br/>'
-                            + '<i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only<br/>'
-                            + '<i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian<br/>'
-                            + '<i class="fa fa-ban" style="background-color: #D63E2A"></i> Meat only<br/>'
-                            + '<i class="fa fa-question" style="background-color: #575757"></i> Unknown<br/>'
-                    }
-                )
-            );
+    function filtersDialogInit() {
+        L.DomEvent.on(L.DomUtil.get('filtersDialogBtn'), 'click', applyFilter);
+    }
 
-            //Overpass
-            new L.OverPassLayer({
-                endPoint: 'https://overpass-api.de/api/',
-                query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
-                beforeRequest: showLoader,
-                afterRequest: hideLoader,
-                onSuccess: addMarkers,
-                minZoomIndicatorEnabled: false
-            }).addTo(map);
+    function filtersDialogShow() {
+        L.DomUtil.get(getCurFilter()).checked = true;
+    }
 
-            //Layers control
-            createLayers();
-            setFilter(getCurFilter());
+    function zoomToastInit() {
+        checkZoomLevel({target: map});
+    }
 
-            //Dialogs
-            ons.createAlertDialog('templates/about.html').then(initDialog);
-            ons.createAlertDialog('templates/geocode.html').then(initDialog);
-            ons.createAlertDialog('templates/filters.html').then(initDialog);
-            ons.createAlertDialog('templates/popup.html').then(initDialog);
-            ons.createAlertDialog('templates/zoom.html').then(initDialog);
+    function init() {
+        //Variables
+        menu = L.DomUtil.get('menu');
+        map = L.map(
+            'map',
+            {
+                center: [48.85661, 2.351499],
+                zoom: 16,
+                maxZoom: 19,
+                minZoom: 3,
+                maxBounds: [[-90, -180], [90, 180]],
+                maxBoundsViscosity: 1
+            }
+        );
+        controlLoader = L.control.loader().addTo(map);
+        var hash = L.UrlUtil.hash();
 
-            //Map events
-            map.on('zoom', checkZoomLevel);
+        //Events
+        L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
+        L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog, { dialog: 'geocodeDialog' });
+        L.DomEvent.on(L.DomUtil.get('filtersMenuItem'), 'click', openDialog, { dialog: 'filtersDialog' });
+        L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
+        L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog, { dialog: 'aboutDialog' });
+
+        //Tiles
+        L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
+            detectRetina: true,
+            maxNativeZoom: 18,
+            maxZoom: 20,
+            attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a target="_blank" href="https://maps.wikimedia.org/">Wikimedia maps</a>'
+        }).addTo(map);
+
+        //Geolocation
+        locate = L.control.locate({ position: 'topright' });
+
+        //Permalink
+        if (L.UrlUtil.queryParse(hash).lat) {
+            //Don't use localStorage value if we have a hash in the URL
+            window.localStorage.setItem('paramsTemp', hash);
         }
+        map.addControl(new L.Control.Permalink({ useLocation: true, useLocalStorage: true }));
+
+        //Legend
+        map.addControl(
+            new InfoControl(
+                {
+                    position: 'bottomright',
+                    content: '<i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan<br/>'
+                        + '<i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only<br/>'
+                        + '<i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian<br/>'
+                        + '<i class="fa fa-ban" style="background-color: #D63E2A"></i> Meat only<br/>'
+                        + '<i class="fa fa-question" style="background-color: #575757"></i> Unknown<br/>'
+                }
+            )
+        );
+
+        //Overpass
+        new L.OverPassLayer({
+            endPoint: 'https://overpass-api.de/api/',
+            query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
+            beforeRequest: showLoader,
+            afterRequest: hideLoader,
+            onSuccess: addMarkers,
+            minZoomIndicatorEnabled: false
+        }).addTo(map);
+
+        //Layers control
+        createLayers();
+        setFilter(getCurFilter());
+
+        //Dialogs
+        ons.createAlertDialog('templates/about.html').then(initDialog);
+        ons.createAlertDialog('templates/geocode.html').then(initDialog);
+        ons.createAlertDialog('templates/filters.html').then(initDialog);
+        ons.createAlertDialog('templates/popup.html').then(initDialog);
+        ons.createAlertDialog('templates/zoom.html').then(initDialog);
+
+        //Map events
+        map.on('zoom', checkZoomLevel);
+    }
+
+    return {
+        geocodeDialogInit: geocodeDialogInit,
+        filtersDialogInit: filtersDialogInit,
+        filtersDialogShow: filtersDialogShow,
+        zoomToastInit: zoomToastInit,
+        init: init
     };
 }());
 
