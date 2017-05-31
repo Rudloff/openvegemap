@@ -269,6 +269,14 @@ var openvegemap = (function () {
         }
     }
 
+    function checkZoomLevel(e) {
+        if (e.target.getZoom() >= 15) {
+            openvegemap.zoomToast.hide();
+        } else if (!openvegemap.zoomToast.visible) {
+            openvegemap.zoomToast.show();
+        }
+    }
+
     return {
         geocodeDialogInit: function () {
             geocoder = new L.Control.Geocoder(
@@ -290,6 +298,9 @@ var openvegemap = (function () {
         filtersDialogShow: function () {
             L.DomUtil.get(getCurFilter()).checked = true;
         },
+        zoomToastInit: function () {
+            checkZoomLevel({target: map});
+        },
         init: function () {
             //Variables
             menu = L.DomUtil.get('menu');
@@ -299,7 +310,9 @@ var openvegemap = (function () {
                     center: [48.85661, 2.351499],
                     zoom: 16,
                     maxZoom: 19,
-                    minZoom: 15
+                    minZoom: 3,
+                    maxBounds: [[-90, -180], [90, 180]],
+                    maxBoundsViscosity: 1
                 }
             );
             controlLoader = L.control.loader().addTo(map);
@@ -350,7 +363,8 @@ var openvegemap = (function () {
                 query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
                 beforeRequest: showLoader,
                 afterRequest: hideLoader,
-                onSuccess: addMarkers
+                onSuccess: addMarkers,
+                minZoomIndicatorEnabled: false
             }).addTo(map);
 
             //Layers control
@@ -362,6 +376,10 @@ var openvegemap = (function () {
             ons.createAlertDialog('templates/geocode.html').then(initDialog);
             ons.createAlertDialog('templates/filters.html').then(initDialog);
             ons.createAlertDialog('templates/popup.html').then(initDialog);
+            ons.createAlertDialog('templates/zoom.html').then(initDialog);
+
+            //Map events
+            map.on('zoom', checkZoomLevel);
         }
     };
 }());
