@@ -1,0 +1,50 @@
+<ons-alert-dialog id="filtersDialog" cancelable>
+    <div class="alert-dialog-title">Filters</div>
+    <div class="alert-dialog-content">
+        <ons-list>
+            <ons-list-item modifier="nodivider">
+                <div class="left">
+                    <ons-input name="filter" type="radio" input-id="vegan-only"></ons-input>
+                </div>
+                <label for="vegan-only" class="center">
+                    Vegan only
+                </label>
+            </ons-list-item>
+            <ons-list-item modifier="longdivider">
+                <div class="left">
+                    <ons-input name="filter" type="radio" input-id="vegan"></ons-input>
+                </div>
+                <label for="vegan" class="center">
+                    Vegan friendly
+                </label>
+            </ons-list-item>
+            <ons-list-item modifier="nodivider">
+                <div class="left">
+                    <ons-input name="filter" type="radio" input-id="vegetarian-only"></ons-input>
+                </div>
+                <label for="vegetarian-only" class="center">
+                    Vegetarian only
+                </label>
+            </ons-list-item>
+            <ons-list-item modifier="longdivider">
+                <div class="left">
+                    <ons-input name="filter" type="radio" input-id="vegetarian"></ons-input>
+                </div>
+                <label for="vegetarian" class="center">
+                    Vegetarian friendly
+                </label>
+            </ons-list-item>
+            <ons-list-item>
+                <div class="left">
+                    <ons-input name="filter" type="radio" input-id="other"></ons-input>
+                </div>
+                <label for="other" class="center">
+                    Everything
+                </label>
+            </ons-list-item>
+        </ons-list>
+    </div>
+    <div class="alert-dialog-footer">
+        <button class="alert-dialog-button" id="filtersDialogBtn">Apply</button>
+    </div>
+</ons-alert-dialog>

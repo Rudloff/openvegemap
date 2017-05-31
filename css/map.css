@@ -8,11 +8,14 @@
     z-index: 2000;
 }
 
-.legend {
+.leaflet-control-container .info-control {
     color: #555;
+    font-size: 12px;
     line-height: 18px;
+    padding-left: 0;
+    padding-right: 8px;
 }
-.legend i {
+.info-control i {
     clear:left;
     color: white;
     float: left;
@@ -21,14 +24,6 @@
     padding-top: 3px;
     text-align:center;
     width: 18px;
-}
-
-.info {
-    background: white;
-    background: rgba(255,255,255,0.8);
-    border-radius: 5px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    padding: 6px 8px;
 }
 
 ons-splitter-side a {

@@ -1,5 +1,5 @@
 /*jslint browser: true, nomen: true*/
-/*global L, ons*/
+/*global L, InfoControl, ons*/
 var openvegemap = (function () {
     'use strict';
 
@@ -8,7 +8,10 @@ var openvegemap = (function () {
         curFeatures = [],
         menu,
         locate,
-        geocoder;
+        geocoder,
+        layers = {},
+        layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other'],
+        dialogs = {};
 
     function isDiet(diet, tags) {
         var key = 'diet:' + diet;
@@ -99,8 +102,23 @@ var openvegemap = (function () {
             return '🍺';
         default:
             return '';
-            break;
         }
+    }
+
+    function getLayer(tags) {
+        if (isOnlyDiet('vegan', tags)) {
+            return layers['vegan-only'];
+        }
+        if (isOnlyDiet('vegetarian', tags)) {
+            return layers['vegetarian-only'];
+        }
+        if (isDiet('vegan', tags)) {
+            return layers.vegan;
+        }
+        if (isDiet('vegetarian', tags)) {
+            return layers.vegetarian;
+        }
+        return layers.other;
     }
 
     function getMarkerIcon(tags) {
@@ -150,7 +168,7 @@ var openvegemap = (function () {
             if (feature.tags.name) {
                 marker.bindTooltip(getIcon(feature.tags) + '&nbsp;' + feature.tags.name, { direction: 'bottom' });
             }
-            marker.addTo(map);
+            marker.addTo(getLayer(feature.tags));
         }
     }
 
@@ -160,16 +178,6 @@ var openvegemap = (function () {
 
     function showLoader() {
         controlLoader.show();
-    }
-
-    function addLegend() {
-        var div = L.DomUtil.create('div', 'info legend');
-        div.innerHTML = '<i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan<br/>'
-            + '<i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only<br/>'
-            + '<i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian<br/>'
-            + '<i class="fa fa-ban" style="background-color: #D63E2A"></i> Meat only<br/>'
-            + '<i class="fa fa-question" style="background-color: #575757"></i> Unknown<br/>';
-        return div;
     }
 
     function openMenu() {
@@ -194,7 +202,7 @@ var openvegemap = (function () {
         var circle = L.circle(e.geocode.center, 10);
         circle.addTo(map);
         map.fitBounds(circle.getBounds());
-        openvegemap.geocodeDialog.hide();
+        dialogs.geocodeDialog.hide();
         menu.close();
     }
 
@@ -203,91 +211,192 @@ var openvegemap = (function () {
     }
 
     function openDialog() {
-        openvegemap[this.dialog].show();
+        dialogs[this.dialog].show();
+        var showFunction = this.dialog + 'Show';
+        if (typeof openvegemap[showFunction] === 'function') {
+            openvegemap[showFunction]();
+        }
     }
 
     function initDialog(dialog) {
-        openvegemap[dialog.id] = dialog;
+        dialogs[dialog.id] = dialog;
         var initFunction = dialog.id + 'Init';
         if (typeof openvegemap[initFunction] === 'function') {
             openvegemap[initFunction]();
         }
     }
 
-    return {
-        geocodeDialogInit: function () {
-            geocoder = new L.Control.Geocoder(
-                {
-                    geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
-                    position: 'topleft',
-                    defaultMarkGeocode: false
-                }
-            ).on('markgeocode', addGeocodeMarker);
-            geocoder._alts = L.DomUtil.get('geocodeAlt');
-            geocoder._container = openvegemap.geocodeDialog;
-            geocoder._errorElement = L.DomUtil.get('geocodeError');
-            geocoder._input = L.DomUtil.get('geocodeInput');
-            L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
-        },
-        init: function () {
-            //Variables
-            menu = L.DomUtil.get('menu');
-            map = L.map(
-                'map',
-                {
-                    center: [48.85661, 2.351499],
-                    zoom: 16,
-                    maxZoom: 19,
-                    minZoom: 15
-                }
-            );
-            controlLoader = L.control.loader().addTo(map);
-            var hash = L.UrlUtil.hash(),
-                legend = L.control({position: 'bottomright'});
-
-            //Events
-            L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
-            L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog, { dialog: 'geocodeDialog' });
-            L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
-            L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog, { dialog: 'aboutDialog' });
-
-            //Tiles
-            L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-                detectRetina: true,
-                maxNativeZoom: 18,
-                maxZoom: 20,
-                attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a target="_blank" href="https://maps.wikimedia.org/">Wikimedia maps</a>'
-            }).addTo(map);
-
-            //Geolocation
-            locate = L.control.locate({ position: 'topright' });
-
-            //Permalink
-            if (L.UrlUtil.queryParse(hash).lat) {
-                //Don't use localStorage value if we have a hash in the URL
-                window.localStorage.setItem('paramsTemp', hash);
-            }
-            map.addControl(new L.Control.Permalink({ useLocation: true, useLocalStorage: true }));
-
-            //Legend
-            legend.onAdd = addLegend;
-            legend.addTo(map);
-
-            //Overpass
-            new L.OverPassLayer({
-                endPoint: 'https://overpass-api.de/api/',
-                query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
-                beforeRequest: showLoader,
-                afterRequest: hideLoader,
-                onSuccess: addMarkers
-            }).addTo(map);
-
-            //Dialogs
-            ons.createAlertDialog('templates/about.html').then(initDialog);
-            ons.createAlertDialog('templates/geocode.html').then(initDialog);
-            ons.createAlertDialog('templates/popup.html').then(initDialog);
+    function setFilter(filter) {
+        var i;
+        for (i = 0; i < layerNames.length; i += 1) {
+            layers[layerNames[i]].removeFrom(map);
         }
+        for (i = 0; i < layerNames.length; i += 1) {
+            if (!filter.endsWith('-only') || layerNames[i].endsWith('-only')) {
+                layers[layerNames[i]].addTo(map);
+            }
+            if (layerNames[i] === filter) {
+                break;
+            }
+        }
+        window.localStorage.setItem('filter', filter);
+    }
+
+    function applyFilter() {
+        var radios = document.getElementsByName('filter'),
+            i;
+        for (i = 0; i < radios.length; i += 1) {
+            if (radios[i].checked) {
+                setFilter(radios[i].getAttribute('input-id'));
+                break;
+            }
+        }
+        dialogs.filtersDialog.hide();
+        menu.close();
+    }
+
+    function getCurFilter() {
+        var curFilter = window.localStorage.getItem('filter');
+        if (!curFilter) {
+            curFilter = 'vegetarian';
+        }
+        return curFilter;
+    }
+
+    function createLayers() {
+        var i;
+        for (i = 0; i < layerNames.length; i += 1) {
+            layers[layerNames[i]] = L.layerGroup();
+        }
+    }
+
+    function checkZoomLevel(e) {
+        if (e.target.getZoom() >= 15) {
+            dialogs.zoomToast.hide();
+        } else if (!dialogs.zoomToast.visible) {
+            dialogs.zoomToast.show();
+        }
+    }
+
+    function geocodeDialogInit() {
+        geocoder = new L.Control.Geocoder(
+            {
+                geocoder: new L.Control.Geocoder.Nominatim({ serviceUrl: 'https://nominatim.openstreetmap.org/' }),
+                position: 'topleft',
+                defaultMarkGeocode: false
+            }
+        ).on('markgeocode', addGeocodeMarker);
+        geocoder._alts = L.DomUtil.get('geocodeAlt');
+        geocoder._container = dialogs.geocodeDialog;
+        geocoder._errorElement = L.DomUtil.get('geocodeError');
+        geocoder._input = L.DomUtil.get('geocodeInput');
+        L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
+    }
+
+    function filtersDialogInit() {
+        L.DomEvent.on(L.DomUtil.get('filtersDialogBtn'), 'click', applyFilter);
+    }
+
+    function filtersDialogShow() {
+        L.DomUtil.get(getCurFilter()).checked = true;
+    }
+
+    function zoomToastInit() {
+        checkZoomLevel({target: map});
+    }
+
+    function init() {
+        //Variables
+        menu = L.DomUtil.get('menu');
+        map = L.map(
+            'map',
+            {
+                center: [48.85661, 2.351499],
+                zoom: 16,
+                maxZoom: 19,
+                minZoom: 3,
+                maxBounds: [[-90, -180], [90, 180]],
+                maxBoundsViscosity: 1
+            }
+        );
+        controlLoader = L.control.loader().addTo(map);
+        var hash = L.UrlUtil.hash();
+
+        //Events
+        L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
+        L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog, { dialog: 'geocodeDialog' });
+        L.DomEvent.on(L.DomUtil.get('filtersMenuItem'), 'click', openDialog, { dialog: 'filtersDialog' });
+        L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
+        L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog, { dialog: 'aboutDialog' });
+
+        //Tiles
+        L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
+            detectRetina: true,
+            maxNativeZoom: 18,
+            maxZoom: 20,
+            attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a target="_blank" href="https://maps.wikimedia.org/">Wikimedia maps</a>'
+        }).addTo(map);
+
+        //Geolocation
+        locate = L.control.locate({ position: 'topright' });
+
+        //Permalink
+        if (L.UrlUtil.queryParse(hash).lat) {
+            //Don't use localStorage value if we have a hash in the URL
+            window.localStorage.setItem('paramsTemp', hash);
+        }
+        map.addControl(new L.Control.Permalink({ useLocation: true, useLocalStorage: true }));
+
+        //Legend
+        map.addControl(
+            new InfoControl(
+                {
+                    position: 'bottomright',
+                    content: '<i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan<br/>'
+                        + '<i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only<br/>'
+                        + '<i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian<br/>'
+                        + '<i class="fa fa-ban" style="background-color: #D63E2A"></i> Meat only<br/>'
+                        + '<i class="fa fa-question" style="background-color: #575757"></i> Unknown<br/>'
+                }
+            )
+        );
+
+        //Overpass
+        new L.OverPassLayer({
+            endPoint: 'https://overpass-api.de/api/',
+            query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
+            beforeRequest: showLoader,
+            afterRequest: hideLoader,
+            onSuccess: addMarkers,
+            minZoomIndicatorEnabled: false
+        }).addTo(map);
+
+        //Layers control
+        createLayers();
+        setFilter(getCurFilter());
+
+        //Dialogs
+        ons.createAlertDialog('templates/about.html').then(initDialog);
+        ons.createAlertDialog('templates/geocode.html').then(initDialog);
+        ons.createAlertDialog('templates/filters.html').then(initDialog);
+        ons.createAlertDialog('templates/popup.html').then(initDialog);
+        ons.createAlertDialog('templates/zoom.html').then(initDialog);
+
+        //Map events
+        map.on('zoom', checkZoomLevel);
+    }
+
+    return {
+        geocodeDialogInit: geocodeDialogInit,
+        filtersDialogInit: filtersDialogInit,
+        filtersDialogShow: filtersDialogShow,
+        zoomToastInit: zoomToastInit,
+        init: init
     };
 }());
 
-ons.ready(openvegemap.init);
+if (typeof ons === 'object') {
+    ons.ready(openvegemap.init);
+} else {
+    throw 'Onsen is not loaded';
+}

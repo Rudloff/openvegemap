@@ -34,7 +34,7 @@ module.exports = function (grunt) {
                     dest: {
                         'css': 'dist/_bower.css'
                     },
-                    exclude: ['leaflet-loader', 'Leaflet.awesome-markers', 'onsenui']
+                    exclude: ['onsenui']
                 },
                 js: {
                     dest: {
