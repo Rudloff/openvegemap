@@ -11,7 +11,8 @@ var openvegemap = (function () {
         geocoder,
         layers = {},
         layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other'],
-        dialogs = {};
+        dialogs = {},
+        dialogFunctions = {};
 
     function isDiet(diet, tags) {
         var key = 'diet:' + diet;
@@ -212,17 +213,15 @@ var openvegemap = (function () {
 
     function openDialog() {
         dialogs[this.dialog].show();
-        var showFunction = this.dialog + 'Show';
-        if (typeof openvegemap[showFunction] === 'function') {
-            openvegemap[showFunction]();
+        if (dialogFunctions[this.dialog] && typeof dialogFunctions[this.dialog].show === 'function') {
+            dialogFunctions[this.dialog].show();
         }
     }
 
     function initDialog(dialog) {
         dialogs[dialog.id] = dialog;
-        var initFunction = dialog.id + 'Init';
-        if (typeof openvegemap[initFunction] === 'function') {
-            openvegemap[initFunction]();
+        if (dialogFunctions[dialog.id] && typeof dialogFunctions[dialog.id].init === 'function') {
+            dialogFunctions[dialog.id].init();
         }
     }
 
@@ -375,6 +374,20 @@ var openvegemap = (function () {
         createLayers();
         setFilter(getCurFilter());
 
+        //Dialog functions
+        dialogFunctions = {
+            geocodeDialog: {
+                init: geocodeDialogInit
+            },
+            filtersDialog: {
+                init: filtersDialogInit,
+                show: filtersDialogShow
+            },
+            zoomToast : {
+                init: zoomToastInit
+            }
+        };
+
         //Dialogs
         ons.createAlertDialog('templates/about.html').then(initDialog);
         ons.createAlertDialog('templates/geocode.html').then(initDialog);
@@ -387,10 +400,6 @@ var openvegemap = (function () {
     }
 
     return {
-        geocodeDialogInit: geocodeDialogInit,
-        filtersDialogInit: filtersDialogInit,
-        filtersDialogShow: filtersDialogShow,
-        zoomToastInit: zoomToastInit,
         init: init
     };
 }());
