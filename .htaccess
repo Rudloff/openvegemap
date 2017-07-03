@@ -9,3 +9,8 @@ AddOutputFilterByType DEFLATE text/css text/html application/javascript font/tru
     ExpiresByType image/svg+xml "access plus 1 week"
     ExpiresByType font/truetype "access plus 1 week"
 </ifmodule>
+
+Header set X-Frame-Options DENY
+Header set X-Content-Type-Options nosniff
+Header set X-XSS-Protection "1; mode=block"
+Header set Content-Security-Policy "default-src 'self'; img-src 'self' maps.wikimedia.org; style-src 'self' 'unsafe-inline'; connect-src 'self' overpass-api.de nominatim.openstreetmap.org; object-src 'none'; script-src 'self' nominatim.openstreetmap.org"
