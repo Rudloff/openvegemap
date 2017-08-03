@@ -12,7 +12,8 @@ var openvegemap = (function () {
         layers = {},
         layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other'],
         dialogs = {},
-        dialogFunctions = {};
+        dialogFunctions = {},
+        zoomWarningDisplayed = false;
 
     function isDiet(diet, tags) {
         var key = 'diet:' + diet;
@@ -270,10 +271,13 @@ var openvegemap = (function () {
     }
 
     function checkZoomLevel(e) {
-        if (e.target.getZoom() >= 15) {
+        var zoom = e.target.getZoom();
+        if (zoom >= 15 && zoomWarningDisplayed) {
             dialogs.zoomToast.hide();
-        } else if (!dialogs.zoomToast.visible) {
+            zoomWarningDisplayed = false;
+        } else if (zoom < 15 && !zoomWarningDisplayed) {
             dialogs.zoomToast.show();
+            zoomWarningDisplayed = true;
         }
     }
 
