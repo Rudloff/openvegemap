@@ -18,4 +18,8 @@ var oldbrowser = (function () {
     };
 }());
 
-L.DomEvent.on(window, 'load', oldbrowser.init);
+if (typeof L === 'object') {
+    L.DomEvent.on(window, 'load', oldbrowser.init);
+} else {
+    throw 'Leaflet is not loaded';
+}
