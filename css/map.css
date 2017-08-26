@@ -56,7 +56,7 @@ ons-toolbar-button {
 }
 
 .hoursTable {
-    width: 100%;
-    padding-top: 1em;
     padding-bottom: 1em;
+    padding-top: 1em;
+    width: 100%;
 }

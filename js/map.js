@@ -1,5 +1,26 @@
 /*jslint browser: true, this: true*/
 /*global L, InfoControl, ons, window*/
+/*property
+    AwesomeMarkers, Control, DomEvent, DomUtil, Geocoder, Nominatim,
+    OverPassLayer, Permalink, UrlUtil, _alts, _container, _errorElement,
+    _geocode, _input, addControl, addTo, advance, afterRequest, amenity,
+    attribution, beforeRequest, bindTooltip, center, checked, circle, close,
+    content, control, craft, create, createAlertDialog, cuisine,
+    defaultMarkGeocode, detectRetina, dialog, direction, elements,
+    enableHighAccuracy, endPoint, endsWith, feature, filtersDialog, fitBounds,
+    forEach, geocode, geocodeDialog, geocoder, get, getAttribute, getBounds,
+    getDate, getDay, getElementsByName, getHours, getItem, getIterator,
+    getMinutes, getMonth, getState, getStateString, getZoom, hash, hide,
+    hostname, href, icon, id, indexOf, init, innerHTML, lat, layerGroup,
+    loader, localStorage, locate, lon, map, marker, markerColor, maxBounds,
+    maxBoundsViscosity, maxNativeZoom, maxZoom, minZoom,
+    minZoomIndicatorEnabled, name, on, onSuccess, open, opening_hours, other,
+    padStart, phone, position, prefix, push, query, queryParse, ready,
+    removeFrom, replace, serviceUrl, setAttribute, setDate, setHours, setIcon,
+    setItem, setMinutes, setView, shop, show, some, tags, takeaway, target,
+    then, tileLayer, toString, type, useLocalStorage, useLocation, vegan,
+    vegetarian, website, zoom, zoomToast
+*/
 var openvegemap = (function () {
     'use strict';
 
@@ -46,12 +67,12 @@ var openvegemap = (function () {
     }
 
     function getOpeningHoursBtn(value) {
-        var oh = new opening_hours(value, null);
+        var oh = new window.opening_hours(value, null);
         return '<ons-list-item id="hoursBtn" tappable modifier="chevron"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
     }
 
     function getOpeningHoursTable(value) {
-        var oh = new opening_hours(value, null),
+        var oh = new window.opening_hours(value, null),
             it = oh.getIterator(),
             origDate = new Date(),
             table = '',
