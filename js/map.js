@@ -1,4 +1,4 @@
-/*jslint browser: true, this: true, for: true*/
+/*jslint browser: true, this: true*/
 /*global L, InfoControl, ons, window*/
 var openvegemap = (function () {
     'use strict';
@@ -55,15 +55,16 @@ var openvegemap = (function () {
             it = oh.getIterator(),
             date = new Date(),
             table = '',
-            row,
+            row = 0,
             prevdate,
             curdate,
             open,
             prevDay,
+            curDay,
             curMonth;
         date.setHours(0);
         date.setMinutes(0);
-        for (row = 0; row < 7; row += 1) {
+        while (row < 7) {
             it.setDate(date);
             prevdate = date;
             curdate = date;
@@ -71,13 +72,14 @@ var openvegemap = (function () {
 
             while (it.advance() && curdate.getTime() - date.getTime() < 24 * 60 * 60 * 1000) {
                 curdate = it.getDate();
+                curDay = curdate.getDay();
 
                 if (open) {
                     table += '<tr><th>';
-                    if (!prevDay || prevDay !== curdate.getDay()) {
+                    if (!prevDay || prevDay !== curDay) {
                         curMonth = curdate.getMonth() + 1;
                         table += curdate.getDate().toString().padStart(2, 0) + '/' + curMonth.toString().padStart(2, 0);
-                        prevDay = curdate.getDay();
+                        prevDay = curDay;
                     }
                     table += '</th><td>' + prevdate.getHours().toString().padStart(2, 0) + ':' + prevdate.getMinutes().toString().padStart(2, 0) + '<td>' + curdate.getHours().toString().padStart(2, 0) + ':' + curdate.getMinutes().toString().padStart(2, 0) + '</td></tr></td>';
                 }
@@ -87,6 +89,7 @@ var openvegemap = (function () {
                 prevdate = curdate;
             }
             date.setDate(date.getDate() + 1);
+            row += 1;
         }
         return table;
     }
@@ -282,16 +285,13 @@ var openvegemap = (function () {
     }
 
     function setFilter(filter) {
-        var i;
         layerNames.forEach(removeLayer);
-        for (i = 0; i < layerNames.length; i += 1) {
-            if (!filter.endsWith('-only') || layerNames[i].endsWith('-only')) {
-                layers[layerNames[i]].addTo(map);
+        layerNames.some(function (layer) {
+            if (!filter.endsWith('-only') || layer.endsWith('-only')) {
+                layers[layer].addTo(map);
             }
-            if (layerNames[i] === filter) {
-                break;
-            }
-        }
+            return layer === filter;
+        });
         window.localStorage.setItem('filter', filter);
     }
 
