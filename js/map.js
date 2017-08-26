@@ -1,4 +1,4 @@
-/*jslint browser: true, this: true*/
+/*jslint browser: true, this: true, for: true*/
 /*global L, InfoControl, ons, window*/
 var openvegemap = (function () {
     'use strict';
@@ -277,11 +277,13 @@ var openvegemap = (function () {
         }
     }
 
+    function removeLayer(layer) {
+        layers[layer].removeFrom(map);
+    }
+
     function setFilter(filter) {
         var i;
-        for (i = 0; i < layerNames.length; i += 1) {
-            layers[layerNames[i]].removeFrom(map);
-        }
+        layerNames.forEach(removeLayer);
         for (i = 0; i < layerNames.length; i += 1) {
             if (!filter.endsWith('-only') || layerNames[i].endsWith('-only')) {
                 layers[layerNames[i]].addTo(map);
@@ -293,15 +295,18 @@ var openvegemap = (function () {
         window.localStorage.setItem('filter', filter);
     }
 
-    function applyFilter() {
-        var radios = document.getElementsByName('filter'),
-            i;
-        for (i = 0; i < radios.length; i += 1) {
-            if (radios[i].checked) {
-                setFilter(radios[i].getAttribute('input-id'));
-                break;
+    function applyFilter(radio) {
+        if (radio.checked) {
+            var filter = radio.getAttribute('input-id');
+            if (filter) {
+                setFilter(filter);
             }
         }
+    }
+
+    function applyFilters() {
+        var radios = document.getElementsByName('filter');
+        radios.forEach(applyFilter);
         dialogs.filtersDialog.hide();
         menu.close();
     }
@@ -314,11 +319,12 @@ var openvegemap = (function () {
         return curFilter;
     }
 
+    function createLayer(layer) {
+        layers[layer] = L.layerGroup();
+    }
+
     function createLayers() {
-        var i;
-        for (i = 0; i < layerNames.length; i += 1) {
-            layers[layerNames[i]] = L.layerGroup();
-        }
+        layerNames.forEach(createLayer);
     }
 
     function checkZoomLevel(e) {
@@ -348,7 +354,7 @@ var openvegemap = (function () {
     }
 
     function filtersDialogInit() {
-        L.DomEvent.on(L.DomUtil.get('filtersDialogBtn'), 'click', applyFilter);
+        L.DomEvent.on(L.DomUtil.get('filtersDialogBtn'), 'click', applyFilters);
     }
 
     function filtersDialogShow() {
