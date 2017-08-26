@@ -75,7 +75,7 @@ var openvegemap = (function () {
 
             if (open) {
                 table += '<tr><th>';
-                if (!prevDay || prevDay !== curDay) {
+                if (prevDay !== curDay) {
                     curMonth = curDate.getMonth() + 1;
                     table += curDate.getDate().toString().padStart(2, 0) + '/' + curMonth.toString().padStart(2, 0);
                     prevDay = curDay;
