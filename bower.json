@@ -9,7 +9,8 @@
     "leaflet-plugins": "~3.0.0",
     "leaflet-overpass-layer": "~2.7.0",
     "leaflet-info-control": "~0.2.0",
-    "onsenui": "~2.5.2"
+    "onsenui": "~2.5.2",
+    "opening_hours.js": "~3.5.0"
   },
   "resolutions": {
     "leaflet": "~1.2.0"

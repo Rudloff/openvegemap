@@ -46,6 +46,47 @@ var openvegemap = (function () {
         return '';
     }
 
+    function getOpeningHoursBtn(value) {
+        var oh = new opening_hours(value, null);
+        return '<ons-list-item id="hoursBtn" tappable modifier="chevron"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
+    }
+
+    function getOpeningHoursTable(value) {
+        var oh = new opening_hours(value, null),
+            it = oh.getIterator(),
+            date = new Date(),
+            table = '';
+        date.setHours(0);
+        date.setMinutes(0);
+        for (var row = 0; row < 7; row++) {
+            it.setDate(date);
+            var prevdate = date,
+                curdate = date,
+                open = it.getState(),
+                prevDay;
+
+            while (it.advance() && curdate.getTime() - date.getTime() < 24*60*60*1000) {
+                curdate = it.getDate();
+
+                if (open) {
+                    table += '<tr><th>';
+                    if (!prevDay || prevDay != curdate.getDay()) {
+                        table += curdate.getDate().toString().padStart(2, 0) + '/' + (curdate.getMonth() + 1).toString().padStart(2, 0);
+                        prevDay = curdate.getDay();
+                    }
+                    table += '</th><td>' + prevdate.getHours().toString().padStart(2, 0) + ':' + prevdate.getMinutes().toString().padStart(2, 0) + '<td>' + curdate.getHours().toString().padStart(2, 0) + ':' + curdate.getMinutes().toString().padStart(2, 0) + '</td></tr></td>';
+                }
+
+                open = it.getState();
+
+                prevdate = curdate;
+            }
+            date.setDate(date.getDate()+1);
+        }
+        return table;
+        return oh.prettifyValue({conf: {rule_sep_string: '\n'}});
+    }
+
     function showPopup(e) {
         var popup = '',
             url = L.DomUtil.create('a');
@@ -65,6 +106,10 @@ var openvegemap = (function () {
             }
             popup += getPropertyRow('Website', '<a target="_blank" href="' + e.target.feature.tags.website + '">' + e.target.feature.tags.website + '</a>');
         }
+        if (e.target.feature.tags['opening_hours']) {
+            popup += getOpeningHoursBtn(e.target.feature.tags['opening_hours']);
+            L.DomUtil.get('hoursTable').innerHTML = getOpeningHoursTable(e.target.feature.tags['opening_hours']);
+        }
         if (!e.target.feature.tags.name) {
             e.target.feature.tags.name = '';
         }
@@ -72,6 +117,10 @@ var openvegemap = (function () {
         L.DomUtil.get('mapPopupList').innerHTML = popup;
         L.DomUtil.get('gmapsLink').setAttribute('href', 'https://www.google.fr/maps/dir//' + e.target.feature.lat + ',' + e.target.feature.lon);
         L.DomUtil.get('editLink').setAttribute('href', 'https://editor.openvegemap.netlib.re/' + e.target.feature.type + '/' + e.target.feature.id);
+        if (e.target.feature.tags['opening_hours']) {
+            var hoursBtn = L.DomUtil.get('hoursBtn');
+            L.DomEvent.on(hoursBtn, 'click', openDialog, { dialog: 'hoursPopup', target: hoursBtn });
+        }
         L.DomUtil.get('mapPopup').show();
     }
 
@@ -212,8 +261,8 @@ var openvegemap = (function () {
         data.elements.forEach(addMarker);
     }
 
-    function openDialog() {
-        dialogs[this.dialog].show();
+    function openDialog(e) {
+        dialogs[this.dialog].show(this.target);
         if (dialogFunctions[this.dialog] && typeof dialogFunctions[this.dialog].show === 'function') {
             dialogFunctions[this.dialog].show();
         }
@@ -398,6 +447,7 @@ var openvegemap = (function () {
         ons.createAlertDialog('templates/filters.html').then(initDialog);
         ons.createAlertDialog('templates/popup.html').then(initDialog);
         ons.createAlertDialog('templates/zoom.html').then(initDialog);
+        ons.createAlertDialog('templates/hours.html').then(initDialog);
 
         //Map events
         map.on('zoom', checkZoomLevel);
