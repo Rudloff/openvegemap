@@ -57,8 +57,7 @@ var openvegemap = (function () {
     }
 
     function formatDay(date) {
-        var month = date.getMonth() + 1;
-        return date.getDate().toString().padStart(2, 0) + '/' + month.toString().padStart(2, 0);
+        return date.toLocaleDateString('en-US', {weekday: 'long'});
     }
 
     function getClosedDates(curDate, prevDate) {
@@ -79,19 +78,15 @@ var openvegemap = (function () {
     function getOpeningHoursTable(value) {
         var oh = new opening_hours(value, null),
             it = oh.getIterator(),
-            origDate = new Date(),
             table = '',
-            prevDate,
-            curDate,
+            // We use a fake date to start a monday
+            curDate = new Date(2017, 0, 2),
+            prevDate = curDate,
             prevOpenDay,
             curDay,
             endDate;
-        origDate.setHours(0);
-        origDate.setMinutes(0);
-        it.setDate(origDate);
-        prevDate = origDate;
-        curDate = origDate;
-        endDate = new Date(origDate.getTime() + weekInterval);
+        it.setDate(curDate);
+        endDate = new Date(curDate.getTime() + weekInterval);
 
         while (it.advance(endDate)) {
             curDate = it.getDate();
