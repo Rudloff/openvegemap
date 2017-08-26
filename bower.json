@@ -1,9 +1,9 @@
 {
   "name": "openvegemap",
   "dependencies": {
-    "leaflet": "~1.0.0",
+    "leaflet": "~1.2.0",
     "leaflet-loader": "~0.0.1",
-    "leaflet.locatecontrol": "~0.59.1",
+    "leaflet.locatecontrol": "~0.62.0",
     "leaflet-control-geocoder": "1.5.3",
     "Leaflet.awesome-markers": "~2.0.2",
     "leaflet-plugins": "~3.0.0",
@@ -12,6 +12,6 @@
     "onsenui": "~2.5.2"
   },
   "resolutions": {
-    "leaflet": "~1.0.0"
+    "leaflet": "~1.2.0"
   }
 }
