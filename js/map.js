@@ -1,4 +1,4 @@
-/*jslint browser: true*/
+/*jslint browser: true, this: true*/
 /*global L, InfoControl, ons, window*/
 var openvegemap = (function () {
     'use strict';
