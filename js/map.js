@@ -98,11 +98,14 @@ var openvegemap = (function () {
                     table += formatDay(curDate);
                     prevOpenDay = curDay;
                 }
-                table += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(curDate) + '</td></tr></td>';
+                table += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(curDate) + '</td></tr>';
             }
             table += getClosedDates(curDate, prevDate);
 
             prevDate = curDate;
+        }
+        if (curDate.getDay() !== 0) {
+            table += '<tr><th>Sunday</th><td colspan="2">Closed<td></tr>';
         }
         return table;
     }
