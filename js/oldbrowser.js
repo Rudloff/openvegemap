@@ -1,5 +1,5 @@
 /*jslint browser: true*/
-/*global L, MutationObserver*/
+/*global L, MutationObserver, window*/
 var oldbrowser = (function () {
     'use strict';
 
