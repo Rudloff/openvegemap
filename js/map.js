@@ -146,8 +146,6 @@ var openvegemap = (function () {
             switch (tags.craft) {
             case 'caterer':
                 return '🍴';
-            default:
-                break;
             }
         }
         if (tags.amenity) {
@@ -162,10 +160,9 @@ var openvegemap = (function () {
                 return '🍸';
             case 'pub':
                 return '🍺';
-            default:
-                return '';
             }
         }
+        return '';
     }
 
     function getLayer(tags) {
