@@ -53,43 +53,38 @@ var openvegemap = (function () {
     function getOpeningHoursTable(value) {
         var oh = new opening_hours(value, null),
             it = oh.getIterator(),
-            date = new Date(),
+            origDate = new Date(),
             table = '',
-            row = 0,
-            prevdate,
-            curdate,
+            prevDate,
+            curDate,
             open,
             prevDay,
             curDay,
-            curMonth;
-        date.setHours(0);
-        date.setMinutes(0);
-        while (row < 7) {
-            it.setDate(date);
-            prevdate = date;
-            curdate = date;
-            open = it.getState();
+            curMonth,
+            week = 24 * 60 * 60 * 1000 * 7;
+        origDate.setHours(0);
+        origDate.setMinutes(0);
+        it.setDate(origDate);
+        prevDate = origDate;
+        curDate = origDate;
+        open = it.getState();
 
-            while (it.advance() && curdate.getTime() - date.getTime() < 24 * 60 * 60 * 1000) {
-                curdate = it.getDate();
-                curDay = curdate.getDay();
+        while (it.advance() && curDate - origDate < week) {
+            curDate = it.getDate();
+            curDay = curDate.getDay();
 
-                if (open) {
-                    table += '<tr><th>';
-                    if (!prevDay || prevDay !== curDay) {
-                        curMonth = curdate.getMonth() + 1;
-                        table += curdate.getDate().toString().padStart(2, 0) + '/' + curMonth.toString().padStart(2, 0);
-                        prevDay = curDay;
-                    }
-                    table += '</th><td>' + prevdate.getHours().toString().padStart(2, 0) + ':' + prevdate.getMinutes().toString().padStart(2, 0) + '<td>' + curdate.getHours().toString().padStart(2, 0) + ':' + curdate.getMinutes().toString().padStart(2, 0) + '</td></tr></td>';
+            if (open) {
+                table += '<tr><th>';
+                if (!prevDay || prevDay !== curDay) {
+                    curMonth = curDate.getMonth() + 1;
+                    table += curDate.getDate().toString().padStart(2, 0) + '/' + curMonth.toString().padStart(2, 0);
+                    prevDay = curDay;
                 }
-
-                open = it.getState();
-
-                prevdate = curdate;
+                table += '</th><td>' + prevDate.getHours().toString().padStart(2, 0) + ':' + prevDate.getMinutes().toString().padStart(2, 0) + '<td>' + curDate.getHours().toString().padStart(2, 0) + ':' + curDate.getMinutes().toString().padStart(2, 0) + '</td></tr></td>';
             }
-            date.setDate(date.getDate() + 1);
-            row += 1;
+
+            open = it.getState();
+            prevDate = curDate;
         }
         return table;
     }
