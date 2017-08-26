@@ -7,7 +7,6 @@ var openvegemap = (function () {
         controlLoader,
         curFeatures = [],
         menu,
-        locate,
         geocoder,
         layers = {},
         layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other'],
@@ -251,12 +250,7 @@ var openvegemap = (function () {
     }
 
     function locateMe() {
-        locate._layer = new L.LayerGroup();
-        locate._layer.addTo(map);
-        locate._map = map;
-        locate._container = L.DomUtil.create('div');
-        locate._icon = L.DomUtil.create('div');
-        locate.start();
+        map.locate({setView: true, enableHighAccuracy: true});
         menu.close();
     }
 
@@ -396,9 +390,6 @@ var openvegemap = (function () {
             maxZoom: 20,
             attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a target="_blank" href="https://maps.wikimedia.org/">Wikimedia maps</a>'
         }).addTo(map);
-
-        //Geolocation
-        locate = L.control.locate({position: 'topright'});
 
         //Permalink
         if (L.UrlUtil.queryParse(hash).lat) {
