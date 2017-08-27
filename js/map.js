@@ -33,7 +33,9 @@ var openvegemap = (function () {
         layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other'],
         dialogs = {},
         dialogFunctions = {},
-        zoomWarningDisplayed = false;
+        zoomWarningDisplayed = false,
+        dayInterval = 24 * 60 * 60 * 1000,
+        weekInterval = dayInterval * 7;
 
     function isDiet(diet, tags) {
         var key = 'diet:' + diet;
@@ -71,41 +73,60 @@ var openvegemap = (function () {
         return '<ons-list-item id="hoursBtn" tappable modifier="chevron"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
     }
 
+    function formatHour(date) {
+        return date.getHours().toString().padStart(2, 0) + ':' + date.getMinutes().toString().padStart(2, 0);
+    }
+
+    function formatDay(date) {
+        return date.toLocaleDateString('en-US', {weekday: 'long'});
+    }
+
+    function getClosedDates(curDate, prevDate) {
+        var result = '';
+        if (curDate - prevDate > dayInterval) {
+            // If we advanced more than a day, it means we have to display one or more closed days
+            var closedDate = prevDate;
+            while (closedDate.getDay() < curDate.getDay()) {
+                if (closedDate.getDay() > prevDate.getDay()) {
+                    result += '<tr><th>' + formatDay(closedDate) + '</th><td colspan="2">Closed</td></tr>';
+                }
+                closedDate = new Date(closedDate.getTime() + dayInterval);
+            }
+        }
+        return result;
+    }
+
     function getOpeningHoursTable(value) {
         var oh = new window.opening_hours(value, null),
             it = oh.getIterator(),
-            origDate = new Date(),
             table = '',
-            prevDate,
-            curDate,
-            open,
-            prevDay,
+            // We use a fake date to start a monday
+            curDate = new Date(2017, 0, 2),
+            prevDate = curDate,
+            prevOpenDay,
             curDay,
-            curMonth,
-            week = 24 * 60 * 60 * 1000 * 7;
-        origDate.setHours(0);
-        origDate.setMinutes(0);
-        it.setDate(origDate);
-        prevDate = origDate;
-        curDate = origDate;
-        open = it.getState();
+            endDate;
+        it.setDate(curDate);
+        endDate = new Date(curDate.getTime() + weekInterval);
 
-        while (it.advance() && curDate - origDate < week) {
+        while (it.advance(endDate)) {
             curDate = it.getDate();
             curDay = curDate.getDay();
 
-            if (open) {
+            if (it.getState() === false) {
                 table += '<tr><th>';
-                if (prevDay !== curDay) {
-                    curMonth = curDate.getMonth() + 1;
-                    table += curDate.getDate().toString().padStart(2, 0) + '/' + curMonth.toString().padStart(2, 0);
-                    prevDay = curDay;
+                if (prevOpenDay !== curDay) {
+                    table += formatDay(curDate);
+                    prevOpenDay = curDay;
                 }
-                table += '</th><td>' + prevDate.getHours().toString().padStart(2, 0) + ':' + prevDate.getMinutes().toString().padStart(2, 0) + '<td>' + curDate.getHours().toString().padStart(2, 0) + ':' + curDate.getMinutes().toString().padStart(2, 0) + '</td></tr></td>';
+                table += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(curDate) + '</td></tr>';
             }
+            table += getClosedDates(curDate, prevDate);
 
-            open = it.getState();
             prevDate = curDate;
+        }
+        if (curDate.getDay() !== 0) {
+            table += '<tr><th>Sunday</th><td colspan="2">Closed<td></tr>';
         }
         return table;
     }
@@ -167,8 +188,6 @@ var openvegemap = (function () {
             switch (tags.craft) {
             case 'caterer':
                 return '🍴';
-            default:
-                break;
             }
         }
         if (tags.amenity) {
@@ -183,10 +202,9 @@ var openvegemap = (function () {
                 return '🍸';
             case 'pub':
                 return '🍺';
-            default:
-                return '';
             }
         }
+        return '';
     }
 
     function getLayer(tags) {
