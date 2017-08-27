@@ -19,7 +19,8 @@
     removeFrom, replace, serviceUrl, setAttribute, setDate, setHours, setIcon,
     setItem, setMinutes, setView, shop, show, some, tags, takeaway, target,
     then, tileLayer, toString, type, useLocalStorage, useLocation, vegan,
-    vegetarian, website, zoom, zoomToast
+    vegetarian, website, zoom, zoomToast,
+    toLocaleDateString, weekday, getTime
 */
 var openvegemap = (function () {
     'use strict';
