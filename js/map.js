@@ -20,7 +20,7 @@
     setItem, setMinutes, setView, shop, show, some, tags, takeaway, target,
     then, tileLayer, toString, type, useLocalStorage, useLocation, vegan,
     vegetarian, website, zoom, zoomToast,
-    toLocaleDateString, weekday, getTime
+    toLocaleDateString, weekday, getTime, stringify, parse
 */
 var openvegemap = (function () {
     'use strict';
@@ -212,11 +212,11 @@ var openvegemap = (function () {
         if (isOnlyDiet('vegan', tags)) {
             return layers['vegan-only'];
         }
-        if (isOnlyDiet('vegetarian', tags)) {
-            return layers['vegetarian-only'];
-        }
         if (isDiet('vegan', tags)) {
             return layers.vegan;
+        }
+        if (isOnlyDiet('vegetarian', tags)) {
+            return layers['vegetarian-only'];
         }
         if (isDiet('vegetarian', tags)) {
             return layers.vegetarian;
@@ -319,39 +319,31 @@ var openvegemap = (function () {
         layers[layer].removeFrom(map);
     }
 
-    function setFilter(filter) {
-        layerNames.forEach(removeLayer);
-        layerNames.some(function (layer) {
-            if (!filter.endsWith('-only') || layer.endsWith('-only')) {
-                layers[layer].addTo(map);
-            }
-            return layer === filter;
-        });
-        window.localStorage.setItem('filter', filter);
-    }
-
-    function applyFilter(radio) {
-        if (radio.checked) {
-            var filter = radio.getAttribute('input-id');
-            if (filter) {
-                setFilter(filter);
-            }
-        }
+    function setFilter(layer) {
+        layers[layer].addTo(map);
     }
 
     function applyFilters() {
-        var radios = document.getElementsByName('filter');
-        radios.forEach(applyFilter);
+        var activeFilters = [];
+        layerNames.forEach(removeLayer);
+        layerNames.forEach(function (layer) {
+            var checkbox = L.DomUtil.get(layer + '-filter');
+            if (checkbox && checkbox.checked) {
+                activeFilters.push(layer);
+            }
+        });
+        activeFilters.forEach(setFilter);
+        window.localStorage.setItem('filters', JSON.stringify(activeFilters));
         dialogs.filtersDialog.hide();
         menu.close();
     }
 
     function getCurFilter() {
-        var curFilter = window.localStorage.getItem('filter');
-        if (!curFilter) {
-            curFilter = 'vegetarian';
+        var curFilters = JSON.parse(window.localStorage.getItem('filters'));
+        if (!curFilters) {
+            curFilters = ['vegan', 'vegan-only', 'vegetarian', 'vegetarian-only'];
         }
-        return curFilter;
+        return curFilters;
     }
 
     function createLayer(layer) {
@@ -392,8 +384,12 @@ var openvegemap = (function () {
         L.DomEvent.on(L.DomUtil.get('filtersDialogBtn'), 'click', applyFilters);
     }
 
+    function filtersDialogCheckbox(layer) {
+        L.DomUtil.get(layer + '-filter').checked = true;
+    }
+
     function filtersDialogShow() {
-        L.DomUtil.get(getCurFilter()).checked = true;
+        getCurFilter().forEach(filtersDialogCheckbox);
     }
 
     function zoomToastInit() {
@@ -466,7 +462,7 @@ var openvegemap = (function () {
 
         //Layers control
         createLayers();
-        setFilter(getCurFilter());
+        getCurFilter().forEach(setFilter);
 
         //Dialog functions
         dialogFunctions = {
