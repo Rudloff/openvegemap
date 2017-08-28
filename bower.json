@@ -3,7 +3,7 @@
   "dependencies": {
     "leaflet": "~1.2.0",
     "leaflet-loader": "~0.0.1",
-    "leaflet-control-geocoder": "1.5.3",
+    "leaflet-control-geocoder": "~1.5.5",
     "Leaflet.awesome-markers": "~2.0.2",
     "leaflet-plugins": "~3.0.0",
     "leaflet-overpass-layer": "~2.7.0",
