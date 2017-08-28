@@ -46,7 +46,8 @@ module.exports = function (grunt) {
                     mainFiles: {
                         'leaflet-control-geocoder': 'dist/Control.Geocoder.js',
                         'leaflet-plugins': 'control/Permalink.js'
-                    }
+                    },
+                    exclude: ['jquery']
                 }
             },
             uglify: {
