@@ -112,9 +112,9 @@ var openvegemap = (function () {
 
         while (it.advance(endDate)) {
             curDate = it.getDate();
-            curDay = curDate.getDay();
+            curDay = prevDate.getDay();
 
-            if (it.getState() === false) {
+            if (oh.getState(prevDate)) {
                 table += '<tr><th>';
                 if (prevOpenDay !== curDay) {
                     table += formatDay(curDate);
