@@ -134,7 +134,6 @@ var openvegemap = (function () {
                 table += '<tr><th>';
                 if (prevOpenDay !== curDay) {
                     table += formatDay(prevDate);
-                    prevOpenDay = curDay;
                 }
                 table += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(it.getDate()) + '</td></tr>';
             }
