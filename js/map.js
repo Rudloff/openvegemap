@@ -116,7 +116,7 @@ var openvegemap = (function () {
             // We use a fake date to start a monday
             curDate = new Date(2017, 0, 2),
             prevDate = curDate,
-            curDay = prevDate.getDay(),
+            curDay,
             prevOpenDay = new Date(2017, 0, 1),
             endDate;
         it.setDate(curDate);
