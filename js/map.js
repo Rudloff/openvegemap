@@ -192,38 +192,50 @@ var openvegemap = (function () {
         L.DomUtil.get('mapPopup').show();
     }
 
+    function getShopIcon(tags) {
+        switch (tags.shop) {
+        case 'bakery':
+            return '🥖';
+        default:
+            return '🛒';
+        }
+    }
+
+    function getCraftIcon(tags) {
+        switch (tags.craft) {
+        case 'caterer':
+            return '🍴';
+        default:
+            return '';
+        }
+    }
+
+    function getAmenityIcon(tags) {
+        switch (tags.amenity) {
+        case 'fast_food':
+            return '🍔';
+        case 'restaurant':
+            return '🍴';
+        case 'cafe':
+            return '🍵';
+        case 'bar':
+            return '🍸';
+        case 'pub':
+            return '🍺';
+        default:
+            return '';
+        }
+    }
+
     function getIcon(tags) {
         if (tags.shop) {
-            switch (tags.shop) {
-            case 'bakery':
-                return '🥖';
-            default:
-                return '🛒';
-            }
+            return getShopIcon(tags);
         }
         if (tags.craft) {
-            switch (tags.craft) {
-            case 'caterer':
-                return '🍴';
-            default:
-                break;
-            }
+            return getCraftIcon(tags);
         }
         if (tags.amenity) {
-            switch (tags.amenity) {
-            case 'fast_food':
-                return '🍔';
-            case 'restaurant':
-                return '🍴';
-            case 'cafe':
-                return '🍵';
-            case 'bar':
-                return '🍸';
-            case 'pub':
-                return '🍺';
-            default:
-                break;
-            }
+            return getAmenityIcon(tags);
         }
         return '';
     }
