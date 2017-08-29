@@ -155,27 +155,35 @@ var openvegemap = (function () {
         }
     }
 
-    function showPopup(e) {
-        var popup = '',
+    function getPopupRows(tags) {
+        var rows = '',
             url = L.DomUtil.create('a');
-        popup += getPropertyRow('Vegan', e.target.feature.tags['diet:vegan']);
-        popup += getPropertyRow('Vegetarian', e.target.feature.tags['diet:vegetarian']);
-        if (e.target.feature.tags.cuisine) {
-            popup += getPropertyRow('Cuisine', e.target.feature.tags.cuisine.replace(/;/g, ', '));
+        rows += getPropertyRow('Vegan', tags['diet:vegan']);
+        rows += getPropertyRow('Vegetarian', tags['diet:vegetarian']);
+        if (tags.cuisine) {
+            rows += getPropertyRow('Cuisine', tags.cuisine.replace(/;/g, ', '));
         }
-        popup += getPropertyRow('Take away', e.target.feature.tags.takeaway);
-        if (e.target.feature.tags.phone) {
-            popup += getPropertyRow('Phone number', '<a href="tel:' + e.target.feature.tags.phone + '">' + e.target.feature.tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
+        rows += getPropertyRow('Take away', tags.takeaway);
+        if (tags.phone) {
+            rows += getPropertyRow('Phone number', '<a href="tel:' + tags.phone + '">' + tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
         }
-        if (e.target.feature.tags.website) {
-            url.href = e.target.feature.tags.website;
+        if (tags.website) {
+            url.href = tags.website;
             if (url.hostname === 'localhost') {
-                e.target.feature.tags.website = 'http://' + e.target.feature.tags.website;
+                tags.website = 'http://' + tags.website;
             }
-            popup += getPropertyRow('Website', '<a target="_blank" href="' + e.target.feature.tags.website + '">' + e.target.feature.tags.website + '</a>');
+            rows += getPropertyRow('Website', '<a target="_blank" href="' + tags.website + '">' + tags.website + '</a>');
         }
+        if (tags.opening_hours) {
+            rows += getOpeningHoursBtn(tags.opening_hours);
+        }
+        return rows;
+    }
+
+    function showPopup(e) {
+        var popup = '';
+        popup += getPopupRows(e.target.feature.tags);
         if (e.target.feature.tags.opening_hours) {
-            popup += getOpeningHoursBtn(e.target.feature.tags.opening_hours);
             L.DomUtil.get('hoursTable').innerHTML = getOpeningHoursTable(e.target.feature.tags.opening_hours);
         }
         if (!e.target.feature.tags.name) {
