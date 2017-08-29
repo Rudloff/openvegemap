@@ -2,44 +2,44 @@
     <div class="alert-dialog-title">Filters</div>
     <div class="alert-dialog-content">
         <ons-list>
-            <ons-list-item modifier="nodivider">
+            <ons-list-item modifier="nodivider" title="Restaurants that serve only vegan food">
                 <div class="left">
-                    <ons-input name="filter" type="radio" input-id="vegan-only"></ons-input>
+                    <ons-checkbox input-id="vegan-only-filter"></ons-checkbox>
                 </div>
-                <label for="vegan-only" class="center">
+                <label for="vegan-only-filter" class="center">
                     Vegan only
                 </label>
             </ons-list-item>
-            <ons-list-item modifier="longdivider">
+            <ons-list-item modifier="longdivider" title="Restaurants that serve vegan food and other food">
                 <div class="left">
-                    <ons-input name="filter" type="radio" input-id="vegan"></ons-input>
+                    <ons-checkbox input-id="vegan-filter"></ons-checkbox>
                 </div>
-                <label for="vegan" class="center">
+                <label for="vegan-filter" class="center">
                     Vegan friendly
                 </label>
             </ons-list-item>
-            <ons-list-item modifier="nodivider">
+            <ons-list-item modifier="nodivider" title="Restaurants that serve only vegetarian food but no vegan food">
                 <div class="left">
-                    <ons-input name="filter" type="radio" input-id="vegetarian-only"></ons-input>
+                    <ons-checkbox input-id="vegetarian-only-filter"></ons-checkbox>
                 </div>
-                <label for="vegetarian-only" class="center">
+                <label for="vegetarian-only-filter" class="center">
                     Vegetarian only
                 </label>
             </ons-list-item>
-            <ons-list-item modifier="longdivider">
+            <ons-list-item modifier="longdivider" title="Restaurants that serve vegetarian food and meat but no vegan food">
                 <div class="left">
-                    <ons-input name="filter" type="radio" input-id="vegetarian"></ons-input>
+                    <ons-checkbox input-id="vegetarian-filter"></ons-checkbox>
                 </div>
-                <label for="vegetarian" class="center">
+                <label for="vegetarian-filter" class="center">
                     Vegetarian friendly
                 </label>
             </ons-list-item>
             <ons-list-item>
                 <div class="left">
-                    <ons-input name="filter" type="radio" input-id="other"></ons-input>
+                    <ons-checkbox input-id="other-filter"></ons-checkbox>
                 </div>
-                <label for="other" class="center">
-                    Everything
+                <label for="other-filter" class="center" title="Restaurants that serve meat or we don't have enough information about">
+                    Not vegetarian/unknown
                 </label>
             </ons-list-item>
         </ons-list>

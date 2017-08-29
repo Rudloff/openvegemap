@@ -54,3 +54,9 @@ ons-toolbar-button {
 .leaflet-control-geocoder-error {
     display: block;
 }
+
+.hoursTable {
+    padding-bottom: 1em;
+    padding-top: 1em;
+    width: 100%;
+}

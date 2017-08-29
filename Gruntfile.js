@@ -46,7 +46,8 @@ module.exports = function (grunt) {
                     mainFiles: {
                         'leaflet-control-geocoder': 'dist/Control.Geocoder.js',
                         'leaflet-plugins': 'control/Permalink.js'
-                    }
+                    },
+                    exclude: ['jquery']
                 }
             },
             uglify: {
@@ -60,7 +61,7 @@ module.exports = function (grunt) {
                 },
                 js: {
                     files: {
-                        'dist/map.js': 'js/map.js'
+                        'dist/map.js': ['js/oldbrowser.js', 'js/map.js']
                     },
                     options: {
                         sourceMap: true
