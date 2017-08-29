@@ -97,6 +97,18 @@ var openvegemap = (function () {
         return result;
     }
 
+    function getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay) {
+        var row = '';
+        if (oh.getState(prevDate)) {
+            row += '<tr><th>';
+            if (prevOpenDay !== curDay) {
+                row += formatDay(prevDate);
+            }
+            row += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(curDate) + '</td></tr>';
+        }
+        return row;
+    }
+
     function getOpeningHoursTable(value) {
         var oh = new window.opening_hours(value, null),
             it = oh.getIterator(),
@@ -105,7 +117,7 @@ var openvegemap = (function () {
             curDate = new Date(2017, 0, 2),
             prevDate = curDate,
             curDay = prevDate.getDay(),
-            prevOpenDay = curDay,
+            prevOpenDay = new Date(2017, 0, 1),
             endDate;
         it.setDate(curDate);
         endDate = new Date(curDate.getTime() + weekInterval);
@@ -114,15 +126,12 @@ var openvegemap = (function () {
             curDate = it.getDate();
             curDay = prevDate.getDay();
 
-            if (oh.getState(prevDate)) {
-                table += '<tr><th>';
-                if (prevOpenDay !== curDay) {
-                    table += formatDay(prevDate);
-                    prevOpenDay = curDay;
-                }
-                table += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(curDate) + '</td></tr>';
-            }
+            table += getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay);
             table += getClosedDates(curDate, prevDate);
+
+            if (oh.getState(prevDate) && prevOpenDay !== curDay) {
+                prevOpenDay = curDay;
+            }
 
             prevDate = curDate;
         }
@@ -130,13 +139,7 @@ var openvegemap = (function () {
             //If the loop stopped on sunday, we might need to add another row
             it.advance();
             curDay = prevDate.getDay();
-            if (oh.getState(prevDate)) {
-                table += '<tr><th>';
-                if (prevOpenDay !== curDay) {
-                    table += formatDay(prevDate);
-                }
-                table += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(it.getDate()) + '</td></tr>';
-            }
+            table += getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay);
         } else {
             //If the loop stop before sunday, it means it is closed
             table += '<tr><th>Sunday</th><td colspan="2">Closed<td></tr>';
