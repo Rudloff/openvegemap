@@ -88,7 +88,7 @@ var openvegemap = (function () {
             // If we advanced more than a day, it means we have to display one or more closed days
             var closedDate = prevDate;
             while (closedDate.getDay() < curDate.getDay()) {
-                if (closedDate.getDay() > prevDate.getDay()) {
+                if (closedDate.getDay() === 1 || closedDate.getDay() > prevDate.getDay()) {
                     result += '<tr><th>' + formatDay(closedDate) + '</th><td colspan="2">Closed</td></tr>';
                 }
                 closedDate = new Date(closedDate.getTime() + dayInterval);
@@ -117,7 +117,7 @@ var openvegemap = (function () {
             if (oh.getState(prevDate)) {
                 table += '<tr><th>';
                 if (prevOpenDay !== curDay) {
-                    table += formatDay(curDate);
+                    table += formatDay(prevDate);
                     prevOpenDay = curDay;
                 }
                 table += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(curDate) + '</td></tr>';
@@ -126,8 +126,25 @@ var openvegemap = (function () {
 
             prevDate = curDate;
         }
-        if (curDate.getDay() !== 0) {
+        if (curDate.getDay() === 0) {
+            //If the loop stopped on sunday, we might need to add another row
+            it.advance();
+            curDay = prevDate.getDay();
+            if (oh.getState(prevDate)) {
+                table += '<tr><th>';
+                if (prevOpenDay !== curDay) {
+                    table += formatDay(prevDate);
+                    prevOpenDay = curDay;
+                }
+                table += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(it.getDate()) + '</td></tr>';
+            }
+        } else {
+            //If the loop stop before sunday, it means it is closed
             table += '<tr><th>Sunday</th><td colspan="2">Closed<td></tr>';
+        }
+        if (!table) {
+            //Sometimes the opening hours data is in a format we don't support
+            table += "<tr><th>Sorry, we don't have enough info</th></tr>";
         }
         return table;
     }
