@@ -464,8 +464,7 @@ var openvegemap = (function () {
         L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog, {dialog: 'aboutDialog'});
 
         //Tiles
-        L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', {
-            detectRetina: true,
+        L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
             maxNativeZoom: 18,
             maxZoom: 20,
             attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a target="_blank" href="https://maps.wikimedia.org/">Wikimedia maps</a>'
