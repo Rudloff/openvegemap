@@ -97,6 +97,18 @@ var openvegemap = (function () {
         return result;
     }
 
+    function getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay) {
+        var row = '';
+        if (oh.getState(prevDate)) {
+            row += '<tr><th>';
+            if (prevOpenDay !== curDay) {
+                row += formatDay(prevDate);
+            }
+            row += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(curDate) + '</td></tr>';
+        }
+        return row;
+    }
+
     function getOpeningHoursTable(value) {
         var oh = new window.opening_hours(value, null),
             it = oh.getIterator(),
@@ -104,8 +116,8 @@ var openvegemap = (function () {
             // We use a fake date to start a monday
             curDate = new Date(2017, 0, 2),
             prevDate = curDate,
-            prevOpenDay,
             curDay,
+            prevOpenDay = new Date(2017, 0, 1),
             endDate;
         it.setDate(curDate);
         endDate = new Date(curDate.getTime() + weekInterval);
@@ -114,15 +126,12 @@ var openvegemap = (function () {
             curDate = it.getDate();
             curDay = prevDate.getDay();
 
-            if (oh.getState(prevDate)) {
-                table += '<tr><th>';
-                if (prevOpenDay !== curDay) {
-                    table += formatDay(prevDate);
-                    prevOpenDay = curDay;
-                }
-                table += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(curDate) + '</td></tr>';
-            }
+            table += getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay);
             table += getClosedDates(curDate, prevDate);
+
+            if (oh.getState(prevDate) && prevOpenDay !== curDay) {
+                prevOpenDay = curDay;
+            }
 
             prevDate = curDate;
         }
@@ -130,14 +139,7 @@ var openvegemap = (function () {
             //If the loop stopped on sunday, we might need to add another row
             it.advance();
             curDay = prevDate.getDay();
-            if (oh.getState(prevDate)) {
-                table += '<tr><th>';
-                if (prevOpenDay !== curDay) {
-                    table += formatDay(prevDate);
-                    prevOpenDay = curDay;
-                }
-                table += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(it.getDate()) + '</td></tr>';
-            }
+            table += getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay);
         } else {
             //If the loop stop before sunday, it means it is closed
             table += '<tr><th>Sunday</th><td colspan="2">Closed<td></tr>';
@@ -156,27 +158,35 @@ var openvegemap = (function () {
         }
     }
 
-    function showPopup(e) {
-        var popup = '',
+    function getPopupRows(tags) {
+        var rows = '',
             url = L.DomUtil.create('a');
-        popup += getPropertyRow('Vegan', e.target.feature.tags['diet:vegan']);
-        popup += getPropertyRow('Vegetarian', e.target.feature.tags['diet:vegetarian']);
-        if (e.target.feature.tags.cuisine) {
-            popup += getPropertyRow('Cuisine', e.target.feature.tags.cuisine.replace(/;/g, ', '));
+        rows += getPropertyRow('Vegan', tags['diet:vegan']);
+        rows += getPropertyRow('Vegetarian', tags['diet:vegetarian']);
+        if (tags.cuisine) {
+            rows += getPropertyRow('Cuisine', tags.cuisine.replace(/;/g, ', '));
         }
-        popup += getPropertyRow('Take away', e.target.feature.tags.takeaway);
-        if (e.target.feature.tags.phone) {
-            popup += getPropertyRow('Phone number', '<a href="tel:' + e.target.feature.tags.phone + '">' + e.target.feature.tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
+        rows += getPropertyRow('Take away', tags.takeaway);
+        if (tags.phone) {
+            rows += getPropertyRow('Phone number', '<a href="tel:' + tags.phone + '">' + tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
         }
-        if (e.target.feature.tags.website) {
-            url.href = e.target.feature.tags.website;
+        if (tags.website) {
+            url.href = tags.website;
             if (url.hostname === 'localhost') {
-                e.target.feature.tags.website = 'http://' + e.target.feature.tags.website;
+                tags.website = 'http://' + tags.website;
             }
-            popup += getPropertyRow('Website', '<a target="_blank" href="' + e.target.feature.tags.website + '">' + e.target.feature.tags.website + '</a>');
+            rows += getPropertyRow('Website', '<a target="_blank" href="' + tags.website + '">' + tags.website + '</a>');
         }
+        if (tags.opening_hours) {
+            rows += getOpeningHoursBtn(tags.opening_hours);
+        }
+        return rows;
+    }
+
+    function showPopup(e) {
+        var popup = '';
+        popup += getPopupRows(e.target.feature.tags);
         if (e.target.feature.tags.opening_hours) {
-            popup += getOpeningHoursBtn(e.target.feature.tags.opening_hours);
             L.DomUtil.get('hoursTable').innerHTML = getOpeningHoursTable(e.target.feature.tags.opening_hours);
         }
         if (!e.target.feature.tags.name) {
@@ -193,34 +203,50 @@ var openvegemap = (function () {
         L.DomUtil.get('mapPopup').show();
     }
 
+    function getShopIcon(tags) {
+        switch (tags.shop) {
+        case 'bakery':
+            return '🥖';
+        default:
+            return '🛒';
+        }
+    }
+
+    function getCraftIcon(tags) {
+        switch (tags.craft) {
+        case 'caterer':
+            return '🍴';
+        default:
+            return '';
+        }
+    }
+
+    function getAmenityIcon(tags) {
+        switch (tags.amenity) {
+        case 'fast_food':
+            return '🍔';
+        case 'restaurant':
+            return '🍴';
+        case 'cafe':
+            return '🍵';
+        case 'bar':
+            return '🍸';
+        case 'pub':
+            return '🍺';
+        default:
+            return '';
+        }
+    }
+
     function getIcon(tags) {
         if (tags.shop) {
-            switch (tags.shop) {
-            case 'bakery':
-                return '🥖';
-            default:
-                return '🛒';
-            }
+            return getShopIcon(tags);
         }
         if (tags.craft) {
-            switch (tags.craft) {
-            case 'caterer':
-                return '🍴';
-            }
+            return getCraftIcon(tags);
         }
         if (tags.amenity) {
-            switch (tags.amenity) {
-            case 'fast_food':
-                return '🍔';
-            case 'restaurant':
-                return '🍴';
-            case 'cafe':
-                return '🍵';
-            case 'bar':
-                return '🍸';
-            case 'pub':
-                return '🍺';
-            }
+            return getAmenityIcon(tags);
         }
         return '';
     }
