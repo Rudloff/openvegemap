@@ -99,7 +99,7 @@ var openvegemap = (function () {
 
     function getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay) {
         var row = '';
-        if (oh.getState(prevDate) && prevDate != curDate) {
+        if (oh.getState(prevDate) && prevDate !== curDate) {
             row += '<tr><th>';
             if (prevOpenDay !== curDay) {
                 row += formatDay(prevDate);
@@ -126,7 +126,7 @@ var openvegemap = (function () {
             curDate = it.getDate();
             curDay = prevDate.getDay();
 
-            if (prevDate.getHours() != 0 || prevDate.getMinutes() != 0) {
+            if (prevDate.getHours() !== 0 || prevDate.getMinutes() !== 0) {
                 table += getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay);
                 table += getClosedDates(curDate, prevDate);
 
