@@ -99,7 +99,7 @@ var openvegemap = (function () {
 
     function getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay) {
         var row = '';
-        if (oh.getState(prevDate)) {
+        if (oh.getState(prevDate) && prevDate != curDate) {
             row += '<tr><th>';
             if (prevOpenDay !== curDay) {
                 row += formatDay(prevDate);
@@ -126,11 +126,13 @@ var openvegemap = (function () {
             curDate = it.getDate();
             curDay = prevDate.getDay();
 
-            table += getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay);
-            table += getClosedDates(curDate, prevDate);
+            if (prevDate.getHours() != 0 || prevDate.getMinutes() != 0) {
+                table += getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay);
+                table += getClosedDates(curDate, prevDate);
 
-            if (oh.getState(prevDate) && prevOpenDay !== curDay) {
-                prevOpenDay = curDay;
+                if (oh.getState(prevDate) && prevOpenDay !== curDay) {
+                    prevOpenDay = curDay;
+                }
             }
 
             prevDate = curDate;
@@ -138,8 +140,7 @@ var openvegemap = (function () {
         if (curDate.getDay() === 0) {
             //If the loop stopped on sunday, we might need to add another row
             it.advance();
-            curDay = prevDate.getDay();
-            table += getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay);
+            table += getOpeningHoursRow(oh, it.getDate(), curDate, prevDate.getDay(), prevOpenDay);
         } else {
             //If the loop stop before sunday, it means it is closed
             table += '<tr><th>Sunday</th><td colspan="2">Closed<td></tr>';
