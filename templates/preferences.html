@@ -1,0 +1,49 @@
+<ons-alert-dialog id="preferencesDialog" cancelable>
+    <div class="alert-dialog-title">Preferences</div>
+    <div class="alert-dialog-content">
+        <ons-list>
+            <ons-list-header>Routing provider</ons-list-header>
+            <ons-list-item>
+                <div class="left">
+                    <ons-radio name="routing-provider" input-id="google-routingprovider" value="google"></ons-radio>
+                </div>
+                <label for="google-routingprovider" class="center">
+                    Google Maps
+                </label>
+            </ons-list-item>
+            <ons-list-item>
+                <div class="left">
+                    <ons-radio name="routing-provider" input-id="graphhopper-routingprovider" value="graphhopper"></ons-radio>
+                </div>
+                <label for="graphhopper-routingprovider" class="center">
+                    GraphHopper
+                </label>
+            </ons-list-item>
+            <ons-list-item>
+                <div class="left">
+                    <ons-radio name="routing-provider" input-id="openroute-routingprovider" value="openroute"></ons-radio>
+                </div>
+                <label for="openroute-routingprovider" class="center">
+                    OpenRouteService
+                </label>
+            </ons-list-item>
+            <ons-list-item modifier="nodivider">
+                <div class="left">
+                    <ons-radio name="routing-provider" input-id="custom-routingprovider" value="openroute"></ons-radio>
+                </div>
+                <label for="custom-routingprovider" class="center">
+                    Custom:
+                </label>
+                <div class="right">
+                    <ons-input input-id="custom-routingprovider-url" modifier="underbar"></ons-input>
+                </div>
+            </ons-list-item>
+            <ons-list-item>
+                (Use {LAT} and {LON} as placeholders for latitude and longitude.)
+            </ons-list-item>
+        </ons-list>
+    </div>
+    <div class="alert-dialog-footer">
+        <button class="alert-dialog-button" id="preferencesDialogBtn">Apply</button>
+    </div>
+</ons-alert-dialog>

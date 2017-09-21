@@ -20,7 +20,8 @@
     setItem, setMinutes, setView, shop, show, some, tags, takeaway, target,
     then, tileLayer, toString, type, useLocalStorage, useLocation, vegan,
     vegetarian, website, zoom, zoomToast,
-    toLocaleDateString, weekday, getTime, stringify, parse
+    toLocaleDateString, weekday, getTime, stringify, parse,
+    google, openroute, graphhopper, value, keys, preferencesDialog
 */
 var openvegemap = (function () {
     'use strict';
@@ -36,7 +37,12 @@ var openvegemap = (function () {
         dialogFunctions = {},
         zoomWarningDisplayed = false,
         dayInterval = 24 * 60 * 60 * 1000,
-        weekInterval = dayInterval * 7;
+        weekInterval = dayInterval * 7,
+        routingProviders = {
+            google: 'https://www.google.com/maps/dir//{LAT},{LON}',
+            graphhopper: 'https://graphhopper.com/maps/?point=&point={LAT},{LON}',
+            openroute: 'https://openrouteservice.org/directions?a=null,null,{LAT},{LON}'
+        };
 
     function isDiet(diet, tags) {
         var key = 'diet:' + diet;
@@ -184,6 +190,22 @@ var openvegemap = (function () {
         return rows;
     }
 
+    function getRoutingUrl(lat, lon) {
+        var url = window.localStorage.getItem('routing-provider');
+        if (!url) {
+            url = routingProviders.google;
+        }
+
+        if (lat) {
+            url = url.replace('{LAT}', lat);
+        }
+        if (lon) {
+            url = url.replace('{LON}', lon);
+        }
+
+        return url;
+    }
+
     function showPopup(e) {
         var popup = '';
         popup += getPopupRows(e.target.feature.tags);
@@ -195,7 +217,7 @@ var openvegemap = (function () {
         }
         L.DomUtil.get('mapPopupTitle').innerHTML = e.target.feature.tags.name;
         L.DomUtil.get('mapPopupList').innerHTML = popup;
-        L.DomUtil.get('gmapsLink').setAttribute('href', 'https://www.google.fr/maps/dir//' + e.target.feature.lat + ',' + e.target.feature.lon);
+        L.DomUtil.get('gmapsLink').setAttribute('href', getRoutingUrl(e.target.feature.lat, e.target.feature.lon));
         L.DomUtil.get('editLink').setAttribute('href', 'https://editor.openvegemap.netlib.re/' + e.target.feature.type + '/' + e.target.feature.id);
         if (e.target.feature.tags.opening_hours) {
             var hoursBtn = L.DomUtil.get('hoursBtn');
@@ -436,6 +458,48 @@ var openvegemap = (function () {
         getCurFilter().forEach(filtersDialogCheckbox);
     }
 
+    function setRoutingProvider() {
+        var curProvider = routingProviders.google;
+        if (L.DomUtil.get('custom-routingprovider').checked) {
+            curProvider = L.DomUtil.get('custom-routingprovider-url').value;
+        }
+        Object.keys(routingProviders).some(function (provider) {
+            if (L.DomUtil.get(provider + '-routingprovider').checked) {
+                curProvider = routingProviders[provider];
+
+                return true;
+            }
+        });
+
+        window.localStorage.setItem('routing-provider', curProvider);
+        dialogs.preferencesDialog.hide();
+        menu.close();
+    }
+
+    function preferencesDialogInit() {
+        L.DomEvent.on(L.DomUtil.get('preferencesDialogBtn'), 'click', setRoutingProvider);
+    }
+
+    function preferencesDialogShow() {
+        var url = window.localStorage.getItem('routing-provider'),
+            curProvider;
+        Object.keys(routingProviders).some(function (provider) {
+            if (url === routingProviders[provider]) {
+                curProvider = provider;
+
+                return true;
+            }
+        });
+        if (!curProvider && url) {
+            L.DomUtil.get('custom-routingprovider-url').value = url;
+            curProvider = 'custom';
+        }
+        if (!curProvider) {
+            curProvider = 'google';
+        }
+        L.DomUtil.get(curProvider + '-routingprovider').checked = true;
+    }
+
     function zoomToastInit() {
         checkZoomLevel({target: map});
     }
@@ -461,6 +525,7 @@ var openvegemap = (function () {
         L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
         L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog, {dialog: 'geocodeDialog'});
         L.DomEvent.on(L.DomUtil.get('filtersMenuItem'), 'click', openDialog, {dialog: 'filtersDialog'});
+        L.DomEvent.on(L.DomUtil.get('preferencesMenuItem'), 'click', openDialog, {dialog: 'preferencesDialog'});
         L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
         L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog, {dialog: 'aboutDialog'});
 
@@ -516,6 +581,10 @@ var openvegemap = (function () {
                 init: filtersDialogInit,
                 show: filtersDialogShow
             },
+            preferencesDialog: {
+                init: preferencesDialogInit,
+                show: preferencesDialogShow
+            },
             zoomToast: {
                 init: zoomToastInit
             }
@@ -525,6 +594,7 @@ var openvegemap = (function () {
         ons.createAlertDialog('templates/about.html').then(initDialog);
         ons.createAlertDialog('templates/geocode.html').then(initDialog);
         ons.createAlertDialog('templates/filters.html').then(initDialog);
+        ons.createAlertDialog('templates/preferences.html').then(initDialog);
         ons.createAlertDialog('templates/popup.html').then(initDialog);
         ons.createAlertDialog('templates/zoom.html').then(initDialog);
         ons.createAlertDialog('templates/hours.html').then(initDialog);
