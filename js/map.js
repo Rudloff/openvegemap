@@ -469,6 +469,8 @@ var openvegemap = (function () {
 
                 return true;
             }
+
+            return false;
         });
 
         window.localStorage.setItem('routing-provider', curProvider);
@@ -489,6 +491,8 @@ var openvegemap = (function () {
 
                 return true;
             }
+
+            return false;
         });
         if (!curProvider && url) {
             L.DomUtil.get('custom-routingprovider-url').value = url;
