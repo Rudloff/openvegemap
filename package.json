@@ -7,7 +7,6 @@
   "dependencies": {
     "@bower_components/Leaflet.awesome-markers": "lvoogdt/Leaflet.awesome-markers#~2.0.2",
     "@bower_components/leaflet-loader": "stefanocudini/leaflet-loader#~0.0.1",
-    "jquery": "~2.1.4",
     "leaflet": "~1.2.0",
     "leaflet-control-geocoder": "~1.5.5",
     "leaflet-info-control": "~0.2.0",
@@ -20,8 +19,8 @@
     "grunt": "~1.0.1",
     "grunt-contrib-csslint": "~2.0.0",
     "grunt-contrib-cssmin": "^2.2.1",
-    "grunt-contrib-imagemin": "~1.0.1",
-    "grunt-contrib-uglify": "~3.0.0",
+    "grunt-contrib-imagemin": "~2.0.1",
+    "grunt-contrib-uglify": "~3.1.0",
     "grunt-contrib-watch": "~1.0.0",
     "grunt-fixpack": "~0.1.0",
     "grunt-jslint": "^1.2.0",
