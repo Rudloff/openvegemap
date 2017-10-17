@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@bower_components/Leaflet.awesome-markers@lvoogdt/Leaflet.awesome-markers#~2.0.2":
-  version "0.0.0"
-  resolved "https://codeload.github.com/lvoogdt/Leaflet.awesome-markers/tar.gz/bfac1eb6f7896072d690bde57c1fb5002961a99a"
-
 "@bower_components/leaflet-loader@stefanocudini/leaflet-loader#~0.0.1":
   version "0.0.0"
   resolved "https://codeload.github.com/stefanocudini/leaflet-loader/tar.gz/1fd10fd8c65da92b0ada8555339391862a2edfd1"
@@ -1640,6 +1636,10 @@ leaflet-overpass-layer@~2.7.0:
 leaflet-plugins@~3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/leaflet-plugins/-/leaflet-plugins-3.0.1.tgz#aa0c29e3cf71de33784efaa02de177a246dd53b1"
+
+leaflet.awesome-markers@lvoogdt/Leaflet.awesome-markers#~2.0.2:
+  version "0.0.0"
+  resolved "https://codeload.github.com/lvoogdt/Leaflet.awesome-markers/tar.gz/bfac1eb6f7896072d690bde57c1fb5002961a99a"
 
 leaflet@^1.0.0, leaflet@^1.0.1, leaflet@~1.2.0:
   version "1.2.0"
