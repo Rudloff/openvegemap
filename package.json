@@ -4,10 +4,20 @@
   "version": "0.4.3",
   "author": "Pierre Rudloff",
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
+  "dependencies": {
+    "@bower_components/Leaflet.awesome-markers": "lvoogdt/Leaflet.awesome-markers#~2.0.2",
+    "@bower_components/leaflet-loader": "stefanocudini/leaflet-loader#~0.0.1",
+    "jquery": "~2.1.4",
+    "leaflet": "~1.2.0",
+    "leaflet-control-geocoder": "~1.5.5",
+    "leaflet-info-control": "~0.2.0",
+    "leaflet-overpass-layer": "~2.7.0",
+    "leaflet-plugins": "~3.0.0",
+    "onsenui": "~2.5.2",
+    "opening_hours": "~3.5.0"
+  },
   "devDependencies": {
-    "bower": "^1.8.2",
     "grunt": "~1.0.1",
-    "grunt-bower-concat": "~1.0.0",
     "grunt-contrib-csslint": "~2.0.0",
     "grunt-contrib-cssmin": "^2.2.1",
     "grunt-contrib-imagemin": "~1.0.1",
@@ -18,6 +28,9 @@
     "grunt-jsonlint": "~1.1.0",
     "grunt-shipit": "^1.0.1",
     "shipit-git-update": "~0.1.0"
+  },
+  "engines": {
+    "yarn": ">= 1.0.0"
   },
   "homepage": "https://github.com/Rudloff/openvegemap",
   "keywords": [
