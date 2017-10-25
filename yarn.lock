@@ -2,10 +2,6 @@
 # yarn lockfile v1
 
 
-"@bower_components/leaflet-loader@stefanocudini/leaflet-loader#~0.0.1":
-  version "0.0.0"
-  resolved "https://codeload.github.com/stefanocudini/leaflet-loader/tar.gz/1fd10fd8c65da92b0ada8555339391862a2edfd1"
-
 "@onsenui/custom-elements@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@onsenui/custom-elements/-/custom-elements-1.0.0.tgz#8e2b5c8968b8d94da70c6e92ecc56b47f79a0ff3"
@@ -1625,6 +1621,10 @@ leaflet-info-control@~0.2.0:
   resolved "https://registry.yarnpkg.com/leaflet-info-control/-/leaflet-info-control-0.2.1.tgz#f163282b98e5e84ad9e8bb242b4d1eba5eec2262"
   dependencies:
     leaflet "^1.0.0"
+
+leaflet-loader@~0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/leaflet-loader/-/leaflet-loader-0.0.1.tgz#39792e0b56f7ed74c9e0d9edde28d1c0bd347595"
 
 leaflet-overpass-layer@~2.7.0:
   version "2.7.0"

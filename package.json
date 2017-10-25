@@ -5,13 +5,13 @@
   "author": "Pierre Rudloff",
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "dependencies": {
-    "leaflet.awesome-markers": "lvoogdt/Leaflet.awesome-markers#~2.0.2",
-    "@bower_components/leaflet-loader": "stefanocudini/leaflet-loader#~0.0.1",
     "leaflet": "~1.2.0",
     "leaflet-control-geocoder": "~1.5.5",
     "leaflet-info-control": "~0.2.0",
+    "leaflet-loader": "~0.0.1",
     "leaflet-overpass-layer": "~2.7.0",
     "leaflet-plugins": "~3.0.0",
+    "leaflet.awesome-markers": "lvoogdt/Leaflet.awesome-markers#~2.0.2",
     "onsenui": "~2.5.2",
     "opening_hours": "~3.5.0"
   },
