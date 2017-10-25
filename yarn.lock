@@ -2039,9 +2039,9 @@ onetime@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/onetime/-/onetime-1.1.0.tgz#a1f7838f8314c516f05ecefcbc4ccfe04b4ed789"
 
-onsenui@~2.5.2:
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/onsenui/-/onsenui-2.5.3.tgz#9c246b6de0b31eb4fdbc8da0c2fdddbcfbdb590e"
+onsenui@~2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/onsenui/-/onsenui-2.7.0.tgz#272b296d0e8d1501cbab0382a994036101551b9f"
   dependencies:
     "@onsenui/custom-elements" "1.0.0"
     core-js "2.4.1"
