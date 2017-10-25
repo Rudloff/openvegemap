@@ -538,6 +538,10 @@ download@^4.0.0, download@^4.1.2:
     vinyl-fs "^2.2.0"
     ware "^1.2.0"
 
+drmonty-leaflet-awesome-markers@~2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/drmonty-leaflet-awesome-markers/-/drmonty-leaflet-awesome-markers-2.0.2.tgz#8d5ba66b74b33e0a695390a7fde7192fe6976dee"
+
 duplexer2@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/duplexer2/-/duplexer2-0.0.2.tgz#c614dcf67e2fb14995a91711e5a617e8a60a31db"
@@ -1636,10 +1640,6 @@ leaflet-overpass-layer@~2.7.0:
 leaflet-plugins@~3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/leaflet-plugins/-/leaflet-plugins-3.0.1.tgz#aa0c29e3cf71de33784efaa02de177a246dd53b1"
-
-leaflet.awesome-markers@lvoogdt/Leaflet.awesome-markers#~2.0.2:
-  version "0.0.0"
-  resolved "https://codeload.github.com/lvoogdt/Leaflet.awesome-markers/tar.gz/bfac1eb6f7896072d690bde57c1fb5002961a99a"
 
 leaflet@^1.0.0, leaflet@^1.0.1, leaflet@~1.2.0:
   version "1.2.0"
