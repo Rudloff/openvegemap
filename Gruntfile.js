@@ -62,17 +62,6 @@ module.exports = function (grunt) {
                     servers: 'pierre@dev.rudloff.pro',
                     postUpdateCmd: 'yarn install; ./node_modules/.bin/grunt'
                 }
-            },
-            imagemin: {
-                dependencies: {
-                    files: {
-                        'dist/images/leaflet-loader.gif': 'node_modules/@bower_components/leaflet-loader/images/leaflet-loader.gif',
-                        'dist/images/markers-shadow.png': 'node_modules/@bower_components/Leaflet.awesome-markers/dist/images/markers-shadow.png',
-                        'dist/images/markers-shadow@2x.png': 'node_modules/@bower_components/Leaflet.awesome-markers/dist/images/markers-shadow@2x.png',
-                        'dist/images/markers-soft.png': 'node_modules/@bower_components/Leaflet.awesome-markers/dist/images/markers-soft.png',
-                        'dist/images/markers-soft@2x.png': 'node_modules/@bower_components/Leaflet.awesome-markers/dist/images/markers-soft@2x.png'
-                    }
-                }
             }
         }
     );
@@ -86,9 +75,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-shipit');
     grunt.loadNpmTasks('shipit-git-update');
     grunt.loadNpmTasks('grunt-contrib-csslint');
-    grunt.loadNpmTasks('grunt-contrib-imagemin');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
-    grunt.registerTask('default', ['uglify', 'cssmin', 'imagemin']);
+    grunt.registerTask('default', ['uglify', 'cssmin']);
     grunt.registerTask('prod', ['shipit:prod', 'update']);
 };
