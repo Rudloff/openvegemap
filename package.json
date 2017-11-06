@@ -10,7 +10,7 @@
     "leaflet-control-geocoder": "~1.5.5",
     "leaflet-info-control": "~0.2.0",
     "leaflet-loader": "~0.0.1",
-    "leaflet-overpass-layer": "~2.7.0",
+    "leaflet-overpass-layer": "~2.8.0",
     "leaflet-plugins": "~3.0.0",
     "onsenui": "~2.7.0",
     "opening_hours": "~3.5.0"

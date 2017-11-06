@@ -928,18 +928,18 @@ leaflet-loader@~0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/leaflet-loader/-/leaflet-loader-0.0.1.tgz#39792e0b56f7ed74c9e0d9edde28d1c0bd347595"
 
-leaflet-overpass-layer@~2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/leaflet-overpass-layer/-/leaflet-overpass-layer-2.7.0.tgz#8a9d5d18f1f8389721e60bbec38fa7f1f91a4cd3"
+leaflet-overpass-layer@~2.8.0:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/leaflet-overpass-layer/-/leaflet-overpass-layer-2.8.0.tgz#4658d5da5d5e0151a74bdd3a8f4fd678cb2cfbfe"
   dependencies:
     js-clipper "^1.0.1"
-    leaflet "^1.0.1"
+    leaflet "^1.2.0"
 
 leaflet-plugins@~3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/leaflet-plugins/-/leaflet-plugins-3.0.1.tgz#aa0c29e3cf71de33784efaa02de177a246dd53b1"
 
-leaflet@^1.0.0, leaflet@^1.0.1, leaflet@~1.2.0:
+leaflet@^1.0.0, leaflet@^1.2.0, leaflet@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.2.0.tgz#fd5d93d9cb00091f5f8a69206d0d6744c1c82697"
 
