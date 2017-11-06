@@ -4,10 +4,21 @@
         <meta charset="UTF-8" />
         <title>OpenVegeMap</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
-        <link rel="stylesheet" href="dist/bower.css" />
-        <link rel="stylesheet" href="bower_components/onsenui/css/onsenui.css"/>
-        <link rel="stylesheet" href="bower_components/onsenui/css/onsen-css-components.min.css"/>
-        <script src="dist/bower.js"></script>
+        <link rel="stylesheet" href="node_modules/leaflet/dist/leaflet.css"/>
+        <link rel="stylesheet" href="node_modules/onsenui/css/onsenui.min.css"/>
+        <link rel="stylesheet" href="node_modules/onsenui/css/onsen-css-components.min.css"/>
+        <link rel="stylesheet" href="node_modules/leaflet-loader/leaflet-loader.css"/>
+        <link rel="stylesheet" href="node_modules/drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css"/>
+        <link rel="stylesheet" href="node_modules/leaflet-control-geocoder/dist/Control.Geocoder.css"/>
+        <script src="node_modules/leaflet/dist/leaflet.js"></script>
+        <script src="node_modules/onsenui/js/onsenui.min.js"></script>
+        <script src="node_modules/leaflet-loader/leaflet-loader.js"></script>
+        <script src="node_modules/leaflet-plugins/control/Permalink.js"></script>
+        <script src="node_modules/leaflet-info-control/InfoControl.js"></script>
+        <script src="node_modules/leaflet-overpass-layer/dist/OverPassLayer.bundle.js"></script>
+        <script src="node_modules/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+        <script src="node_modules/drmonty-leaflet-awesome-markers/js/leaflet.awesome-markers.min.js"></script>
+        <script src="node_modules/opening_hours/opening_hours.js"></script>
         <script src="dist/map.js"></script>
         <link rel="stylesheet" href="dist/map.css" />
         <link rel="manifest" href="manifest.json" />
@@ -38,6 +49,12 @@
                                 <ons-icon icon="fa-map-marker" fixed-width></ons-icon>
                             </div>
                             <div class="center">Locate me</div>
+                        </ons-list-item>
+                        <ons-list-item tappable id="preferencesMenuItem">
+                            <div class="left">
+                                <ons-icon icon="fa-cog" fixed-width></ons-icon>
+                            </div>
+                            <div class="center">Preferences</div>
                         </ons-list-item>
                         <a href="https://editor.openvegemap.netlib.re/" target="_blank">
                             <ons-list-item tappable>
