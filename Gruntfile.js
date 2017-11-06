@@ -60,7 +60,7 @@ module.exports = function (grunt) {
                 prod: {
                     deployTo: '/var/www/openvegemap/',
                     servers: 'pierre@dev.rudloff.pro',
-                    postUpdateCmd: 'yarn install; ./node_modules/.bin/grunt'
+                    postUpdateCmd: 'yarn install; grunt'
                 }
             }
         }
