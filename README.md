@@ -8,7 +8,6 @@ Find vegetarian and vegan restaurants in your city
 
 ```bash
 yarn install
-grunt
 ```
 
 ## Android app

@@ -1,25 +1,25 @@
 {
   "name": "openvegemap",
   "description": "Find vegetarian and vegan restaurants in your city",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "author": "Pierre Rudloff",
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "dependencies": {
     "drmonty-leaflet-awesome-markers": "~2.0.2",
+    "grunt": "~1.0.1",
+    "grunt-contrib-cssmin": "^2.2.1",
+    "grunt-contrib-uglify": "~3.1.0",
     "leaflet": "~1.2.0",
     "leaflet-control-geocoder": "~1.5.5",
     "leaflet-info-control": "~0.2.0",
     "leaflet-loader": "~0.0.1",
-    "leaflet-overpass-layer": "~2.7.0",
+    "leaflet-overpass-layer": "~2.8.0",
     "leaflet-plugins": "~3.0.0",
     "onsenui": "~2.7.0",
     "opening_hours": "~3.5.0"
   },
   "devDependencies": {
-    "grunt": "~1.0.1",
     "grunt-contrib-csslint": "~2.0.0",
-    "grunt-contrib-cssmin": "^2.2.1",
-    "grunt-contrib-uglify": "~3.1.0",
     "grunt-contrib-watch": "~1.0.0",
     "grunt-fixpack": "~0.1.0",
     "grunt-jslint": "^1.2.0",
@@ -40,5 +40,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Rudloff/openvegemap.git"
+  },
+  "scripts": {
+    "postinstall": "grunt"
   }
 }
