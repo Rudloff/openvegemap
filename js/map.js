@@ -1,5 +1,4 @@
-/*jslint browser: true, this: true*/
-/*global L, InfoControl, ons, window*/
+/*jslint browser: true, this: true, es6: true, node: true*/
 /*property
     AwesomeMarkers, Control, DomEvent, DomUtil, Geocoder, Nominatim,
     OverPassLayer, Permalink, UrlUtil, _alts, _container, _errorElement,
@@ -23,6 +22,19 @@
     toLocaleDateString, weekday, getTime, stringify, parse,
     google, openroute, graphhopper, value, keys, preferencesDialog
 */
+
+import ons from 'onsenui';
+import L from 'leaflet';
+import opening_hours from 'opening_hours';
+require('leaflet-loader/leaflet-loader.js');
+require('leaflet-plugins/control/Permalink.js');
+require('leaflet-overpass-layer/dist/OverPassLayer.bundle.js');
+require('leaflet-control-geocoder');
+require('drmonty-leaflet-awesome-markers');
+var InfoControl = require("exports-loader?InfoControl!leaflet-info-control/InfoControl.js");
+
+require('./oldbrowser.js');
+
 var openvegemap = (function () {
     'use strict';
 
@@ -76,7 +88,7 @@ var openvegemap = (function () {
     }
 
     function getOpeningHoursBtn(value) {
-        var oh = new window.opening_hours(value, null);
+        var oh = new opening_hours(value, null);
         return '<ons-list-item id="hoursBtn" tappable modifier="chevron"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
     }
 
@@ -116,7 +128,7 @@ var openvegemap = (function () {
     }
 
     function getOpeningHoursTable(value) {
-        var oh = new window.opening_hours(value, null),
+        var oh = new opening_hours(value, null),
             it = oh.getIterator(),
             table = '',
             // We use a fake date to start a monday
@@ -191,7 +203,7 @@ var openvegemap = (function () {
     }
 
     function getRoutingUrl(lat, lon) {
-        var url = window.localStorage.getItem('routing-provider');
+        var url = localStorage.getItem('routing-provider');
         if (!url) {
             url = routingProviders.google;
         }
@@ -399,13 +411,13 @@ var openvegemap = (function () {
             }
         });
         activeFilters.forEach(setFilter);
-        window.localStorage.setItem('filters', JSON.stringify(activeFilters));
+        localStorage.setItem('filters', JSON.stringify(activeFilters));
         dialogs.filtersDialog.hide();
         menu.close();
     }
 
     function getCurFilter() {
-        var curFilters = JSON.parse(window.localStorage.getItem('filters'));
+        var curFilters = JSON.parse(localStorage.getItem('filters'));
         if (!curFilters) {
             curFilters = ['vegan', 'vegan-only', 'vegetarian', 'vegetarian-only'];
         }
@@ -473,7 +485,7 @@ var openvegemap = (function () {
             return false;
         });
 
-        window.localStorage.setItem('routing-provider', curProvider);
+        localStorage.setItem('routing-provider', curProvider);
         dialogs.preferencesDialog.hide();
         menu.close();
     }
@@ -483,7 +495,7 @@ var openvegemap = (function () {
     }
 
     function preferencesDialogShow() {
-        var url = window.localStorage.getItem('routing-provider'),
+        var url = localStorage.getItem('routing-provider'),
             curProvider;
         Object.keys(routingProviders).some(function (provider) {
             if (url === routingProviders[provider]) {
@@ -543,7 +555,7 @@ var openvegemap = (function () {
         //Permalink
         if (L.UrlUtil.queryParse(hash).lat) {
             //Don't use localStorage value if we have a hash in the URL
-            window.localStorage.setItem('paramsTemp', hash);
+            localStorage.setItem('paramsTemp', hash);
         }
         map.addControl(new L.Control.Permalink({useLocation: true, useLocalStorage: true}));
 

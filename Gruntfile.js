@@ -4,8 +4,8 @@ module.exports = function (grunt) {
     grunt.initConfig(
         {
             jslint: {
-                Gruntfile: {
-                    src: ['Gruntfile.js']
+                meta: {
+                    src: ['*.js']
                 },
                 js: {
                     src: 'js/*.js'
@@ -27,16 +27,6 @@ module.exports = function (grunt) {
             fixpack: {
                 package: {
                     src: 'package.json'
-                }
-            },
-            uglify: {
-                js: {
-                    files: {
-                        'dist/map.js': ['js/oldbrowser.js', 'js/map.js']
-                    },
-                    options: {
-                        sourceMap: true
-                    }
                 }
             },
             cssmin: {
@@ -70,7 +60,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-jsonlint');
     grunt.loadNpmTasks('grunt-fixpack');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-shipit');
@@ -78,6 +67,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-csslint');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
-    grunt.registerTask('default', ['uglify', 'cssmin']);
+    grunt.registerTask('default', ['cssmin']);
     grunt.registerTask('prod', ['shipit:prod', 'update']);
 };

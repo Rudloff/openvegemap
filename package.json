@@ -6,10 +6,11 @@
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "dependencies": {
     "drmonty-leaflet-awesome-markers": "~2.0.2",
+    "exports-loader": "~0.6.4",
     "grunt": "~1.0.1",
-    "grunt-contrib-cssmin": "^2.2.1",
-    "grunt-contrib-uglify": "~3.1.0",
-    "grunt-loadnpmtasks": "^0.3.4",
+    "grunt-contrib-cssmin": "~2.2.1",
+    "grunt-loadnpmtasks": "~0.3.4",
+    "i18next-client": "~1.11.4",
     "leaflet": "~1.2.0",
     "leaflet-control-geocoder": "~1.5.5",
     "leaflet-info-control": "~0.2.0",
@@ -17,7 +18,8 @@
     "leaflet-overpass-layer": "~2.8.0",
     "leaflet-plugins": "~3.0.0",
     "onsenui": "~2.8.0",
-    "opening_hours": "~3.5.0"
+    "opening_hours": "~3.5.0",
+    "webpack": "~3.8.1"
   },
   "devDependencies": {
     "grunt-contrib-csslint": "~2.0.0",
@@ -43,6 +45,6 @@
     "url": "https://github.com/Rudloff/openvegemap.git"
   },
   "scripts": {
-    "postinstall": "grunt"
+    "postinstall": "grunt; webpack"
   }
 }
