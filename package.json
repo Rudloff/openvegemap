@@ -16,7 +16,7 @@
     "leaflet-loader": "~0.0.1",
     "leaflet-overpass-layer": "~2.8.0",
     "leaflet-plugins": "~3.0.0",
-    "onsenui": "~2.7.0",
+    "onsenui": "~2.8.0",
     "opening_hours": "~3.5.0"
   },
   "devDependencies": {
