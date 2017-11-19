@@ -1,4 +1,5 @@
-/*jslint browser: true, this: true, es6: true, node: true*/
+/*jslint browser: true, this: true, node: true*/
+/*global window*/
 /*property
     AwesomeMarkers, Control, DomEvent, DomUtil, Geocoder, Nominatim,
     OverPassLayer, Permalink, UrlUtil, _alts, _container, _errorElement,
@@ -23,9 +24,13 @@
     google, openroute, graphhopper, value, keys, preferencesDialog
 */
 
-import ons from 'onsenui';
-import L from 'leaflet';
-import opening_hours from 'opening_hours';
+if (typeof window !== 'object') {
+    throw 'OpenVegeMap must be used in a browser';
+}
+
+var ons = require('onsenui');
+var L = require('leaflet');
+var opening_hours = require('opening_hours');
 require('leaflet-loader/leaflet-loader.js');
 require('leaflet-plugins/control/Permalink.js');
 require('leaflet-overpass-layer/dist/OverPassLayer.bundle.js');

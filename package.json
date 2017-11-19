@@ -42,7 +42,7 @@
     "openstreemap"
   ],
   "license": "GPL-3.0",
-  "main": "index.html",
+  "main": "dist/bundle.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Rudloff/openvegemap.git"
