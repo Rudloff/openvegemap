@@ -614,6 +614,12 @@ deep-extend@~0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
 
+deep-for-each@^1.0.5:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/deep-for-each/-/deep-for-each-1.0.6.tgz#afa0ce249c58492a9720539478a18d37e1b10bae"
+  dependencies:
+    is-plain-object "^2.0.1"
+
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
@@ -1192,7 +1198,7 @@ grunt-fixpack@~0.1.0:
   dependencies:
     fixpack "~2.3.0"
 
-grunt-jslint@^1.2.0:
+grunt-jslint@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/grunt-jslint/-/grunt-jslint-1.2.0.tgz#69474ca679aa20d75975917d504765078e010108"
   dependencies:
@@ -1242,11 +1248,18 @@ grunt-loadnpmtasks@~0.3.4:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/grunt-loadnpmtasks/-/grunt-loadnpmtasks-0.3.4.tgz#e7c91eafcc939f658ea9efa3b3424f8cdeb4e59b"
 
-grunt-shipit@^1.0.1:
+grunt-shipit@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/grunt-shipit/-/grunt-shipit-1.0.1.tgz#f2abccd815d884c5c4a34a0a74c97e680ff6e9c5"
   dependencies:
     shipit-cli "^1.0.1"
+
+grunt-webpack@~3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/grunt-webpack/-/grunt-webpack-3.0.2.tgz#bcfdea313d431e79b6fc18c42040b48dfac9d32f"
+  dependencies:
+    deep-for-each "^1.0.5"
+    lodash "^4.7.0"
 
 grunt@~1.0.1:
   version "1.0.1"
@@ -1514,7 +1527,7 @@ is-number@^3.0.0:
   dependencies:
     kind-of "^3.0.2"
 
-is-plain-object@^2.0.3:
+is-plain-object@^2.0.1, is-plain-object@^2.0.3:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-2.0.4.tgz#2c163b3fafb1b606d9d17928f05c2a1c38e07677"
   dependencies:
@@ -1771,7 +1784,7 @@ lodash@^3.10.1, lodash@^3.5.0, lodash@~3.10.1:
   version "3.10.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
-lodash@^4.14.0, lodash@^4.6.1, lodash@^4.8.2, lodash@~4.17.4:
+lodash@^4.14.0, lodash@^4.6.1, lodash@^4.7.0, lodash@^4.8.2, lodash@~4.17.4:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 

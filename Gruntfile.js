@@ -52,6 +52,9 @@ module.exports = function (grunt) {
                     servers: 'pierre@dev.rudloff.pro',
                     postUpdateCmd: 'yarn install --prod'
                 }
+            },
+            webpack: {
+                build: require('./webpack.config.js')
             }
         }
     );
@@ -65,8 +68,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-shipit');
     grunt.loadNpmTasks('shipit-git-update');
     grunt.loadNpmTasks('grunt-contrib-csslint');
+    grunt.loadNpmTasks('grunt-webpack');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
-    grunt.registerTask('default', ['cssmin']);
+    grunt.registerTask('default', ['cssmin', 'webpack']);
     grunt.registerTask('prod', ['shipit:prod', 'update']);
 };
