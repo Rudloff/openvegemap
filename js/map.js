@@ -33,6 +33,15 @@ require('leaflet-control-geocoder');
 require('drmonty-leaflet-awesome-markers');
 var InfoControl = require("exports-loader?InfoControl!leaflet-info-control/InfoControl.js");
 
+//CSS
+require('leaflet/dist/leaflet.css');
+require('onsenui/css/onsenui-core.css');
+require('onsenui/css/onsen-css-components.css');
+require('onsenui/css/font_awesome/css/font-awesome.css');
+require('leaflet-loader/leaflet-loader.css');
+require('drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css');
+require('leaflet-control-geocoder/dist/Control.Geocoder.css');
+
 require('./oldbrowser.js');
 
 var openvegemap = (function () {

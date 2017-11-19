@@ -29,21 +29,14 @@ module.exports = function (grunt) {
                     src: 'package.json'
                 }
             },
-            cssmin: {
-                css: {
-                    files: {
-                        'dist/map.css': 'css/map.css'
-                    }
-                }
-            },
             watch: {
                 js: {
                     files: ['js/*.js'],
-                    tasks: ['uglify:js']
+                    tasks: ['webpack']
                 },
                 css: {
                     files: ['css/*.css'],
-                    tasks: ['cssmin:css']
+                    tasks: ['webpack']
                 }
             },
             shipit: {
@@ -63,7 +56,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-jsonlint');
     grunt.loadNpmTasks('grunt-fixpack');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-shipit');
     grunt.loadNpmTasks('shipit-git-update');
@@ -71,6 +63,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-webpack');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
-    grunt.registerTask('default', ['cssmin', 'webpack']);
+    grunt.registerTask('default', ['webpack']);
     grunt.registerTask('prod', ['shipit:prod', 'update']);
 };

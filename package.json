@@ -5,10 +5,11 @@
   "author": "Pierre Rudloff",
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "dependencies": {
+    "css-loader": "~0.28.7",
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "exports-loader": "~0.6.4",
+    "file-loader": "~1.1.5",
     "grunt": "~1.0.1",
-    "grunt-contrib-cssmin": "~2.2.1",
     "grunt-loadnpmtasks": "~0.3.4",
     "grunt-webpack": "~3.0.2",
     "i18next-client": "~1.11.4",
@@ -20,6 +21,7 @@
     "leaflet-plugins": "~3.0.0",
     "onsenui": "~2.8.0",
     "opening_hours": "~3.5.0",
+    "style-loader": "~0.19.0",
     "webpack": "~3.8.1"
   },
   "devDependencies": {
