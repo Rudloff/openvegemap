@@ -45,6 +45,6 @@
     "url": "https://github.com/Rudloff/openvegemap.git"
   },
   "scripts": {
-    "postinstall": "grunt; webpack"
+    "postinstall": "grunt; webpack --optimize-minimize"
   }
 }
