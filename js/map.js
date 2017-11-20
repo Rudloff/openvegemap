@@ -31,7 +31,7 @@ if (typeof window !== 'object') {
 
 var ons = require('onsenui');
 var L = require('leaflet');
-var opening_hours = require('opening_hours');
+var OH = require('opening_hours');
 require('leaflet-loader/leaflet-loader.js');
 require('leaflet-plugins/control/Permalink.js');
 require('leaflet-overpass-layer/dist/OverPassLayer.bundle.js');
@@ -103,7 +103,7 @@ var openvegemap = (function () {
     }
 
     function getOpeningHoursBtn(value) {
-        var oh = new opening_hours(value, null);
+        var oh = new OH(value, null);
         return '<ons-list-item id="hoursBtn" tappable modifier="chevron"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
     }
 
@@ -143,7 +143,7 @@ var openvegemap = (function () {
     }
 
     function getOpeningHoursTable(value) {
-        var oh = new opening_hours(value, null),
+        var oh = new OH(value, null),
             it = oh.getIterator(),
             table = '',
             // We use a fake date to start a monday
