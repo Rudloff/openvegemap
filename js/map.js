@@ -1,5 +1,5 @@
 /*jslint browser: true, this: true, node: true*/
-/*global window*/
+/*global window, localStorage*/
 /*property
     AwesomeMarkers, Control, DomEvent, DomUtil, Geocoder, Nominatim,
     OverPassLayer, Permalink, UrlUtil, _alts, _container, _errorElement,
