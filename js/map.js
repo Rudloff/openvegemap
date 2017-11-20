@@ -21,7 +21,8 @@
     then, tileLayer, toString, type, useLocalStorage, useLocation, vegan,
     vegetarian, website, zoom, zoomToast,
     toLocaleDateString, weekday, getTime, stringify, parse,
-    google, openroute, graphhopper, value, keys, preferencesDialog
+    google, openroute, graphhopper, value, keys, preferencesDialog,
+    InfoControl
 */
 
 if (typeof window !== 'object') {
@@ -36,7 +37,7 @@ require('leaflet-plugins/control/Permalink.js');
 require('leaflet-overpass-layer/dist/OverPassLayer.bundle.js');
 require('leaflet-control-geocoder');
 require('drmonty-leaflet-awesome-markers');
-var InfoControl = require("exports-loader?InfoControl!leaflet-info-control/InfoControl.js");
+require('leaflet-info-control');
 
 //CSS
 require('leaflet/dist/leaflet.css');
@@ -575,7 +576,7 @@ var openvegemap = (function () {
 
         //Legend
         map.addControl(
-            new InfoControl(
+            new L.Control.InfoControl(
                 {
                     position: 'bottomright',
                     content: '<i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan<br/>'

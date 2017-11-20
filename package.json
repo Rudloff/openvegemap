@@ -7,7 +7,6 @@
   "dependencies": {
     "css-loader": "~0.28.7",
     "drmonty-leaflet-awesome-markers": "~2.0.2",
-    "exports-loader": "~0.6.4",
     "file-loader": "~1.1.5",
     "grunt": "~1.0.1",
     "grunt-loadnpmtasks": "~0.3.4",
@@ -15,7 +14,7 @@
     "i18next-client": "~1.11.4",
     "leaflet": "~1.2.0",
     "leaflet-control-geocoder": "~1.5.5",
-    "leaflet-info-control": "~0.2.0",
+    "leaflet-info-control": "~0.3.0",
     "leaflet-loader": "~0.0.1",
     "leaflet-overpass-layer": "~2.8.0",
     "leaflet-plugins": "~3.0.0",
