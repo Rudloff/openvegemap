@@ -26,7 +26,7 @@
 */
 
 if (typeof window !== 'object') {
-    throw 'OpenVegeMap must be used in a browser';
+    throw 'OpenVegeMap must be used in a browser.';
 }
 
 var ons = require('onsenui');
