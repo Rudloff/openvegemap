@@ -4,8 +4,8 @@ module.exports = function (grunt) {
     grunt.initConfig(
         {
             jslint: {
-                Gruntfile: {
-                    src: ['Gruntfile.js']
+                meta: {
+                    src: ['*.js']
                 },
                 js: {
                     src: 'js/*.js'
@@ -29,39 +29,25 @@ module.exports = function (grunt) {
                     src: 'package.json'
                 }
             },
-            uglify: {
-                js: {
-                    files: {
-                        'dist/map.js': ['js/oldbrowser.js', 'js/map.js']
-                    },
-                    options: {
-                        sourceMap: true
-                    }
-                }
-            },
-            cssmin: {
-                css: {
-                    files: {
-                        'dist/map.css': 'css/map.css'
-                    }
-                }
-            },
             watch: {
                 js: {
                     files: ['js/*.js'],
-                    tasks: ['uglify:js']
+                    tasks: ['webpack']
                 },
                 css: {
                     files: ['css/*.css'],
-                    tasks: ['cssmin:css']
+                    tasks: ['webpack']
                 }
             },
             shipit: {
                 prod: {
                     deployTo: '/var/www/openvegemap/',
                     servers: 'pierre@dev.rudloff.pro',
-                    postUpdateCmd: 'yarn install --prod; grunt'
+                    postUpdateCmd: 'yarn install --prod'
                 }
+            },
+            webpack: {
+                build: require('./webpack.config.js')
             }
         }
     );
@@ -70,14 +56,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-jsonlint');
     grunt.loadNpmTasks('grunt-fixpack');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-shipit');
     grunt.loadNpmTasks('shipit-git-update');
     grunt.loadNpmTasks('grunt-contrib-csslint');
+    grunt.loadNpmTasks('grunt-webpack');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
-    grunt.registerTask('default', ['uglify', 'cssmin']);
+    grunt.registerTask('default', ['webpack']);
     grunt.registerTask('prod', ['shipit:prod', 'update']);
 };
