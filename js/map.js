@@ -22,12 +22,16 @@
     vegetarian, website, zoom, zoomToast,
     toLocaleDateString, weekday, getTime, stringify, parse,
     google, openroute, graphhopper, value, keys, preferencesDialog,
-    InfoControl
+    InfoControl, shim
 */
 
 if (typeof window !== 'object') {
     throw 'OpenVegeMap must be used in a browser.';
 }
+
+//Polyfills
+var padStart = require('string.prototype.padstart');
+padStart.shim();
 
 var ons = require('onsenui');
 var L = require('leaflet');
