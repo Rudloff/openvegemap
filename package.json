@@ -22,7 +22,7 @@
     "opening_hours": "~3.5.0",
     "string.prototype.padstart": "~3.0.0",
     "style-loader": "~0.19.0",
-    "webpack": "~3.8.1"
+    "webpack": "~3.10.0"
   },
   "devDependencies": {
     "grunt-contrib-csslint": "~2.0.0",
