@@ -33,9 +33,9 @@ if (typeof window !== 'object') {
 var padStart = require('string.prototype.padstart');
 padStart.shim();
 
-var ons = require('onsenui');
-var L = require('leaflet');
-var OH = require('opening_hours');
+var ons = require('onsenui'),
+    L = require('leaflet'),
+    OH = require('opening_hours');
 require('leaflet-loader/leaflet-loader.js');
 require('leaflet-plugins/control/Permalink.js');
 require('leaflet-overpass-layer/dist/OverPassLayer.bundle.js');
