@@ -8,9 +8,6 @@
     "css-loader": "~0.28.7",
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "file-loader": "~1.1.5",
-    "grunt": "~1.0.1",
-    "grunt-loadnpmtasks": "~0.3.4",
-    "grunt-webpack": "~3.0.2",
     "i18next-client": "~1.11.4",
     "leaflet": "~1.2.0",
     "leaflet-control-geocoder": "~1.5.5",
@@ -25,12 +22,14 @@
     "webpack": "~3.10.0"
   },
   "devDependencies": {
+    "grunt": "~1.0.1",
     "grunt-contrib-csslint": "~2.0.0",
     "grunt-contrib-watch": "~1.0.0",
     "grunt-fixpack": "~0.1.0",
     "grunt-jslint": "~1.2.0",
     "grunt-jsonlint": "~1.1.0",
     "grunt-shipit": "~1.0.1",
+    "grunt-webpack": "~3.0.2",
     "shipit-git-update": "~0.1.0"
   },
   "engines": {
@@ -48,6 +47,6 @@
     "url": "https://github.com/Rudloff/openvegemap.git"
   },
   "scripts": {
-    "postinstall": "grunt"
+    "postinstall": "webpack"
   }
 }
