@@ -23,13 +23,13 @@
             <ons-splitter-side id="menu" side="left" width="220px" collapse>
                 <ons-page>
                     <ons-list>
-                        <ons-list-item tappable id="geocodeMenuItem">
+                        <ons-list-item tappable id="geocodeMenuItem" data-dialog="geocodeDialog">
                             <div class="left">
                                 <ons-icon icon="fa-search" fixed-width></ons-icon>
                             </div>
                             <div class="center">Search</div>
                         </ons-list-item>
-                        <ons-list-item tappable id="filtersMenuItem">
+                        <ons-list-item tappable id="filtersMenuItem" data-dialog="filtersDialog">
                             <div class="left">
                                 <ons-icon icon="fa-filter" fixed-width></ons-icon>
                             </div>
@@ -41,7 +41,7 @@
                             </div>
                             <div class="center">Locate me</div>
                         </ons-list-item>
-                        <ons-list-item tappable id="preferencesMenuItem">
+                        <ons-list-item tappable id="preferencesMenuItem" data-dialog="preferencesDialog">
                             <div class="left">
                                 <ons-icon icon="fa-cog" fixed-width></ons-icon>
                             </div>
@@ -63,7 +63,7 @@
                                 <div class="center">Report a bug</div>
                             </ons-list-item>
                         </a>
-                        <ons-list-item tappable id="aboutMenuItem">
+                        <ons-list-item tappable id="aboutMenuItem" data-dialog="aboutDialog">
                             <div class="left">
                                 <ons-icon icon="fa-info" fixed-width></ons-icon>
                             </div>

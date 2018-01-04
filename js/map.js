@@ -1,4 +1,4 @@
-/*jslint browser: true, this: true, node: true*/
+/*jslint browser: true, node: true*/
 /*global window, localStorage*/
 /*property
     AwesomeMarkers, Control, DomEvent, DomUtil, Geocoder, Nominatim,
@@ -22,7 +22,7 @@
     vegetarian, website, zoom, zoomToast,
     toLocaleDateString, weekday, getTime, stringify, parse,
     google, openroute, graphhopper, value, keys, preferencesDialog,
-    InfoControl, shim
+    InfoControl, shim, currentTarget, dataset
 */
 
 if (typeof window !== 'object') {
@@ -108,7 +108,7 @@ var openvegemap = (function () {
 
     function getOpeningHoursBtn(value) {
         var oh = new OH(value, null);
-        return '<ons-list-item id="hoursBtn" tappable modifier="chevron"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
+        return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
     }
 
     function formatHour(date) {
@@ -189,10 +189,10 @@ var openvegemap = (function () {
         return table;
     }
 
-    function openDialog() {
-        dialogs[this.dialog].show(this.target);
-        if (dialogFunctions[this.dialog] && typeof dialogFunctions[this.dialog].show === 'function') {
-            dialogFunctions[this.dialog].show();
+    function openDialog(e) {
+        dialogs[e.currentTarget.dataset.dialog].show(e.currentTarget);
+        if (dialogFunctions[e.currentTarget.dataset.dialog] && typeof dialogFunctions[e.currentTarget.dataset.dialog].show === 'function') {
+            dialogFunctions[e.currentTarget.dataset.dialog].show();
         }
     }
 
@@ -252,7 +252,7 @@ var openvegemap = (function () {
         L.DomUtil.get('editLink').setAttribute('href', 'https://editor.openvegemap.netlib.re/' + e.target.feature.type + '/' + e.target.feature.id);
         if (e.target.feature.tags.opening_hours) {
             var hoursBtn = L.DomUtil.get('hoursBtn');
-            L.DomEvent.on(hoursBtn, 'click', openDialog, {dialog: 'hoursPopup', target: hoursBtn});
+            L.DomEvent.on(hoursBtn, 'click', openDialog);
         }
         L.DomUtil.get('mapPopup').show();
     }
@@ -558,11 +558,11 @@ var openvegemap = (function () {
 
         //Events
         L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
-        L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog, {dialog: 'geocodeDialog'});
-        L.DomEvent.on(L.DomUtil.get('filtersMenuItem'), 'click', openDialog, {dialog: 'filtersDialog'});
-        L.DomEvent.on(L.DomUtil.get('preferencesMenuItem'), 'click', openDialog, {dialog: 'preferencesDialog'});
+        L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog);
+        L.DomEvent.on(L.DomUtil.get('filtersMenuItem'), 'click', openDialog);
+        L.DomEvent.on(L.DomUtil.get('preferencesMenuItem'), 'click', openDialog);
         L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
-        L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog, {dialog: 'aboutDialog'});
+        L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog);
 
         //Tiles
         L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
