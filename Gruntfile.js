@@ -52,7 +52,6 @@ module.exports = function (grunt) {
         }
     );
 
-    require('grunt-loadnpmtasks').extend(grunt);
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-jsonlint');
     grunt.loadNpmTasks('grunt-fixpack');
