@@ -18,8 +18,21 @@
         <meta property="og:description" content="Find vegetarian and vegan restaurants in your city" />
     </head>
     <body>
-        <noscript><div>This application requires JavaScript, sorry ¯\_(ツ)_/¯</div></noscript>
         <ons-splitter>
+            <ons-splitter-content id="content">
+                <ons-page>
+                    <ons-toolbar>
+                        <div class="left">
+                            <ons-toolbar-button title="Menu" id="menuBtn">
+                                <ons-icon icon="fa-navicon"></ons-icon>
+                            </ons-toolbar-button>
+                        </div>
+                        <div class="center">OpenVegeMap</div>
+                    </ons-toolbar>
+                    <div id="map" class="map"></div>
+                </ons-page>
+            </ons-splitter-content>
+            <noscript><div>This application requires JavaScript, sorry ¯\_(ツ)_/¯</div></noscript>
             <ons-splitter-side id="menu" side="left" width="220px" collapse>
                 <ons-page>
                     <ons-list>
@@ -72,19 +85,6 @@
                     </ons-list>
                 </ons-page>
             </ons-splitter-side>
-            <ons-splitter-content id="content">
-                <ons-page>
-                    <ons-toolbar>
-                        <div class="left">
-                            <ons-toolbar-button title="Menu" id="menuBtn">
-                                <ons-icon icon="fa-navicon"></ons-icon>
-                            </ons-toolbar-button>
-                        </div>
-                        <div class="center">OpenVegeMap</div>
-                    </ons-toolbar>
-                    <div id="map" class="map"></div>
-                </ons-page>
-            </ons-splitter-content>
         </ons-splitter>
     </body>
 </html>
