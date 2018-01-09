@@ -22,6 +22,7 @@
     "webpack": "~3.10.0"
   },
   "devDependencies": {
+    "doxdox": "^2.0.3",
     "grunt": "~1.0.1",
     "grunt-contrib-csslint": "~2.0.0",
     "grunt-contrib-watch": "~1.0.0",
