@@ -4,11 +4,11 @@ module.exports = function (grunt) {
     grunt.initConfig(
         {
             jslint: {
-                meta: {
-                    src: ['*.js']
-                },
                 js: {
                     src: 'js/*.js'
+                },
+                meta: {
+                    src: ['*.js']
                 }
             },
             csslint: {

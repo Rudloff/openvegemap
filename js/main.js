@@ -22,7 +22,8 @@
     vegetarian, website, zoom, zoomToast,
     toLocaleDateString, weekday, getTime, stringify, parse,
     google, openroute, graphhopper, value, keys, preferencesDialog,
-    InfoControl, shim, currentTarget, dataset
+    InfoControl, shim, currentTarget, dataset,
+    getMarkerIcon, getColor, getLayer
 */
 
 if (typeof window !== 'object') {
@@ -53,6 +54,7 @@ require('drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css');
 require('leaflet-control-geocoder/dist/Control.Geocoder.css');
 
 require('./oldbrowser.js');
+var POI = require('./poi.js');
 
 var openvegemap = (function () {
     'use strict';
@@ -74,48 +76,6 @@ var openvegemap = (function () {
             graphhopper: 'https://graphhopper.com/maps/?point=&point={LAT},{LON}',
             openroute: 'https://openrouteservice.org/directions?a=null,null,{LAT},{LON}'
         };
-
-    /**
-     * Check if a POI is OK for the specified diet.
-     * @param  {string}  diet Diet (vegan, vegetarian)
-     * @param  {Object}  tags POI tags
-     * @return {Boolean}
-     */
-    function isDiet(diet, tags) {
-        var key = 'diet:' + diet;
-        if (tags[key] && (tags[key] === 'yes' || tags[key] === 'only')) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check if a POI is not OK for the specified diet.
-     * @param  {string}  diet Diet (vegan, vegetarian)
-     * @param  {Object}  tags POI tags
-     * @return {Boolean}
-     */
-    function isNotDiet(diet, tags) {
-        var key = 'diet:' + diet;
-        if (tags[key] && tags[key] === 'no') {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check if a POI serves only food intended for the specified diet.
-     * @param  {string}  diet Diet (vegan, vegetarian)
-     * @param  {Object}  tags POI tags
-     * @return {Boolean}
-     */
-    function isOnlyDiet(diet, tags) {
-        var key = 'diet:' + diet;
-        if (tags[key] && tags[key] === 'only') {
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Generate a row to display in a marker popup.
@@ -406,66 +366,6 @@ var openvegemap = (function () {
     }
 
     /**
-     * Get the map layer in which a POI should be added.
-     * @param  {Object} tags POI tags
-     * @return {Object} Layer
-     */
-    function getLayer(tags) {
-        if (isOnlyDiet('vegan', tags)) {
-            return layers['vegan-only'];
-        }
-        if (isDiet('vegan', tags)) {
-            return layers.vegan;
-        }
-        if (isOnlyDiet('vegetarian', tags)) {
-            return layers['vegetarian-only'];
-        }
-        if (isDiet('vegetarian', tags)) {
-            return layers.vegetarian;
-        }
-        return layers.other;
-    }
-
-    /**
-     * Get the correct icon for the marker of a POI.
-     * @param  {Object} tags POI tags
-     * @return {string} Font Awesome icon name
-     */
-    function getMarkerIcon(tags) {
-        if (isOnlyDiet('vegan', tags)) {
-            return 'dot-circle-o';
-        }
-        if (isDiet('vegan', tags)) {
-            return 'circle';
-        }
-        if (isDiet('vegetarian', tags)) {
-            return 'circle-o';
-        }
-        if (isNotDiet('vegetarian', tags)) {
-            return 'ban';
-        }
-        return 'question';
-    }
-
-    /**
-     * Get the correct color for the marker of a POI.
-     * @param  {Object} tags POI tags
-     * @return {string} Color name
-     */
-    function getColor(tags) {
-        if (isDiet('vegan', tags)) {
-            return 'green';
-        }
-        if (isDiet('vegetarian', tags)) {
-            return 'darkgreen';
-        }
-        if (isNotDiet('vegetarian', tags)) {
-            return 'red';
-        }
-        return 'gray';
-    }
-
-    /**
      * Add a marker to the map.
      * @param {Object} feature POI
      */
@@ -476,18 +376,19 @@ var openvegemap = (function () {
                 feature.lat = feature.center.lat;
                 feature.lon = feature.center.lon;
             }
-            var marker = L.marker([feature.lat, feature.lon]);
+            var poi = new POI(feature.tags),
+                marker = L.marker([feature.lat, feature.lon]);
             marker.feature = feature;
             marker.setIcon(L.AwesomeMarkers.icon({
-                icon: getMarkerIcon(feature.tags),
+                icon: poi.getMarkerIcon(),
                 prefix: 'fa',
-                markerColor: getColor(feature.tags)
+                markerColor: poi.getColor()
             }));
             marker.on('click', showPopup);
             if (feature.tags.name) {
                 marker.bindTooltip(getIcon(feature.tags) + '&nbsp;' + feature.tags.name, {direction: 'bottom'});
             }
-            marker.addTo(getLayer(feature.tags));
+            marker.addTo(layers[poi.getLayer()]);
         }
     }
 
