@@ -312,6 +312,7 @@ function openvegemapMain() {
 
     /**
      * Set the routing provider from the preferences.
+     * @return {Void}
      */
     function setRoutingProvider() {
         var curProvider = routingProviders.google;

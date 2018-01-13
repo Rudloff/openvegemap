@@ -1,5 +1,5 @@
 /*jslint browser: true, node: true*/
-/*global window*/
+/*global window, localStorage*/
 
 if (typeof window !== 'object') {
     throw 'OpenVegeMap must be used in a browser.';
@@ -43,6 +43,7 @@ function layers() {
     /**
      * Add a layer to the map.
      * @param {string} layerName Layer name
+     * @return {Void}
      */
     function setFilter(layerName) {
         layerObjects[layerName].addTo(map);
@@ -79,9 +80,9 @@ function layers() {
      * Add a marker to a layer
      * @param {Object} marker    Leaflet marker
      * @param {string} layerName Layer name
+     * @return {Void}
      */
     function addMarker(marker, layerName) {
-        console.log(marker);
         marker.addTo(layerObjects[layerName]);
     }
 
