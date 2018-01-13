@@ -23,7 +23,7 @@
     toLocaleDateString, weekday, getTime, stringify, parse,
     google, openroute, graphhopper, value, keys, preferencesDialog,
     InfoControl, shim, currentTarget, dataset,
-    getMarkerIcon, getColor, getLayer, getPopupRows
+    getMarkerIcon, getColor, getLayer, getPopupRows, getIcon
 */
 
 if (typeof window !== 'object') {
@@ -251,74 +251,6 @@ function openvegemapMain() {
     }
 
     /**
-     * Get the correct icon for a shop POI.
-     * @param  {Object} tags POI tags
-     * @return {string} Emoji
-     */
-    function getShopIcon(tags) {
-        switch (tags.shop) {
-        case 'bakery':
-            return '🥖';
-        default:
-            return '🛒';
-        }
-    }
-
-    /**
-     * Get the correct icon for a craft POI.
-     * @param  {Object} tags POI tags
-     * @return {string} Emoji
-     */
-    function getCraftIcon(tags) {
-        switch (tags.craft) {
-        case 'caterer':
-            return '🍴';
-        default:
-            return '';
-        }
-    }
-
-    /**
-     * Get the correct icon for an amenity POI.
-     * @param  {Object} tags POI tags
-     * @return {string} Emoji
-     */
-    function getAmenityIcon(tags) {
-        switch (tags.amenity) {
-        case 'fast_food':
-            return '🍔';
-        case 'restaurant':
-            return '🍴';
-        case 'cafe':
-            return '🍵';
-        case 'bar':
-            return '🍸';
-        case 'pub':
-            return '🍺';
-        default:
-            return '';
-        }
-    }
-
-    /**
-     * Get the correct icon for a POI.
-     * @param  {Object} tags POI tags
-     * @return {string} Emoji
-     */
-    function getIcon(tags) {
-        if (tags.shop) {
-            return getShopIcon(tags);
-        }
-        if (tags.craft) {
-            return getCraftIcon(tags);
-        }
-        if (tags.amenity) {
-            return getAmenityIcon(tags);
-        }
-        return '';
-    }
-
-    /**
      * Add a marker to the map.
      * @param {Object} feature POI
      */
@@ -339,7 +271,7 @@ function openvegemapMain() {
             }));
             marker.on('click', showPopup);
             if (feature.tags.name) {
-                marker.bindTooltip(getIcon(feature.tags) + '&nbsp;' + feature.tags.name, {direction: 'bottom'});
+                marker.bindTooltip(poi.getIcon() + '&nbsp;' + feature.tags.name, {direction: 'bottom'});
             }
             marker.addTo(layers[poi.getLayer()]);
         }

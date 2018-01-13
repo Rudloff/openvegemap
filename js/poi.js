@@ -106,10 +106,76 @@ function POI(tags) {
         return 'question';
     }
 
+
+    /**
+     * Get the correct icon for a shop POI.
+     * @return {string} Emoji
+     */
+    function getShopIcon() {
+        switch (tags.shop) {
+        case 'bakery':
+            return '🥖';
+        default:
+            return '🛒';
+        }
+    }
+
+    /**
+     * Get the correct icon for a craft POI.
+     * @return {string} Emoji
+     */
+    function getCraftIcon() {
+        switch (tags.craft) {
+        case 'caterer':
+            return '🍴';
+        default:
+            return '';
+        }
+    }
+
+    /**
+     * Get the correct icon for an amenity POI.
+     * @return {string} Emoji
+     */
+    function getAmenityIcon() {
+        switch (tags.amenity) {
+        case 'fast_food':
+            return '🍔';
+        case 'restaurant':
+            return '🍴';
+        case 'cafe':
+            return '🍵';
+        case 'bar':
+            return '🍸';
+        case 'pub':
+            return '🍺';
+        default:
+            return '';
+        }
+    }
+
+    /**
+     * Get the correct icon for a POI.
+     * @return {string} Emoji
+     */
+    function getIcon() {
+        if (tags.shop) {
+            return getShopIcon();
+        }
+        if (tags.craft) {
+            return getCraftIcon();
+        }
+        if (tags.amenity) {
+            return getAmenityIcon();
+        }
+        return '';
+    }
+
     return {
         getMarkerIcon: getMarkerIcon,
         getColor: getColor,
-        getLayer: getLayer
+        getLayer: getLayer,
+        getIcon: getIcon
     };
 }
 
