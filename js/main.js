@@ -23,7 +23,7 @@
     toLocaleDateString, weekday, getTime, stringify, parse,
     google, openroute, graphhopper, value, keys, preferencesDialog,
     InfoControl, shim, currentTarget, dataset,
-    getMarkerIcon, getColor, getLayer
+    getMarkerIcon, getColor, getLayer, getPopupRows
 */
 
 if (typeof window !== 'object') {
@@ -54,7 +54,8 @@ require('drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css');
 require('leaflet-control-geocoder/dist/Control.Geocoder.css');
 
 var oldbrowsers = require('./oldbrowser.js'),
-    POI = require('./poi.js');
+    POI = require('./poi.js'),
+    Popup = require('./popup.js');
 
 function openvegemapMain() {
     'use strict';
@@ -76,29 +77,6 @@ function openvegemapMain() {
             graphhopper: 'https://graphhopper.com/maps/?point=&point={LAT},{LON}',
             openroute: 'https://openrouteservice.org/directions?a=null,null,{LAT},{LON}'
         };
-
-    /**
-     * Generate a row to display in a marker popup.
-     * @param  {string} name  Name of the property
-     * @param  {string} value Value of the property
-     * @return {string} ons-list-item element
-     */
-    function getPropertyRow(name, value) {
-        if (value) {
-            return '<ons-list-item modifier="nodivider"><div class="left">' + name + '</div> <div class="right">' + value.replace(/_/g, ' ') + '</div></ons-list-item>';
-        }
-        return '';
-    }
-
-    /**
-     * Generate an opening hours button to display in a marker popup.
-     * @param  {string} value Value of the opening_hours tag
-     * @return {string} ons-list-item element
-     */
-    function getOpeningHoursBtn(value) {
-        var oh = new OH(value, null);
-        return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
-    }
 
     /**
      * Format an hour as HH:MM.
@@ -221,36 +199,6 @@ function openvegemapMain() {
     }
 
     /**
-     * Get table rows to display in a marker popup.
-     * @param  {Object} tags POI tags
-     * @return {string} Set of tr elements
-     */
-    function getPopupRows(tags) {
-        var rows = '',
-            url = L.DomUtil.create('a');
-        rows += getPropertyRow('Vegan', tags['diet:vegan']);
-        rows += getPropertyRow('Vegetarian', tags['diet:vegetarian']);
-        if (tags.cuisine) {
-            rows += getPropertyRow('Cuisine', tags.cuisine.replace(/;/g, ', '));
-        }
-        rows += getPropertyRow('Take away', tags.takeaway);
-        if (tags.phone) {
-            rows += getPropertyRow('Phone number', '<a href="tel:' + tags.phone + '">' + tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
-        }
-        if (tags.website) {
-            url.href = tags.website;
-            if (url.hostname === 'localhost') {
-                tags.website = 'http://' + tags.website;
-            }
-            rows += getPropertyRow('Website', '<a target="_blank" href="' + tags.website + '">' + tags.website + '</a>');
-        }
-        if (tags.opening_hours) {
-            rows += getOpeningHoursBtn(tags.opening_hours);
-        }
-        return rows;
-    }
-
-    /**
      * Get the routing service URL for the specific coordinates.
      * @param  {number} lat Latitude
      * @param  {number} lon Longitude
@@ -278,8 +226,9 @@ function openvegemapMain() {
      * @return {Void}
      */
     function showPopup(e) {
-        var popup = '';
-        popup += getPopupRows(e.target.feature.tags);
+        var html = '',
+            popup = new Popup(e.target.feature.tags);
+        html += popup.getPopupRows();
         if (e.target.feature.tags.opening_hours) {
             L.DomUtil.get('hoursTable').innerHTML = getOpeningHoursTable(e.target.feature.tags.opening_hours);
         }
@@ -287,7 +236,7 @@ function openvegemapMain() {
             e.target.feature.tags.name = '';
         }
         L.DomUtil.get('mapPopupTitle').innerHTML = e.target.feature.tags.name;
-        L.DomUtil.get('mapPopupList').innerHTML = popup;
+        L.DomUtil.get('mapPopupList').innerHTML = html;
         L.DomUtil.get('gmapsLink').setAttribute('href', getRoutingUrl(e.target.feature.lat, e.target.feature.lon));
         L.DomUtil.get('editLink').setAttribute('href', 'https://editor.openvegemap.netlib.re/' + e.target.feature.type + '/' + e.target.feature.id);
         if (e.target.feature.tags.opening_hours) {

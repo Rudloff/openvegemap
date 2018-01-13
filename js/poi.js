@@ -1,9 +1,6 @@
+/*jslint browser: true, node: true*/
 function POI(tags) {
     'use strict';
-
-    var constructor = {
-        tags: tags
-    };
 
     /**
      * Check if a POI is OK for the specified diet.
@@ -12,7 +9,7 @@ function POI(tags) {
      */
     function isDiet(diet) {
         var key = 'diet:' + diet;
-        if (constructor.tags[key] && (constructor.tags[key] === 'yes' || constructor.tags[key] === 'only')) {
+        if (tags[key] && (tags[key] === 'yes' || tags[key] === 'only')) {
             return true;
         }
         return false;
@@ -25,7 +22,7 @@ function POI(tags) {
      */
     function isNotDiet(diet) {
         var key = 'diet:' + diet;
-        if (constructor.tags[key] && constructor.tags[key] === 'no') {
+        if (tags[key] && tags[key] === 'no') {
             return true;
         }
         return false;
@@ -38,7 +35,7 @@ function POI(tags) {
      */
     function isOnlyDiet(diet) {
         var key = 'diet:' + diet;
-        if (constructor.tags[key] && constructor.tags[key] === 'only') {
+        if (tags[key] && tags[key] === 'only') {
             return true;
         }
         return false;
@@ -50,16 +47,16 @@ function POI(tags) {
      * @return {string} Layer name
      */
     function getLayer() {
-        if (constructor.isOnlyDiet('vegan')) {
+        if (isOnlyDiet('vegan')) {
             return 'vegan-only';
         }
-        if (constructor.isDiet('vegan')) {
+        if (isDiet('vegan')) {
             return 'vegan';
         }
-        if (constructor.isOnlyDiet('vegetarian')) {
+        if (isOnlyDiet('vegetarian')) {
             return 'vegetarian-only';
         }
-        if (constructor.isDiet('vegetarian')) {
+        if (isDiet('vegetarian')) {
             return 'vegetarian';
         }
         return 'other';
@@ -70,13 +67,13 @@ function POI(tags) {
      * @return {string} Color name
      */
     function getColor() {
-        if (constructor.isDiet('vegan')) {
+        if (isDiet('vegan')) {
             return 'green';
         }
-        if (constructor.isDiet('vegetarian')) {
+        if (isDiet('vegetarian')) {
             return 'darkgreen';
         }
-        if (constructor.isNotDiet('vegetarian')) {
+        if (isNotDiet('vegetarian')) {
             return 'red';
         }
         return 'gray';
@@ -87,29 +84,26 @@ function POI(tags) {
      * @return {string} Font Awesome icon name
      */
     function getMarkerIcon() {
-        if (constructor.isOnlyDiet('vegan')) {
+        if (isOnlyDiet('vegan')) {
             return 'dot-circle-o';
         }
-        if (constructor.isDiet('vegan')) {
+        if (isDiet('vegan')) {
             return 'circle';
         }
-        if (constructor.isDiet('vegetarian')) {
+        if (isDiet('vegetarian')) {
             return 'circle-o';
         }
-        if (constructor.isNotDiet('vegetarian')) {
+        if (isNotDiet('vegetarian')) {
             return 'ban';
         }
         return 'question';
     }
 
-    constructor.getMarkerIcon = getMarkerIcon;
-    constructor.getColor = getColor;
-    constructor.getLayer = getLayer;
-    constructor.isOnlyDiet = isOnlyDiet;
-    constructor.isDiet = isDiet;
-    constructor.isNotDiet = isNotDiet;
-
-    return constructor;
+    return {
+        getMarkerIcon: getMarkerIcon,
+        getColor: getColor,
+        getLayer: getLayer
+    };
 }
 
 module.exports = POI;

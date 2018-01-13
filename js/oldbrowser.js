@@ -1,3 +1,4 @@
+/*jslint browser: true, node: true*/
 /*global L, MutationObserver, window*/
 function oldbrowsers() {
     'use strict';
