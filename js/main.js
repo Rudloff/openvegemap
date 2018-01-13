@@ -57,6 +57,10 @@ var oldbrowsers = require('./oldbrowser.js'),
     POI = require('./poi.js'),
     Popup = require('./popup.js');
 
+/**
+ * Main module constructor.
+ * @return {Object} Main module
+ */
 function openvegemapMain() {
     'use strict';
 

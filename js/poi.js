@@ -1,4 +1,11 @@
 /*jslint browser: true, node: true*/
+
+/**
+ * POI class constructor.
+ * @param {Object} tags POI tags
+ * @constructor
+ * @returns {Object} POI object
+ */
 function POI(tags) {
     'use strict';
 

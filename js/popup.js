@@ -2,6 +2,12 @@
 var L = require('leaflet'),
     OH = require('opening_hours');
 
+/**
+ * Popup class constructor.
+ * @param {Object} tags POI tags
+ * @constructor
+ * @returns {Object} Popup object
+ */
 function Popup(tags) {
     'use strict';
 
@@ -30,7 +36,6 @@ function Popup(tags) {
 
     /**
      * Get table rows to display in a marker popup.
-     * @param  {Object} tags POI tags
      * @return {string} Set of tr elements
      */
     function getPopupRows() {

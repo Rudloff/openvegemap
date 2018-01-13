@@ -1,5 +1,10 @@
 /*jslint browser: true, node: true*/
 /*global L, MutationObserver, window*/
+
+/**
+ * oldbrowsers module constructor.
+ * @return {Object} oldbrowsers module
+ */
 function oldbrowsers() {
     'use strict';
 
