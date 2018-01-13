@@ -23,7 +23,8 @@
     toLocaleDateString, weekday, getTime, stringify, parse,
     google, openroute, graphhopper, value, keys, preferencesDialog,
     InfoControl, shim, currentTarget, dataset,
-    getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable
+    getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable,
+    applyFilters, getCurFilter, createLayers, setFilter, addMarker
 */
 
 if (typeof window !== 'object') {
@@ -54,6 +55,7 @@ require('leaflet-control-geocoder/dist/Control.Geocoder.css');
 
 var oldbrowsers = require('./oldbrowser.js'),
     openingHours = require('./opening_hours.js'),
+    layers = require('./layers.js'),
     POI = require('./poi.js'),
     Popup = require('./popup.js');
 
@@ -69,8 +71,6 @@ function openvegemapMain() {
         curFeatures = [],
         menu,
         geocoder,
-        layers = {},
-        layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other'],
         dialogs = {},
         dialogFunctions = {},
         zoomWarningDisplayed = false,
@@ -163,7 +163,7 @@ function openvegemapMain() {
             if (feature.tags.name) {
                 marker.bindTooltip(poi.getIcon() + '&nbsp;' + feature.tags.name, {direction: 'bottom'});
             }
-            marker.addTo(layers[poi.getLayer()]);
+            layers.addMarker(marker, poi.getLayer());
         }
     }
 
@@ -241,72 +241,6 @@ function openvegemapMain() {
     }
 
     /**
-     * Remove a layer from the map.
-     * @param  {string} layer Layer name
-     * @return {Void}
-     */
-    function removeLayer(layer) {
-        layers[layer].removeFrom(map);
-    }
-
-    /**
-     * Add a layer to the map.
-     * @param {string} layer Layer name
-     */
-    function setFilter(layer) {
-        layers[layer].addTo(map);
-    }
-
-    /**
-     * Apply the currently enabled filters.
-     * @return {Void}
-     */
-    function applyFilters() {
-        var activeFilters = [];
-        layerNames.forEach(removeLayer);
-        layerNames.forEach(function (layer) {
-            var checkbox = L.DomUtil.get(layer + '-filter');
-            if (checkbox && checkbox.checked) {
-                activeFilters.push(layer);
-            }
-        });
-        activeFilters.forEach(setFilter);
-        localStorage.setItem('filters', JSON.stringify(activeFilters));
-        dialogs.filtersDialog.hide();
-        menu.close();
-    }
-
-    /**
-     * Get the currently enabled filters.
-     * @return {Array} Filters
-     */
-    function getCurFilter() {
-        var curFilters = JSON.parse(localStorage.getItem('filters'));
-        if (!curFilters) {
-            curFilters = ['vegan', 'vegan-only', 'vegetarian', 'vegetarian-only'];
-        }
-        return curFilters;
-    }
-
-    /**
-     * Create a new layer.
-     * @param  {string} layer Layer name
-     * @return {Object} Layer
-     * @see http://leafletjs.com/reference-1.2.0.html#layergroup
-     */
-    function createLayer(layer) {
-        layers[layer] = L.layerGroup();
-    }
-
-    /**
-     * Create all the needed layers.
-     * @return {Void}
-     */
-    function createLayers() {
-        layerNames.forEach(createLayer);
-    }
-
-    /**
      * Display a warning if the current zoom level is too low.
      * @param  {Object} e Object returned by the zoom event
      * @return {Void}
@@ -342,6 +276,16 @@ function openvegemapMain() {
     }
 
     /**
+     * Function called when the apply button in the filters dialog is clicked
+     * @return {Void}
+     */
+    function applyFilters() {
+        layers.applyFilters();
+        dialogs.filtersDialog.hide();
+        menu.close();
+    }
+
+    /**
      * Initialize the filters dialog.
      * @return {Void}
      */
@@ -363,7 +307,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function filtersDialogShow() {
-        getCurFilter().forEach(filtersDialogCheckbox);
+        layers.getCurFilter().forEach(filtersDialogCheckbox);
     }
 
     /**
@@ -500,8 +444,8 @@ function openvegemapMain() {
         overpassLayer.addTo(map);
 
         //Layers control
-        createLayers();
-        getCurFilter().forEach(setFilter);
+        layers.createLayers(map);
+        layers.getCurFilter().forEach(layers.setFilter);
 
         //Dialog functions
         dialogFunctions = {
