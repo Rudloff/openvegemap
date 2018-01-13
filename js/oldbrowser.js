@@ -1,6 +1,5 @@
-/*jslint browser: true*/
 /*global L, MutationObserver, window*/
-var oldbrowser = (function () {
+function oldbrowsers() {
     'use strict';
 
     /**
@@ -24,10 +23,6 @@ var oldbrowser = (function () {
     return {
         init: init
     };
-}());
-
-if (typeof L === 'object') {
-    L.DomEvent.on(window, 'load', oldbrowser.init);
-} else {
-    throw 'Leaflet is not loaded';
 }
+
+module.exports = oldbrowsers();

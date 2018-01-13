@@ -53,10 +53,10 @@ require('leaflet-loader/leaflet-loader.css');
 require('drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css');
 require('leaflet-control-geocoder/dist/Control.Geocoder.css');
 
-require('./oldbrowser.js');
-var POI = require('./poi.js');
+var oldbrowsers = require('./oldbrowser.js'),
+    POI = require('./poi.js');
 
-var openvegemap = (function () {
+function openvegemapMain() {
     'use strict';
 
     var map,
@@ -762,10 +762,13 @@ var openvegemap = (function () {
     return {
         init: init
     };
-}());
+}
+
+var openvegemap = openvegemapMain();
 
 if (typeof ons === 'object') {
     ons.ready(openvegemap.init);
+    ons.ready(oldbrowsers.init);
 } else {
     throw 'Onsen is not loaded';
 }
