@@ -1,4 +1,10 @@
 /*jslint browser: true, node: true*/
+/*global window*/
+
+if (typeof window !== 'object') {
+    throw 'OpenVegeMap must be used in a browser.';
+}
+
 var L = require('leaflet'),
     OH = require('opening_hours');
 
