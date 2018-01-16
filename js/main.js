@@ -24,7 +24,8 @@
     google, openroute, graphhopper, value, keys, preferencesDialog,
     InfoControl, shim, currentTarget, dataset,
     getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable,
-    applyFilters, getCurFilter, createLayers, setFilter, addMarker
+    applyFilters, getCurFilter, createLayers, setFilter, addMarker,
+    callback
 */
 
 if (typeof window !== 'object') {
@@ -184,20 +185,33 @@ function openvegemapMain() {
     }
 
     /**
-     * Open the main menu.
-     * @return {Void}
-     */
-    function openMenu() {
-        menu.open();
-    }
-
-    /**
      * Move the map to the location of the user.
      * @return {Void}
      */
     function locateMe() {
         map.locate({setView: true, enableHighAccuracy: true});
         menu.close();
+    }
+
+    /**
+     * Initilize menu buttons
+     * @return {Void}
+     */
+    function initMenu() {
+        //We should probably initialize this when the template is loaded instead.
+        L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog);
+        L.DomEvent.on(L.DomUtil.get('filtersMenuItem'), 'click', openDialog);
+        L.DomEvent.on(L.DomUtil.get('preferencesMenuItem'), 'click', openDialog);
+        L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
+        L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog);
+    }
+
+    /**
+     * Open the main menu.
+     * @return {Void}
+     */
+    function openMenu() {
+        menu.open({callback: initMenu});
     }
 
     /**
@@ -397,13 +411,8 @@ function openvegemapMain() {
         controlLoader = L.control.loader().addTo(map);
         var hash = L.UrlUtil.hash();
 
-        //Events
+        //Menu
         L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
-        L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog);
-        L.DomEvent.on(L.DomUtil.get('filtersMenuItem'), 'click', openDialog);
-        L.DomEvent.on(L.DomUtil.get('preferencesMenuItem'), 'click', openDialog);
-        L.DomEvent.on(L.DomUtil.get('locateMenuItem'), 'click', locateMe);
-        L.DomEvent.on(L.DomUtil.get('aboutMenuItem'), 'click', openDialog);
 
         //Tiles
         L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
