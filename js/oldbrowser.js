@@ -1,14 +1,27 @@
-/*jslint browser: true*/
+/*jslint browser: true, node: true*/
 /*global L, MutationObserver, window*/
-var oldbrowser = (function () {
+
+/**
+ * oldbrowsers module constructor.
+ * @return {Object} oldbrowsers module
+ */
+function oldbrowsers() {
     'use strict';
 
+    /**
+     * Display an error if MutationObserver is not supported.
+     * @return {Void}
+     */
     function testMutationObserver() {
         if (typeof MutationObserver !== 'function') {
             document.getElementsByTagName('body')[0].innerHTML = 'Your browser does not support <a href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver">MutationObserver</a>. Please update your browser.';
         }
     }
 
+    /**
+     * Init checks for old browsers
+     * @return {Void}
+     */
     function init() {
         testMutationObserver();
     }
@@ -16,10 +29,6 @@ var oldbrowser = (function () {
     return {
         init: init
     };
-}());
-
-if (typeof L === 'object') {
-    L.DomEvent.on(window, 'load', oldbrowser.init);
-} else {
-    throw 'Leaflet is not loaded';
 }
+
+module.exports = oldbrowsers();

@@ -4,7 +4,8 @@
         <meta charset="UTF-8" />
         <title>OpenVegeMap</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
-        <script src="dist/bundle.js"></script>
+        <script src="cordova.js" defer></script>
+        <script src="dist/bundle.js" defer></script>
         <link rel="manifest" href="manifest.json" />
         <link rel="icon" href="img/logo_32.png" />
         <link rel="canonical" href="https://openvegemap.netlib.re/" />
@@ -19,73 +20,20 @@
         <meta property="og:description" content="Find vegetarian and vegan restaurants in your city" />
     </head>
     <body>
-        <noscript><div>This application requires JavaScript, sorry ¯\_(ツ)_/¯</div></noscript>
         <ons-splitter>
-            <ons-splitter-side id="menu" side="left" width="220px" collapse>
-                <ons-page>
-                    <ons-list>
-                        <ons-list-item tappable id="geocodeMenuItem" data-dialog="geocodeDialog">
-                            <div class="left">
-                                <ons-icon icon="fa-search" fixed-width></ons-icon>
-                            </div>
-                            <div class="center">Search</div>
-                        </ons-list-item>
-                        <ons-list-item tappable id="filtersMenuItem" data-dialog="filtersDialog">
-                            <div class="left">
-                                <ons-icon icon="fa-filter" fixed-width></ons-icon>
-                            </div>
-                            <div class="center">Filters</div>
-                        </ons-list-item>
-                        <ons-list-item tappable id="locateMenuItem">
-                            <div class="left">
-                                <ons-icon icon="fa-map-marker" fixed-width></ons-icon>
-                            </div>
-                            <div class="center">Locate me</div>
-                        </ons-list-item>
-                        <ons-list-item tappable id="preferencesMenuItem" data-dialog="preferencesDialog">
-                            <div class="left">
-                                <ons-icon icon="fa-cog" fixed-width></ons-icon>
-                            </div>
-                            <div class="center">Preferences</div>
-                        </ons-list-item>
-                        <a href="https://editor.openvegemap.netlib.re/" target="_blank">
-                            <ons-list-item tappable>
-                                <div class="left">
-                                    <ons-icon icon="fa-plus-circle" fixed-width></ons-icon>
-                                </div>
-                                <div class="center">Add a restaurant</div>
-                            </ons-list-item>
-                        </a>
-                        <a href="https://github.com/Rudloff/openvegemap/issues" target="_blank">
-                            <ons-list-item tappable>
-                                <div class="left">
-                                    <ons-icon icon="fa-bug" fixed-width></ons-icon>
-                                </div>
-                                <div class="center">Report a bug</div>
-                            </ons-list-item>
-                        </a>
-                        <ons-list-item tappable id="aboutMenuItem" data-dialog="aboutDialog">
-                            <div class="left">
-                                <ons-icon icon="fa-info" fixed-width></ons-icon>
-                            </div>
-                            <div class="center">About</div>
-                        </ons-list-item>
-                    </ons-list>
-                </ons-page>
-            </ons-splitter-side>
             <ons-splitter-content id="content">
                 <ons-page>
                     <ons-toolbar>
                         <div class="left">
-                            <ons-toolbar-button title="Menu" id="menuBtn">
-                                <ons-icon icon="fa-navicon"></ons-icon>
-                            </ons-toolbar-button>
+                            <ons-toolbar-button title="Menu" id="menuBtn" icon="fa-navicon"></ons-toolbar-button>
                         </div>
                         <div class="center">OpenVegeMap</div>
                     </ons-toolbar>
                     <div id="map" class="map"></div>
                 </ons-page>
             </ons-splitter-content>
+            <ons-splitter-side id="menu" side="left" width="220px" collapse page="templates/menu.html"></ons-splitter-side>
         </ons-splitter>
+        <noscript><div>This application requires JavaScript, sorry ¯\_(ツ)_/¯</div></noscript>
     </body>
 </html>

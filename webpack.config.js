@@ -2,7 +2,7 @@
 var webpack = require('webpack');
 
 module.exports = {
-    entry: ['./js/map.js', './css/map.css'],
+    entry: ['./js/main.js', './css/map.css'],
     output: {
         filename: 'dist/bundle.js'
     },

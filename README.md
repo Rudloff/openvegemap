@@ -17,6 +17,7 @@ OpenVegeMap is also available as [an Android app](https://github.com/Rudloff/ope
 ## How to contribute
 
 All the data comes from [OpenStreetMap](https://www.openstreetmap.org/).
+The map displays every node or way that has a `diet:` tag.
 
 There are several ways to contribute:
 
