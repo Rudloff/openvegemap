@@ -35,7 +35,7 @@ function Popup(tags) {
      */
     function getPropertyRow(name, value) {
         if (value) {
-            return '<ons-list-item modifier="nodivider"><div class="left">' + name + '</div> <div class="right">' + value.replace(/_/g, ' ') + '</div></ons-list-item>';
+            return '<ons-list-item modifier="nodivider"><div class="left list-item__title">' + name + '</div> <div class="right list-item__subtitle">' + value.replace(/_/g, ' ') + '</div></ons-list-item>';
         }
         return '';
     }
