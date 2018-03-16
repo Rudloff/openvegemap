@@ -959,11 +959,11 @@ deep-extend@~0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
 
-deep-for-each@^1.0.5:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/deep-for-each/-/deep-for-each-1.0.6.tgz#afa0ce249c58492a9720539478a18d37e1b10bae"
+deep-for-each@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/deep-for-each/-/deep-for-each-2.0.3.tgz#640b17b88c69892e33caba853004aa89ce00f5c4"
   dependencies:
-    is-plain-object "^2.0.1"
+    lodash.isplainobject "^4.0.6"
 
 define-properties@^1.1.2:
   version "1.1.2"
@@ -1747,11 +1747,11 @@ grunt-shipit@~1.0.1:
   dependencies:
     shipit-cli "^1.0.1"
 
-grunt-webpack@~3.0.2:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/grunt-webpack/-/grunt-webpack-3.0.2.tgz#bcfdea313d431e79b6fc18c42040b48dfac9d32f"
+grunt-webpack@~3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/grunt-webpack/-/grunt-webpack-3.1.1.tgz#78de544e88ff41a221c173fc91cad579c97a9087"
   dependencies:
-    deep-for-each "^1.0.5"
+    deep-for-each "^2.0.2"
     lodash "^4.7.0"
 
 grunt@~1.0.1:
@@ -2469,6 +2469,10 @@ locate-path@^2.0.0:
 lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
+
+lodash.isplainobject@^4.0.6:
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz#7c526a52d89b45c45cc690b88163be0497f550cb"
 
 lodash.memoize@^4.1.2:
   version "4.1.2"
