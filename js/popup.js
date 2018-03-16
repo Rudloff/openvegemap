@@ -61,7 +61,7 @@ function Popup(tags) {
             if (url.hostname === 'localhost') {
                 tags.website = 'http://' + tags.website;
             }
-            rows += getPropertyRow('Website', '<a target="_blank" href="' + tags.website + '">' + tags.website + '</a>');
+            rows += getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + tags.website + '</a>');
         }
         if (tags.opening_hours) {
             rows += getOpeningHoursBtn(tags.opening_hours);
