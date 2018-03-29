@@ -33,9 +33,6 @@
     "grunt-webpack": "~3.0.2",
     "shipit-git-update": "~0.1.0"
   },
-  "engines": {
-    "yarn": ">= 1.0.0"
-  },
   "homepage": "https://github.com/Rudloff/openvegemap",
   "keywords": [
     "map",
