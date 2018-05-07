@@ -2391,8 +2391,8 @@ leaflet-loader@~0.0.1:
   resolved "https://registry.yarnpkg.com/leaflet-loader/-/leaflet-loader-0.0.1.tgz#39792e0b56f7ed74c9e0d9edde28d1c0bd347595"
 
 leaflet-overpass-layer@~2.8.0:
-  version "2.8.2"
-  resolved "https://registry.yarnpkg.com/leaflet-overpass-layer/-/leaflet-overpass-layer-2.8.2.tgz#a3fe451715afde226562bcafdf3bef7ef95ff5a2"
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/leaflet-overpass-layer/-/leaflet-overpass-layer-2.8.3.tgz#d034b7fecbc41f2012f554daa7955f5f41dd7fa7"
   dependencies:
     js-clipper "^1.0.1"
     leaflet "^1.2.0"
