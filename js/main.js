@@ -261,10 +261,10 @@ function openvegemapMain() {
      */
     function checkZoomLevel(e) {
         var zoom = e.target.getZoom();
-        if (zoom >= 15 && zoomWarningDisplayed) {
+        if (zoom >= 13 && zoomWarningDisplayed) {
             dialogs.zoomToast.hide();
             zoomWarningDisplayed = false;
-        } else if (zoom < 15 && !zoomWarningDisplayed) {
+        } else if (zoom < 13 && !zoomWarningDisplayed) {
             dialogs.zoomToast.show();
             zoomWarningDisplayed = true;
         }
@@ -449,7 +449,8 @@ function openvegemapMain() {
             beforeRequest: showLoader,
             afterRequest: hideLoader,
             onSuccess: addMarkers,
-            minZoomIndicatorEnabled: false
+            minZoomIndicatorEnabled: false,
+            minZoom: 13
         });
         overpassLayer.addTo(map);
 
