@@ -45,12 +45,15 @@ function Popup(tags) {
      * @return {string} tr element
      */
     function getPhoneRow() {
+        var row = '';
+
         if (tags['contact:phone'] && !tags.phone) {
             tags.phone = tags['contact:phone'];
         }
         if (tags.phone) {
-            return getPropertyRow('Phone number', '<a href="tel:' + tags.phone + '">' + tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
+            row = getPropertyRow('Phone number', '<a href="tel:' + tags.phone + '">' + tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
         }
+        return row;
     }
 
     /**
@@ -58,7 +61,8 @@ function Popup(tags) {
      * @return {string} tr element
      */
     function getWebsiteRow() {
-        var url = L.DomUtil.create('a');
+        var row = '',
+            url = L.DomUtil.create('a');
 
         if (tags['contact:website'] && !tags.website) {
             tags.website = tags['contact:website'];
@@ -68,8 +72,9 @@ function Popup(tags) {
             if (url.hostname === 'localhost') {
                 tags.website = 'http://' + tags.website;
             }
-            return getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + tags.website + '</a>');
+            row = getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + tags.website + '</a>');
         }
+        return row;
     }
 
     /**
