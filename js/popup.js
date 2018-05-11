@@ -41,25 +41,24 @@ function Popup(tags) {
     }
 
     /**
-     * Get table rows to display in a marker popup.
-     * @return {string} Set of tr elements
+     * Get a popup table row containing the phone number.
+     * @return {string} tr element
      */
-    function getPopupRows() {
-        var rows = '',
-            url = L.DomUtil.create('a');
-        rows += getPropertyRow('Vegan', tags['diet:vegan']);
-        rows += getPropertyRow('Vegetarian', tags['diet:vegetarian']);
-        if (tags.cuisine) {
-            rows += getPropertyRow('Cuisine', tags.cuisine.replace(/;/g, ', '));
-        }
-        rows += getPropertyRow('Take away', tags.takeaway);
-
+    function getPhoneRow() {
         if (tags['contact:phone'] && !tags.phone) {
             tags.phone = tags['contact:phone'];
         }
         if (tags.phone) {
-            rows += getPropertyRow('Phone number', '<a href="tel:' + tags.phone + '">' + tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
+            return getPropertyRow('Phone number', '<a href="tel:' + tags.phone + '">' + tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
         }
+    }
+
+    /**
+     * Get a popup table row containing the website.
+     * @return {string} tr element
+     */
+    function getWebsiteRow() {
+        var url = L.DomUtil.create('a');
 
         if (tags['contact:website'] && !tags.website) {
             tags.website = tags['contact:website'];
@@ -69,8 +68,25 @@ function Popup(tags) {
             if (url.hostname === 'localhost') {
                 tags.website = 'http://' + tags.website;
             }
-            rows += getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + tags.website + '</a>');
+            return getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + tags.website + '</a>');
         }
+    }
+
+    /**
+     * Get table rows to display in a marker popup.
+     * @return {string} Set of tr elements
+     */
+    function getPopupRows() {
+        var rows = '';
+        rows += getPropertyRow('Vegan', tags['diet:vegan']);
+        rows += getPropertyRow('Vegetarian', tags['diet:vegetarian']);
+        if (tags.cuisine) {
+            rows += getPropertyRow('Cuisine', tags.cuisine.replace(/;/g, ', '));
+        }
+        rows += getPropertyRow('Take away', tags.takeaway);
+
+        rows += getPhoneRow();
+        rows += getWebsiteRow();
 
         if (tags.opening_hours) {
             rows += getOpeningHoursBtn(tags.opening_hours);
