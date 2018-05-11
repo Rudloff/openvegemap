@@ -53,8 +53,16 @@ function Popup(tags) {
             rows += getPropertyRow('Cuisine', tags.cuisine.replace(/;/g, ', '));
         }
         rows += getPropertyRow('Take away', tags.takeaway);
+
+        if (tags['contact:phone'] && !tags.phone) {
+            tags.phone = tags['contact:phone'];
+        }
         if (tags.phone) {
             rows += getPropertyRow('Phone number', '<a href="tel:' + tags.phone + '">' + tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
+        }
+
+        if (tags['contact:website'] && !tags.website) {
+            tags.website = tags['contact:website'];
         }
         if (tags.website) {
             url.href = tags.website;
@@ -63,6 +71,7 @@ function Popup(tags) {
             }
             rows += getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + tags.website + '</a>');
         }
+
         if (tags.opening_hours) {
             rows += getOpeningHoursBtn(tags.opening_hours);
         }
