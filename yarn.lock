@@ -1747,9 +1747,9 @@ grunt-shipit@~1.0.1:
   dependencies:
     shipit-cli "^1.0.1"
 
-grunt-webpack@~3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/grunt-webpack/-/grunt-webpack-3.1.1.tgz#78de544e88ff41a221c173fc91cad579c97a9087"
+grunt-webpack@~3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/grunt-webpack/-/grunt-webpack-3.1.2.tgz#5649a2c9884cb99e706309268067125833a1ec5c"
   dependencies:
     deep-for-each "^2.0.2"
     lodash "^4.7.0"
