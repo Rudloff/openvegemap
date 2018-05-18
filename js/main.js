@@ -32,10 +32,15 @@ if (typeof window !== 'object') {
     throw 'OpenVegeMap must be used in a browser.';
 }
 
-//Polyfills
+// Check
+var oldbrowsers = require('./oldbrowser.js');
+oldbrowsers.init();
+
+// Polyfills
 var padStart = require('string.prototype.padstart');
 padStart.shim();
 
+// JS
 var ons = require('onsenui'),
     L = require('leaflet');
 require('leaflet-loader/leaflet-loader.js');
@@ -45,7 +50,7 @@ require('leaflet-control-geocoder');
 require('drmonty-leaflet-awesome-markers');
 require('leaflet-info-control');
 
-//CSS
+// CSS
 require('leaflet/dist/leaflet.css');
 require('onsenui/css/onsenui-core.css');
 require('onsenui/css/onsen-css-components.css');
@@ -54,8 +59,7 @@ require('leaflet-loader/leaflet-loader.css');
 require('drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css');
 require('leaflet-control-geocoder/dist/Control.Geocoder.css');
 
-var oldbrowsers = require('./oldbrowser.js'),
-    openingHours = require('./opening_hours.js'),
+var openingHours = require('./opening_hours.js'),
     layers = require('./layers.js'),
     POI = require('./poi.js'),
     Popup = require('./popup.js');
@@ -498,7 +502,6 @@ var openvegemap = openvegemapMain();
 
 if (typeof ons === 'object') {
     ons.ready(openvegemap.init);
-    ons.ready(oldbrowsers.init);
 } else {
     throw 'Onsen is not loaded';
 }
