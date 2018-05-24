@@ -437,11 +437,11 @@ function openvegemapMain() {
             new L.Control.InfoControl(
                 {
                     position: 'bottomright',
-                    content: '<i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan<br/>'
-                            + '<i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only<br/>'
-                            + '<i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian<br/>'
-                            + '<i class="fa fa-ban" style="background-color: #D63E2A"></i> Meat only<br/>'
-                            + '<i class="fa fa-question" style="background-color: #575757"></i> Unknown<br/>'
+                    content: '<div title="Restaurants that serve vegan food and other food"><i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan</div>'
+                            + '<div title="Restaurants that serve only vegan food"><i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only</div>'
+                            + '<div title="Restaurants that serve vegetarian food"><i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian</div>'
+                            + '<div title="Restaurants that serve meat"><i class="fa fa-ban" style="background-color: #D63E2A"></i> Meat only</div>'
+                            + '<div title="Restaurants we don\'t have enough information about"><i class="fa fa-question" style="background-color: #575757"></i> Unknown</div>'
                 }
             )
         );
