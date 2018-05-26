@@ -1,5 +1,7 @@
 # OpenVegeMap
 
+[![Donate](https://liberapay.com/assets/widgets/donate.svg)](https://liberapay.com/Rudloff/donate)
+
 Find vegetarian and vegan restaurants in your city
 
 ## Setup
