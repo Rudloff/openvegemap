@@ -1,4 +1,5 @@
-AddOutputFilterByType DEFLATE text/css text/html application/javascript font/truetype application/json application/font-woff
+AddType font/woff2 .woff2
+AddOutputFilterByType DEFLATE text/css text/html application/javascript font/truetype application/json font/woff2
 
 <ifmodule mod_expires.c>
     ExpiresActive On
@@ -6,8 +7,10 @@ AddOutputFilterByType DEFLATE text/css text/html application/javascript font/tru
     ExpiresByType text/css "access plus 1 week"
     ExpiresByType image/png "access plus 1 week"
     ExpiresByType image/jpeg "access plus 1 week"
+    ExpiresByType image/gif "access plus 1 week"
     ExpiresByType image/svg+xml "access plus 1 week"
     ExpiresByType font/truetype "access plus 1 week"
+    ExpiresByType font/woff2 "access plus 1 week"
 </ifmodule>
 
 Header set X-Frame-Options DENY

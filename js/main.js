@@ -32,10 +32,15 @@ if (typeof window !== 'object') {
     throw 'OpenVegeMap must be used in a browser.';
 }
 
-//Polyfills
+// Check
+var oldbrowsers = require('./oldbrowser.js');
+oldbrowsers.init();
+
+// Polyfills
 var padStart = require('string.prototype.padstart');
 padStart.shim();
 
+// JS
 var ons = require('onsenui'),
     L = require('leaflet');
 require('leaflet-loader/leaflet-loader.js');
@@ -45,7 +50,7 @@ require('leaflet-control-geocoder');
 require('drmonty-leaflet-awesome-markers');
 require('leaflet-info-control');
 
-//CSS
+// CSS
 require('leaflet/dist/leaflet.css');
 require('onsenui/css/onsenui-core.css');
 require('onsenui/css/onsen-css-components.css');
@@ -54,8 +59,7 @@ require('leaflet-loader/leaflet-loader.css');
 require('drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css');
 require('leaflet-control-geocoder/dist/Control.Geocoder.css');
 
-var oldbrowsers = require('./oldbrowser.js'),
-    openingHours = require('./opening_hours.js'),
+var openingHours = require('./opening_hours.js'),
     layers = require('./layers.js'),
     POI = require('./poi.js'),
     Popup = require('./popup.js');
@@ -261,10 +265,10 @@ function openvegemapMain() {
      */
     function checkZoomLevel(e) {
         var zoom = e.target.getZoom();
-        if (zoom >= 15 && zoomWarningDisplayed) {
+        if (zoom >= 13 && zoomWarningDisplayed) {
             dialogs.zoomToast.hide();
             zoomWarningDisplayed = false;
-        } else if (zoom < 15 && !zoomWarningDisplayed) {
+        } else if (zoom < 13 && !zoomWarningDisplayed) {
             dialogs.zoomToast.show();
             zoomWarningDisplayed = true;
         }
@@ -418,7 +422,7 @@ function openvegemapMain() {
         L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
             maxNativeZoom: 18,
             maxZoom: 20,
-            attribution: '&copy; <a target="_blank" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a target="_blank" href="https://maps.wikimedia.org/">Wikimedia maps</a>'
+            attribution: '&copy; <a target="_blank" rel="noopener" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a target="_blank" rel="noopener" href="https://maps.wikimedia.org/">Wikimedia maps</a>'
         }).addTo(map);
 
         //Permalink
@@ -433,11 +437,11 @@ function openvegemapMain() {
             new L.Control.InfoControl(
                 {
                     position: 'bottomright',
-                    content: '<i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan<br/>'
-                            + '<i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only<br/>'
-                            + '<i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian<br/>'
-                            + '<i class="fa fa-ban" style="background-color: #D63E2A"></i> Meat only<br/>'
-                            + '<i class="fa fa-question" style="background-color: #575757"></i> Unknown<br/>'
+                    content: '<div title="Restaurants that serve vegan food and other food"><i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan</div>'
+                            + '<div title="Restaurants that serve only vegan food"><i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only</div>'
+                            + '<div title="Restaurants that serve vegetarian food"><i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian</div>'
+                            + '<div title="Restaurants that serve meat"><i class="fa fa-ban" style="background-color: #D63E2A"></i> Meat only</div>'
+                            + '<div title="Restaurants we don\'t have enough information about"><i class="fa fa-question" style="background-color: #575757"></i> Unknown</div>'
                 }
             )
         );
@@ -449,7 +453,8 @@ function openvegemapMain() {
             beforeRequest: showLoader,
             afterRequest: hideLoader,
             onSuccess: addMarkers,
-            minZoomIndicatorEnabled: false
+            minZoomIndicatorEnabled: false,
+            minZoom: 13
         });
         overpassLayer.addTo(map);
 
@@ -497,7 +502,6 @@ var openvegemap = openvegemapMain();
 
 if (typeof ons === 'object') {
     ons.ready(openvegemap.init);
-    ons.ready(oldbrowsers.init);
 } else {
     throw 'Onsen is not loaded';
 }
