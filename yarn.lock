@@ -2184,8 +2184,8 @@ leaflet-overpass-layer@~2.8.0:
     leaflet "^1.2.0"
 
 leaflet-plugins@~3.0.0:
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/leaflet-plugins/-/leaflet-plugins-3.0.2.tgz#4ffbc222732444b0427a6178b7b41879f7cddd3a"
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/leaflet-plugins/-/leaflet-plugins-3.0.3.tgz#7c727ac79a37636b245dd1adc64e10c61b425864"
 
 leaflet@^1.0.0, leaflet@^1.2.0, leaflet@~1.3.0:
   version "1.3.1"
