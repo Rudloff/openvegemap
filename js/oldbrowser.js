@@ -1,5 +1,5 @@
 /*jslint browser: true, node: true*/
-/*global L, MutationObserver, window*/
+/*global MutationObserver, window*/
 
 /**
  * oldbrowsers module constructor.

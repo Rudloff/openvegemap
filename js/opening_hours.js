@@ -106,15 +106,15 @@ function openingHours() {
             prevDate = curDate;
         }
         if (curDate.getDay() === 0) {
-            //If the loop stopped on sunday, we might need to add another row
+            // If the loop stopped on sunday, we might need to add another row
             it.advance();
             table += getOpeningHoursRow(oh, it.getDate(), curDate, prevDate.getDay(), prevOpenDay);
         } else {
-            //If the loop stop before sunday, it means it is closed
+            // If the loop stop before sunday, it means it is closed
             table += '<tr><th>Sunday</th><td colspan="2">Closed<td></tr>';
         }
         if (!table) {
-            //Sometimes the opening hours data is in a format we don't support
+            // Sometimes the opening hours data is in a format we don't support
             table += "<tr><th>Sorry, we don't have enough info</th></tr>";
         }
         return table;

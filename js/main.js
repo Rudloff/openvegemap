@@ -32,7 +32,7 @@ if (typeof window !== 'object') {
     throw 'OpenVegeMap must be used in a browser.';
 }
 
-// Check
+// Check old browsers
 var oldbrowsers = require('./oldbrowser.js');
 oldbrowsers.init();
 
@@ -202,7 +202,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function initMenu() {
-        //We should probably initialize this when the template is loaded instead.
+        // We should probably initialize this when the template is loaded instead.
         L.DomEvent.on(L.DomUtil.get('geocodeMenuItem'), 'click', openDialog);
         L.DomEvent.on(L.DomUtil.get('filtersMenuItem'), 'click', openDialog);
         L.DomEvent.on(L.DomUtil.get('preferencesMenuItem'), 'click', openDialog);
@@ -399,7 +399,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function init() {
-        //Variables
+        // Variables
         menu = L.DomUtil.get('menu');
         map = L.map(
             'map',
@@ -415,24 +415,24 @@ function openvegemapMain() {
         controlLoader = L.control.loader().addTo(map);
         var hash = L.UrlUtil.hash();
 
-        //Menu
+        // Menu
         L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
 
-        //Tiles
+        // Tiles
         L.tileLayer('https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png', {
             maxNativeZoom: 18,
             maxZoom: 20,
             attribution: '&copy; <a target="_blank" rel="noopener" href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors & <a target="_blank" rel="noopener" href="https://maps.wikimedia.org/">Wikimedia maps</a>'
         }).addTo(map);
 
-        //Permalink
+        // Permalink
         if (L.UrlUtil.queryParse(hash).lat) {
-            //Don't use localStorage value if we have a hash in the URL
+            // Don't use localStorage value if we have a hash in the URL
             localStorage.setItem('paramsTemp', hash);
         }
         map.addControl(new L.Control.Permalink({useLocation: true, useLocalStorage: true}));
 
-        //Legend
+        // Legend
         map.addControl(
             new L.Control.InfoControl(
                 {
@@ -446,7 +446,7 @@ function openvegemapMain() {
             )
         );
 
-        //Overpass
+        // Overpass
         var overpassLayer = new L.OverPassLayer({
             endPoint: 'https://overpass-api.de/api/',
             query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
@@ -458,11 +458,11 @@ function openvegemapMain() {
         });
         overpassLayer.addTo(map);
 
-        //Layers control
+        // Layers control
         layers.createLayers(map);
         layers.getCurFilter().forEach(layers.setFilter);
 
-        //Dialog functions
+        // Dialog functions
         dialogFunctions = {
             geocodeDialog: {
                 init: geocodeDialogInit
@@ -480,7 +480,7 @@ function openvegemapMain() {
             }
         };
 
-        //Dialogs
+        // Dialogs
         ons.createAlertDialog('templates/about.html').then(initDialog);
         ons.createAlertDialog('templates/geocode.html').then(initDialog);
         ons.createAlertDialog('templates/filters.html').then(initDialog);
@@ -489,7 +489,7 @@ function openvegemapMain() {
         ons.createAlertDialog('templates/zoom.html').then(initDialog);
         ons.createAlertDialog('templates/hours.html').then(initDialog);
 
-        //Map events
+        // Map events
         map.on('zoom', checkZoomLevel);
     }
 
