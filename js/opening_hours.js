@@ -67,7 +67,7 @@ function openingHours() {
             if (prevOpenDay !== curDay) {
                 row += formatDay(prevDate);
             }
-            row += '</th><td>' + formatHour(prevDate) + '<td>' + formatHour(curDate) + '</td></tr>';
+            row += '</th><td>' + formatHour(prevDate) + '</td><td>' + formatHour(curDate) + '</td></tr>';
         }
         return row;
     }
