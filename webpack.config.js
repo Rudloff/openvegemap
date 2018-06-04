@@ -1,13 +1,12 @@
 /*jslint node: true*/
-var webpack = require('webpack');
-
 module.exports = {
     entry: ['./js/main.js', './css/map.css'],
     output: {
         filename: 'dist/bundle.js'
     },
+    mode: 'production',
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.css$/,
                 loader: ["style-loader", "css-loader?minimize=true"]
@@ -21,8 +20,5 @@ module.exports = {
                 loader: 'file-loader?name=dist/img/[name].[ext]'
             }
         ]
-    },
-    plugins: [
-        new webpack.optimize.UglifyJsPlugin()
-    ]
+    }
 };
