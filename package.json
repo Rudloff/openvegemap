@@ -1,7 +1,7 @@
 {
   "name": "openvegemap",
   "description": "Find vegetarian and vegan restaurants in your city",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "author": "Pierre Rudloff",
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "dependencies": {
@@ -19,7 +19,8 @@
     "opening_hours": "~3.5.0",
     "string.prototype.padstart": "~3.0.0",
     "style-loader": "~0.21.0",
-    "webpack": "~3.11.0"
+    "webpack": "~4.10.2",
+    "webpack-cli": "~3.0.1"
   },
   "devDependencies": {
     "doxdox": "^2.0.3",
