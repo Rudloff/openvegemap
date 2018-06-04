@@ -2,22 +2,29 @@
 module.exports = {
     entry: ['./js/main.js', './css/map.css'],
     output: {
-        filename: 'dist/bundle.js'
+        filename: 'bundle.js',
+        publicPath: 'dist/'
     },
     mode: 'production',
     module: {
         rules: [
             {
                 test: /\.css$/,
-                loader: ["style-loader", "css-loader?minimize=true"]
+                loader: ["style-loader", "css-loader"]
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
-                loader: 'file-loader?name=dist/fonts/[name].[ext]'
+                loader: 'file-loader',
+                options: {
+                    name: 'fonts/[name].[ext]'
+                }
             },
             {
                 test: /\.(png|gif)$/,
-                loader: 'file-loader?name=dist/img/[name].[ext]'
+                loader: 'file-loader',
+                options: {
+                    name: 'img/[name].[ext]'
+                }
             }
         ]
     }
