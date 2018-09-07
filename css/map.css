@@ -60,3 +60,14 @@ ons-toolbar-button {
     padding-top: 1em;
     width: 100%;
 }
+
+/* Lower the menu because we display it behind the toolbar. */
+.menu .list,
+.leaflet-top {
+    padding-top: 55px;
+}
+
+/* The toolbar is not correctly styled because it is outside of ons-page. */
+.toolbar {
+    font-family: -apple-system,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
+}

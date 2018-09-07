@@ -215,7 +215,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function openMenu() {
-        menu.open({callback: initMenu});
+        menu.toggle({callback: initMenu});
     }
 
     /**
