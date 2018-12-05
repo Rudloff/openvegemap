@@ -100,6 +100,9 @@ function POI(tags) {
         if (isDiet('vegan')) {
             return 'circle';
         }
+        if (isOnlyDiet('vegetarian')) {
+            return 'circle-thin';
+        }
         if (isDiet('vegetarian')) {
             return 'circle-o';
         }
