@@ -25,7 +25,7 @@
     InfoControl, shim, currentTarget, dataset,
     getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable,
     applyFilters, getCurFilter, createLayers, setFilter, addMarker,
-    callback
+    callback, toggle
 */
 
 if (typeof window !== 'object') {
