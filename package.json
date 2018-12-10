@@ -8,6 +8,7 @@
     "css-loader": "~0.28.7",
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "file-loader": "~1.1.5",
+    "i18n-postal-address": "~0.0.6",
     "i18next-client": "~1.11.4",
     "leaflet": "~1.3.0",
     "leaflet-control-geocoder": "~1.5.5",

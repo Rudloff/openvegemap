@@ -1956,6 +1956,11 @@ https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
 
+i18n-postal-address@~0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/i18n-postal-address/-/i18n-postal-address-0.0.6.tgz#804b51bb43925eeed086b944f502dba9418b05a3"
+  integrity sha512-RFRG/NIwIzcXMTQ+Uw6krr3aJ0ffv+7LHv/yjkWceLFBn82sZbdSzD1Vg9FZY1GJqeQuNdpkDyykOgaRUCbqPQ==
+
 i18next-client@~1.11.4:
   version "1.11.4"
   resolved "https://registry.yarnpkg.com/i18next-client/-/i18next-client-1.11.4.tgz#0482eb1b643ecf7a8404f7b592eba328e5f09ae7"
