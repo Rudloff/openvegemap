@@ -1,7 +1,7 @@
 {
   "name": "openvegemap",
   "description": "Find vegetarian and vegan restaurants in your city",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "author": "Pierre Rudloff",
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "dependencies": {
