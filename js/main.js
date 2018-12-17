@@ -206,7 +206,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function openMenu() {
-        menu.toggle({callback: initMenu});
+        menu.toggle();
     }
 
     /**
@@ -387,12 +387,23 @@ function openvegemapMain() {
 
     /**
      * Called when the app is opened from a deep link.
-     * @param  {object} e Event data
+     * @param  {Object} e Event data
      * @return {Void}
      */
     function handleDeepLink(e) {
         var params = L.UrlUtil.queryParse(e.hash);
         map.setView(params, params.zoom);
+    }
+
+    /**
+     * Called when a page template is loaded
+     * @param  {Object} e Event
+     * @return {Void}
+     */
+    function pageInit(e) {
+        if (e.target.id == 'menuPage') {
+            initMenu();
+        }
     }
 
     /**
@@ -415,6 +426,9 @@ function openvegemapMain() {
         );
         controlLoader = L.control.loader().addTo(map);
         var hash = L.UrlUtil.hash();
+
+        // Generic event called when a page template is loaded
+        L.DomEvent.on(document, 'init', pageInit);
 
         // Menu
         L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);

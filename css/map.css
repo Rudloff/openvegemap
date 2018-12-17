@@ -71,3 +71,10 @@ ons-toolbar-button {
 .toolbar {
     font-family: -apple-system,Helvetica Neue,Helvetica,Arial,Lucida Grande,sans-serif;
 }
+
+/* Hide the menu button when the menu is always visible. */
+@media (min-width: 1024px) {
+    #menuBtn {
+        display: none;
+    }
+}
