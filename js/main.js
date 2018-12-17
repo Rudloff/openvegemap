@@ -1,5 +1,5 @@
 /*jslint browser: true, node: true*/
-/*global window, localStorage*/
+/*global window, localStorage, universalLinks*/
 /*property
     AwesomeMarkers, Control, DomEvent, DomUtil, Geocoder, Nominatim,
     OverPassLayer, Permalink, UrlUtil, _alts, _container, _errorElement,
@@ -25,7 +25,7 @@
     InfoControl, shim, currentTarget, dataset,
     getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable,
     applyFilters, getCurFilter, createLayers, setFilter, addMarker,
-    callback, toggle
+    callback, toggle, subscribe
 */
 
 if (typeof window !== 'object') {
@@ -386,6 +386,16 @@ function openvegemapMain() {
     }
 
     /**
+     * Called when the app is opened from a deep link.
+     * @param  {object} e Event data
+     * @return {Void}
+     */
+    function handleDeepLink(e) {
+        var params = L.UrlUtil.queryParse(e.hash);
+        map.setView(params, params.zoom);
+    }
+
+    /**
      * Initialize the app.
      * @return {Void}
      */
@@ -483,6 +493,11 @@ function openvegemapMain() {
 
         // Map events
         map.on('zoom', checkZoomLevel);
+
+        // Handle deep links
+        if (typeof universalLinks === 'object') {
+            universalLinks.subscribe(null, handleDeepLink);
+        }
     }
 
     return {
