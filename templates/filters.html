@@ -4,6 +4,7 @@
     <div class="alert-dialog-title">Filters</div>
     <div class="alert-dialog-content">
         <ons-list>
+            <ons-list-header>Restaurants</ons-list-header>
             <ons-list-item modifier="nodivider" title="Restaurants that serve only vegan food">
                 <div class="left">
                     <ons-checkbox input-id="vegan-only-filter"></ons-checkbox>
@@ -36,12 +37,21 @@
                     Vegetarian friendly
                 </label>
             </ons-list-item>
-            <ons-list-item>
+            <ons-list-item title="Restaurants that serve meat or we don't have enough information about">
                 <div class="left">
                     <ons-checkbox input-id="other-filter"></ons-checkbox>
                 </div>
-                <label for="other-filter" class="center" title="Restaurants that serve meat or we don't have enough information about">
+                <label for="other-filter" class="center">
                     Not vegetarian/unknown
+                </label>
+            </ons-list-item>
+            <ons-list-header>Other</ons-list-header>
+            <ons-list-item>
+                <div class="left">
+                    <ons-checkbox input-id="shop-filter"></ons-checkbox>
+                </div>
+                <label for="shop-filter" class="center">
+                    Shops
                 </label>
             </ons-list-item>
         </ons-list>

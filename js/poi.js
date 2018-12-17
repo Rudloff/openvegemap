@@ -54,6 +54,9 @@ function POI(tags) {
      * @return {string} Layer name
      */
     function getLayer() {
+        if (tags.shop) {
+            return 'shop';
+        }
         if (isOnlyDiet('vegan')) {
             return 'vegan-only';
         }
@@ -96,6 +99,9 @@ function POI(tags) {
         }
         if (isDiet('vegan')) {
             return 'circle';
+        }
+        if (isOnlyDiet('vegetarian')) {
+            return 'circle-thin';
         }
         if (isDiet('vegetarian')) {
             return 'circle-o';

@@ -6,7 +6,8 @@ if (typeof window !== 'object') {
 }
 
 var L = require('leaflet'),
-    OH = require('opening_hours');
+    OH = require('opening_hours'),
+    PostalAddress = require('i18n-postal-address');
 
 /**
  * Popup class constructor.
@@ -78,6 +79,32 @@ function Popup(tags) {
     }
 
     /**
+     * Get a popup table row containing the address.
+     * @return {string} tr element
+     */
+    function getAddressRow() {
+        var street = '',
+            address = new PostalAddress.default();
+
+        if (tags['addr:housenumber']) {
+            street += tags['addr:housenumber'] + ' ';
+        }
+        if (tags['addr:street']) {
+            street += tags['addr:street'];
+        }
+
+        address.setAddress1(street);
+        address.setCity(tags['addr:city']);
+        address.setPostalCode(tags['addr:postcode']);
+        address.setFormat({
+            country: tags['addr:country'],
+            type: 'business'
+        });
+
+        return getPropertyRow('Address', address.toString());
+    }
+
+    /**
      * Get table rows to display in a marker popup.
      * @return {string} Set of tr elements
      */
@@ -90,6 +117,7 @@ function Popup(tags) {
         }
         rows += getPropertyRow('Take away', tags.takeaway);
 
+        rows += getAddressRow();
         rows += getPhoneRow();
         rows += getWebsiteRow();
 

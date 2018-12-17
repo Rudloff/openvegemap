@@ -14,7 +14,7 @@ var L = require('leaflet');
 function layers() {
     'use strict';
 
-    var layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other'],
+    var layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other', 'shop'],
         layerObjects = {},
         map;
 

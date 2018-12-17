@@ -25,7 +25,7 @@
     InfoControl, shim, currentTarget, dataset,
     getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable,
     applyFilters, getCurFilter, createLayers, setFilter, addMarker,
-    callback
+    callback, toggle
 */
 
 if (typeof window !== 'object') {
@@ -215,7 +215,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function openMenu() {
-        menu.open({callback: initMenu});
+        menu.toggle({callback: initMenu});
     }
 
     /**
@@ -437,10 +437,11 @@ function openvegemapMain() {
             new L.Control.InfoControl(
                 {
                     position: 'bottomright',
-                    content: '<div title="Restaurants that serve vegan food and other food"><i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan</div>'
-                            + '<div title="Restaurants that serve only vegan food"><i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only</div>'
-                            + '<div title="Restaurants that serve vegetarian food"><i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian</div>'
-                            + '<div title="Restaurants that serve meat"><i class="fa fa-ban" style="background-color: #D63E2A"></i> Meat only</div>'
+                    content: '<div title="Restaurants that serve only vegan food"><i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only</div>'
+                            + '<div title="Restaurants that serve vegan food and other food"><i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan friendly</div>'
+                            + '<div title="Restaurants that serve only vegetarian food but no vegan food"><i class="fa fa-circle-thin" style="background-color: #728224"></i> Vegetarian only</div>'
+                            + '<div title="Restaurants that serve vegetarian food and meat but no vegan food"><i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian friendly</div>'
+                            + '<div title="Restaurants that serve meat"><i class="fa fa-ban" style="background-color: #D63E2A"></i> Not vegetarian</div>'
                             + '<div title="Restaurants we don\'t have enough information about"><i class="fa fa-question" style="background-color: #575757"></i> Unknown</div>'
                 }
             )
