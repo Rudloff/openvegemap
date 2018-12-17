@@ -1,5 +1,5 @@
 /*jslint browser: true, node: true*/
-/*global window, localStorage*/
+/*global window, localStorage, universalLinks*/
 /*property
     AwesomeMarkers, Control, DomEvent, DomUtil, Geocoder, Nominatim,
     OverPassLayer, Permalink, UrlUtil, _alts, _container, _errorElement,
@@ -25,7 +25,8 @@
     InfoControl, shim, currentTarget, dataset,
     getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable,
     applyFilters, getCurFilter, createLayers, setFilter, addMarker,
-    callback, toggle
+    callback, toggle, subscribe,
+    Circle, radius, setLatLng, setRadius, latlng, latlng, accuracy
 */
 
 if (typeof window !== 'object') {
@@ -50,15 +51,6 @@ require('leaflet-control-geocoder');
 require('drmonty-leaflet-awesome-markers');
 require('leaflet-info-control');
 
-// CSS
-require('leaflet/dist/leaflet.css');
-require('onsenui/css/onsenui-core.css');
-require('onsenui/css/onsen-css-components.css');
-require('onsenui/css/font_awesome/css/font-awesome.css');
-require('leaflet-loader/leaflet-loader.css');
-require('drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css');
-require('leaflet-control-geocoder/dist/Control.Geocoder.css');
-
 var openingHours = require('./opening_hours.js'),
     layers = require('./layers.js'),
     POI = require('./poi.js'),
@@ -73,6 +65,7 @@ function openvegemapMain() {
 
     var map,
         controlLoader,
+        circle,
         curFeatures = [],
         menu,
         geocoder,
@@ -215,7 +208,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function openMenu() {
-        menu.toggle({callback: initMenu});
+        menu.toggle();
     }
 
     /**
@@ -227,13 +220,28 @@ function openvegemapMain() {
     }
 
     /**
+     * Display a circle on the map
+     * @param  {Object} latLng Leaflet LatLng
+     * @param  {int}    radius Circle radius
+     * @return {Void}
+     */
+    function showCircle(latLng, radius) {
+        if (circle === undefined) {
+            circle = new L.Circle(latLng, {radius: radius});
+            circle.addTo(map);
+        } else {
+            circle.setLatLng(latLng);
+            circle.setRadius(radius);
+        }
+        map.fitBounds(circle.getBounds());
+    }
+
+    /**
      * Add a circle on the map at the coordinates returned by the geocoder.
      * @param {Object} e Object returned by the markgeocode event
      */
     function addGeocodeMarker(e) {
-        var circle = L.circle(e.geocode.center, 10);
-        circle.addTo(map);
-        map.fitBounds(circle.getBounds());
+        showCircle(e.geocode.center, 10);
         dialogs.geocodeDialog.hide();
         menu.close();
     }
@@ -395,6 +403,36 @@ function openvegemapMain() {
     }
 
     /**
+     * Called when the app is opened from a deep link.
+     * @param  {Object} e Event data
+     * @return {Void}
+     */
+    function handleDeepLink(e) {
+        var params = L.UrlUtil.queryParse(e.hash);
+        map.setView(params, params.zoom);
+    }
+
+    /**
+     * Called when a page template is loaded
+     * @param  {Object} e Event
+     * @return {Void}
+     */
+    function pageInit(e) {
+        if (e.target.id === 'menuPage') {
+            initMenu();
+        }
+    }
+
+    /**
+     * Called when a new location is found
+     * @param  {Object} e Leaflet LocationEvent
+     * @return {Void}
+     */
+    function newLocation(e) {
+        showCircle(e.latlng, e.accuracy);
+    }
+
+    /**
      * Initialize the app.
      * @return {Void}
      */
@@ -414,6 +452,9 @@ function openvegemapMain() {
         );
         controlLoader = L.control.loader().addTo(map);
         var hash = L.UrlUtil.hash();
+
+        // Generic event called when a page template is loaded
+        L.DomEvent.on(document, 'init', pageInit);
 
         // Menu
         L.DomEvent.on(L.DomUtil.get('menuBtn'), 'click', openMenu);
@@ -492,6 +533,12 @@ function openvegemapMain() {
 
         // Map events
         map.on('zoom', checkZoomLevel);
+        map.on('locationfound', newLocation);
+
+        // Handle deep links
+        if (typeof universalLinks === 'object') {
+            universalLinks.subscribe(null, handleDeepLink);
+        }
     }
 
     return {
