@@ -1,8 +1,11 @@
 /*jslint node: true*/
 module.exports = {
-    entry: ['./js/main.js', './css/map.css'],
+    entry: {
+        main: './js/main.js',
+        style: './js/style.js'
+    },
     output: {
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
         publicPath: 'dist/'
     },
     mode: 'production',

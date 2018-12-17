@@ -50,15 +50,6 @@ require('leaflet-control-geocoder');
 require('drmonty-leaflet-awesome-markers');
 require('leaflet-info-control');
 
-// CSS
-require('leaflet/dist/leaflet.css');
-require('onsenui/css/onsenui-core.css');
-require('onsenui/css/onsen-css-components.css');
-require('onsenui/css/font_awesome/css/font-awesome.css');
-require('leaflet-loader/leaflet-loader.css');
-require('drmonty-leaflet-awesome-markers/css/leaflet.awesome-markers.css');
-require('leaflet-control-geocoder/dist/Control.Geocoder.css');
-
 var openingHours = require('./opening_hours.js'),
     layers = require('./layers.js'),
     POI = require('./poi.js'),
