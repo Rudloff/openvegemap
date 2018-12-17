@@ -25,7 +25,8 @@
     InfoControl, shim, currentTarget, dataset,
     getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable,
     applyFilters, getCurFilter, createLayers, setFilter, addMarker,
-    callback, toggle, subscribe
+    callback, toggle, subscribe,
+    Circle, radius, setLatLng, setRadius, latlng, latlng, accuracy
 */
 
 if (typeof window !== 'object') {
@@ -64,6 +65,7 @@ function openvegemapMain() {
 
     var map,
         controlLoader,
+        circle,
         curFeatures = [],
         menu,
         geocoder,
@@ -218,13 +220,28 @@ function openvegemapMain() {
     }
 
     /**
+     * Display a circle on the map
+     * @param  {Object} latLng Leaflet LatLng
+     * @param  {int}    radius Circle radius
+     * @return {Void}
+     */
+    function showCircle(latLng, radius) {
+        if (circle === undefined) {
+            circle = new L.Circle(latLng, {radius: radius});
+            circle.addTo(map);
+        } else {
+            circle.setLatLng(latLng);
+            circle.setRadius(radius);
+        }
+        map.fitBounds(circle.getBounds());
+    }
+
+    /**
      * Add a circle on the map at the coordinates returned by the geocoder.
      * @param {Object} e Object returned by the markgeocode event
      */
     function addGeocodeMarker(e) {
-        var circle = L.circle(e.geocode.center, 10);
-        circle.addTo(map);
-        map.fitBounds(circle.getBounds());
+        showCircle(e.geocode.center, 10);
         dialogs.geocodeDialog.hide();
         menu.close();
     }
@@ -401,9 +418,18 @@ function openvegemapMain() {
      * @return {Void}
      */
     function pageInit(e) {
-        if (e.target.id == 'menuPage') {
+        if (e.target.id === 'menuPage') {
             initMenu();
         }
+    }
+
+    /**
+     * Called when a new location is found
+     * @param  {Object} e Leaflet LocationEvent
+     * @return {Void}
+     */
+    function newLocation(e) {
+        showCircle(e.latlng, e.accuracy);
     }
 
     /**
@@ -507,6 +533,7 @@ function openvegemapMain() {
 
         // Map events
         map.on('zoom', checkZoomLevel);
+        map.on('locationfound', newLocation);
 
         // Handle deep links
         if (typeof universalLinks === 'object') {
