@@ -26,7 +26,8 @@
     getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable,
     applyFilters, getCurFilter, createLayers, setFilter, addMarker,
     callback, toggle, subscribe,
-    Circle, radius, setLatLng, setRadius, latlng, latlng, accuracy
+    Circle, radius, setLatLng, setRadius, latlng, latlng, accuracy,
+    includes, setShopFilter, isShop
 */
 
 if (typeof window !== 'object') {
@@ -161,7 +162,7 @@ function openvegemapMain() {
             if (feature.tags.name) {
                 marker.bindTooltip(poi.getIcon() + '&nbsp;' + feature.tags.name, {direction: 'bottom'});
             }
-            layers.addMarker(marker, poi.getLayer());
+            layers.addMarker(marker, poi.getLayer(), poi.isShop());
         }
     }
 
@@ -502,7 +503,11 @@ function openvegemapMain() {
 
         // Layers control
         layers.createLayers(map);
-        layers.getCurFilter().forEach(layers.setFilter);
+        var curFilters = layers.getCurFilter();
+        curFilters.forEach(layers.setFilter);
+        if (curFilters.includes('shop')) {
+            curFilters.forEach(layers.setShopFilter);
+        }
 
         // Dialog functions
         dialogFunctions = {
