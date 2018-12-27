@@ -47,7 +47,8 @@ module.exports = function (grunt) {
                 }
             },
             webpack: {
-                build: require('./webpack.config.js')
+                prod: require('./webpack.config.js'),
+                dev: Object.assign({watch: true, optimization: {minimize: false}}, require('./webpack.config.js'))
             }
         }
     );
@@ -55,13 +56,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-jsonlint');
     grunt.loadNpmTasks('grunt-fixpack');
-    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-shipit');
     grunt.loadNpmTasks('shipit-git-update');
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-webpack');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
-    grunt.registerTask('default', ['webpack']);
+    grunt.registerTask('default', ['webpack:prod']);
+    grunt.registerTask('watch', ['webpack:dev']);
     grunt.registerTask('prod', ['shipit:prod', 'update']);
 };
