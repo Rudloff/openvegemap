@@ -7,7 +7,8 @@ if (typeof window !== 'object') {
 
 var L = require('leaflet'),
     OH = require('opening_hours'),
-    PostalAddress = require('i18n-postal-address');
+    PostalAddress = require('i18n-postal-address'),
+    extractDomain = require('extract-domain');
 
 /**
  * Popup class constructor.
@@ -73,7 +74,7 @@ function Popup(tags) {
             if (url.hostname === 'localhost') {
                 tags.website = 'http://' + tags.website;
             }
-            row = getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + tags.website + '</a>');
+            row = getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + extractDomain(tags.website) + '</a>');
         }
         return row;
     }
