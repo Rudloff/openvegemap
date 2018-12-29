@@ -119,16 +119,16 @@ function openvegemapMain() {
      * @return {Void}
      */
     function showPopup(e) {
-        var html = '',
-            popup = new Popup(e.target.feature.tags);
-        html += popup.getPopupRows();
+        var poi = new POI(e.target.feature.tags),
+            popup = new Popup(e.target.feature.tags),
+            html = popup.getPopupRows();
         if (e.target.feature.tags.opening_hours) {
             L.DomUtil.get('hoursTable').innerHTML = openingHours.getOpeningHoursTable(e.target.feature.tags.opening_hours);
         }
         if (!e.target.feature.tags.name) {
             e.target.feature.tags.name = '';
         }
-        L.DomUtil.get('mapPopupTitle').innerHTML = e.target.feature.tags.name;
+        L.DomUtil.get('mapPopupTitle').innerHTML = poi.getIcon() + '&nbsp;' + e.target.feature.tags.name;
         L.DomUtil.get('mapPopupList').innerHTML = html;
         L.DomUtil.get('gmapsLink').setAttribute('href', getRoutingUrl(e.target.feature.lat, e.target.feature.lon));
         L.DomUtil.get('editLink').setAttribute('href', 'https://editor.openvegemap.netlib.re/' + e.target.feature.type + '/' + e.target.feature.id);
