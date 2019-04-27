@@ -9,7 +9,7 @@ var L = require('leaflet');
 
 /**
  * layers module constructor.
- * @return {Object} openingHours module
+ * @return {Object} layers module
  */
 function layers() {
     'use strict';

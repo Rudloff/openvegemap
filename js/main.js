@@ -1,36 +1,5 @@
 /*jslint browser: true, node: true*/
 /*global window, localStorage, universalLinks*/
-/*property
-    AwesomeMarkers, Control, DomEvent, DomUtil, Geocoder, Nominatim,
-    OverPassLayer, Permalink, UrlUtil, _alts, _container, _errorElement,
-    _geocode, _input, addControl, addTo, advance, afterRequest, amenity,
-    attribution, beforeRequest, bindTooltip, center, checked, circle, close,
-    content, control, craft, create, createAlertDialog, cuisine,
-    defaultMarkGeocode, detectRetina, dialog, direction, elements,
-    enableHighAccuracy, endPoint, endsWith, feature, filtersDialog, fitBounds,
-    forEach, geocode, geocodeDialog, geocoder, get, getAttribute, getBounds,
-    getDate, getDay, getElementsByName, getHours, getItem, getIterator,
-    getMinutes, getMonth, getState, getStateString, getZoom, hash, hide,
-    hostname, href, icon, id, indexOf, init, innerHTML, lat, layerGroup,
-    loader, localStorage, locate, lon, map, marker, markerColor, maxBounds,
-    maxBoundsViscosity, maxNativeZoom, maxZoom, minZoom,
-    minZoomIndicatorEnabled, name, on, onSuccess, open, opening_hours, other,
-    padStart, phone, position, prefix, push, query, queryParse, ready,
-    removeFrom, replace, serviceUrl, setAttribute, setDate, setHours, setIcon,
-    setItem, setMinutes, setView, shop, show, some, tags, takeaway, target,
-    then, tileLayer, toString, type, useLocalStorage, useLocation, vegan,
-    vegetarian, website, zoom, zoomToast,
-    toLocaleDateString, weekday, getTime, stringify, parse,
-    google, openroute, graphhopper, value, keys, preferencesDialog,
-    InfoControl, shim, currentTarget, dataset,
-    getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable,
-    applyFilters, getCurFilter, createLayers, setFilter, addMarker,
-    callback, toggle, subscribe,
-    Circle, radius, setLatLng, setRadius, latlng, latlng, accuracy,
-    includes, setShopFilter, isShop
-    readyState, DONE, status, response, thing, urlID, onreadystatechange, send
-    removeAttribute
-*/
 
 if (typeof window !== 'object') {
     throw 'OpenVegeMap must be used in a browser.';
@@ -56,6 +25,7 @@ require('leaflet-info-control');
 
 var openingHours = require('./opening_hours.js'),
     layers = require('./layers.js'),
+    geocoding = require('./geocoding.js'),
     POI = require('./poi.js'),
     Popup = require('./popup.js');
 
@@ -71,7 +41,6 @@ function openvegemapMain() {
         circle,
         curFeatures = [],
         menu,
-        geocoder,
         dialogs = {},
         dialogFunctions = {},
         zoomWarningDisplayed = false,
@@ -249,14 +218,6 @@ function openvegemapMain() {
     }
 
     /**
-     * Start the geocoder.
-     * @return {Void}
-     */
-    function geocode() {
-        geocoder._geocode();
-    }
-
-    /**
      * Display a circle on the map
      * @param  {Object} latLng Leaflet LatLng
      * @param  {int}    radius Circle radius
@@ -324,18 +285,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function geocodeDialogInit() {
-        geocoder = new L.Control.Geocoder(
-            {
-                geocoder: new L.Control.Geocoder.Nominatim({serviceUrl: 'https://nominatim.openstreetmap.org/'}),
-                position: 'topleft',
-                defaultMarkGeocode: false
-            }
-        ).on('markgeocode', addGeocodeMarker);
-        geocoder._alts = L.DomUtil.get('geocodeAlt');
-        geocoder._container = dialogs.geocodeDialog;
-        geocoder._errorElement = L.DomUtil.get('geocodeError');
-        geocoder._input = L.DomUtil.get('geocodeInput');
-        L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
+        geocoding.init(addGeocodeMarker, dialogs.geocodeDialog);
     }
 
     /**
