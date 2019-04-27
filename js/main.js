@@ -28,6 +28,8 @@
     callback, toggle, subscribe,
     Circle, radius, setLatLng, setRadius, latlng, latlng, accuracy,
     includes, setShopFilter, isShop
+    readyState, DONE, status, response, thing, urlID, onreadystatechange, send
+    removeAttribute
 */
 
 if (typeof window !== 'object') {
@@ -81,7 +83,7 @@ function openvegemapMain() {
 
     /**
      * Open a dialog.
-     * @param  {MousEvent} e Event that triggered the dialog
+     * @param  {MouseEvent} e Event that triggered the dialog
      * @return {Void}
      */
     function openDialog(e) {
@@ -114,6 +116,37 @@ function openvegemapMain() {
     }
 
     /**
+     * Add a link to https://lib.reviews/.
+     * @param {Event} e Event
+     */
+    function addReviewLink(e) {
+        if (e.target.readyState === XMLHttpRequest.DONE) {
+            if (e.target.status === 200) {
+                var data = JSON.parse(e.target.response);
+                var reviewLink = L.DomUtil.get('reviewLink');
+                reviewLink.setAttribute('href', 'https://lib.reviews/' + data.thing.urlID);
+                reviewLink.removeAttribute('disabled');
+            }
+        }
+    }
+
+    /**
+     * Start an AJAX request to get reviews from https://lib.reviews/.
+     * @param  {Object} feature POI
+     * @return {Void}
+     */
+    function loadReviews(feature) {
+        var reviewLink = L.DomUtil.get('reviewLink');
+        reviewLink.removeAttribute('href');
+        reviewLink.setAttribute('disabled', 'disabled');
+
+        var request = new XMLHttpRequest();
+        request.open('GET', 'https://lib.reviews/api/thing?url=https://www.openstreetmap.org/' + feature.type + '/' + feature.id, true);
+        request.onreadystatechange = addReviewLink;
+        request.send();
+    }
+
+    /**
      * Display a marker popup.
      * @param  {Object} e Leaflet DomEvent
      * @return {Void}
@@ -136,6 +169,9 @@ function openvegemapMain() {
             var hoursBtn = L.DomUtil.get('hoursBtn');
             L.DomEvent.on(hoursBtn, 'click', openDialog);
         }
+
+        loadReviews(e.target.feature);
+
         L.DomUtil.get('mapPopup').show();
     }
 
