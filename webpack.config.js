@@ -2,7 +2,8 @@
 module.exports = {
     entry: {
         main: './js/main.js',
-        style: './js/style.js'
+        style: './js/style.js',
+        test: './tests/test.js'
     },
     output: {
         filename: '[name].bundle.js',

@@ -8,7 +8,10 @@ module.exports = function (grunt) {
                     src: 'js/*.js'
                 },
                 meta: {
-                    src: ['*.js']
+                    src: '*.js'
+                },
+                tests: {
+                    src: 'tests/*.js'
                 }
             },
             csslint: {
@@ -49,6 +52,9 @@ module.exports = function (grunt) {
             webpack: {
                 prod: require('./webpack.config.js'),
                 dev: Object.assign({watch: true, optimization: {minimize: false}}, require('./webpack.config.js'))
+            },
+            qunit: {
+                files: ['tests/index.html']
             }
         }
     );
@@ -60,9 +66,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('shipit-git-update');
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-webpack');
+    grunt.loadNpmTasks('grunt-contrib-qunit');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
     grunt.registerTask('default', ['webpack:prod']);
     grunt.registerTask('watch', ['webpack:dev']);
     grunt.registerTask('prod', ['shipit:prod', 'update']);
+    grunt.registerTask('test', ['qunit']);
 };
