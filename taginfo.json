@@ -6,7 +6,7 @@
         "description": "Find vegetarian and vegan restaurants in your city",
         "project_url": "https://github.com/Rudloff/openvegemap",
         "doc_url": "https://play.google.com/store/apps/details?id=pro.rudloff.openvegemap",
-        "icon_url": "https://raw.githubusercontent.com/Rudloff/openvegemap/master/img/logo_32.png",
+        "icon_url": "https://raw.githubusercontent.com/Rudloff/openvegemap/master/img/logo_32.png"
     },
     "tags": [
 { "key": "diet:vegan",  "object_types": [ "node", "area" ], "description": "Displayed in popup" },
