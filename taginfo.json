@@ -245,7 +245,7 @@
         "node",
         "area"
       ],
-      "description": "Displayed in popup and on hover"
+      "description": "Displayed in tooltip and in popup"
     }
   ]
 }
