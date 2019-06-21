@@ -11,8 +11,8 @@ try {
         entry.test = './tests/test.js';
     }
 } catch (e) {
-    console.warn('Could not load qunit: "' + e + '"');
-    console.log("This is probably a production environment.");
+    process.stdout.write('Could not load qunit: "' + e + '"\n');
+    process.stdout.write("This is probably a production environment.\n");
 }
 
 module.exports = {
