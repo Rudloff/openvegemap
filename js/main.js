@@ -1,33 +1,5 @@
 /*jslint browser: true, node: true*/
 /*global window, localStorage, universalLinks*/
-/*property
-    AwesomeMarkers, Control, DomEvent, DomUtil, Geocoder, Nominatim,
-    OverPassLayer, Permalink, UrlUtil, _alts, _container, _errorElement,
-    _geocode, _input, addControl, addTo, advance, afterRequest, amenity,
-    attribution, beforeRequest, bindTooltip, center, checked, circle, close,
-    content, control, craft, create, createAlertDialog, cuisine,
-    defaultMarkGeocode, detectRetina, dialog, direction, elements,
-    enableHighAccuracy, endPoint, endsWith, feature, filtersDialog, fitBounds,
-    forEach, geocode, geocodeDialog, geocoder, get, getAttribute, getBounds,
-    getDate, getDay, getElementsByName, getHours, getItem, getIterator,
-    getMinutes, getMonth, getState, getStateString, getZoom, hash, hide,
-    hostname, href, icon, id, indexOf, init, innerHTML, lat, layerGroup,
-    loader, localStorage, locate, lon, map, marker, markerColor, maxBounds,
-    maxBoundsViscosity, maxNativeZoom, maxZoom, minZoom,
-    minZoomIndicatorEnabled, name, on, onSuccess, open, opening_hours, other,
-    padStart, phone, position, prefix, push, query, queryParse, ready,
-    removeFrom, replace, serviceUrl, setAttribute, setDate, setHours, setIcon,
-    setItem, setMinutes, setView, shop, show, some, tags, takeaway, target,
-    then, tileLayer, toString, type, useLocalStorage, useLocation, vegan,
-    vegetarian, website, zoom, zoomToast,
-    toLocaleDateString, weekday, getTime, stringify, parse,
-    google, openroute, graphhopper, value, keys, preferencesDialog,
-    InfoControl, shim, currentTarget, dataset,
-    getMarkerIcon, getColor, getLayer, getPopupRows, getIcon, getOpeningHoursTable,
-    applyFilters, getCurFilter, createLayers, setFilter, addMarker,
-    callback, toggle, subscribe,
-    Circle, radius, setLatLng, setRadius, latlng, latlng, accuracy
-*/
 
 if (typeof window !== 'object') {
     throw 'OpenVegeMap must be used in a browser.';
@@ -53,6 +25,7 @@ require('leaflet-info-control');
 
 var openingHours = require('./opening_hours.js'),
     layers = require('./layers.js'),
+    geocoding = require('./geocoding.js'),
     POI = require('./poi.js'),
     Popup = require('./popup.js');
 
@@ -68,7 +41,6 @@ function openvegemapMain() {
         circle,
         curFeatures = [],
         menu,
-        geocoder,
         dialogs = {},
         dialogFunctions = {},
         zoomWarningDisplayed = false,
@@ -80,7 +52,7 @@ function openvegemapMain() {
 
     /**
      * Open a dialog.
-     * @param  {MousEvent} e Event that triggered the dialog
+     * @param  {MouseEvent} e Event that triggered the dialog
      * @return {Void}
      */
     function openDialog(e) {
@@ -113,21 +85,52 @@ function openvegemapMain() {
     }
 
     /**
+     * Add a link to https://lib.reviews/.
+     * @param {Event} e Event
+     */
+    function addReviewLink(e) {
+        if (e.target.readyState === XMLHttpRequest.DONE) {
+            if (e.target.status === 200) {
+                var data = JSON.parse(e.target.response);
+                var reviewLink = L.DomUtil.get('reviewLink');
+                reviewLink.setAttribute('href', 'https://lib.reviews/' + data.thing.urlID);
+                reviewLink.removeAttribute('disabled');
+            }
+        }
+    }
+
+    /**
+     * Start an AJAX request to get reviews from https://lib.reviews/.
+     * @param  {Object} feature POI
+     * @return {Void}
+     */
+    function loadReviews(feature) {
+        var reviewLink = L.DomUtil.get('reviewLink');
+        reviewLink.removeAttribute('href');
+        reviewLink.setAttribute('disabled', 'disabled');
+
+        var request = new XMLHttpRequest();
+        request.open('GET', 'https://lib.reviews/api/thing?url=https://www.openstreetmap.org/' + feature.type + '/' + feature.id, true);
+        request.onreadystatechange = addReviewLink;
+        request.send();
+    }
+
+    /**
      * Display a marker popup.
      * @param  {Object} e Leaflet DomEvent
      * @return {Void}
      */
     function showPopup(e) {
-        var html = '',
-            popup = new Popup(e.target.feature.tags);
-        html += popup.getPopupRows();
+        var poi = new POI(e.target.feature.tags),
+            popup = new Popup(e.target.feature.tags),
+            html = popup.getPopupRows();
         if (e.target.feature.tags.opening_hours) {
             L.DomUtil.get('hoursTable').innerHTML = openingHours.getOpeningHoursTable(e.target.feature.tags.opening_hours);
         }
         if (!e.target.feature.tags.name) {
             e.target.feature.tags.name = '';
         }
-        L.DomUtil.get('mapPopupTitle').innerHTML = e.target.feature.tags.name;
+        L.DomUtil.get('mapPopupTitle').innerHTML = poi.getIcon() + '&nbsp;' + e.target.feature.tags.name;
         L.DomUtil.get('mapPopupList').innerHTML = html;
         L.DomUtil.get('gmapsLink').setAttribute('href', getRoutingUrl(e.target.feature.lat, e.target.feature.lon));
         L.DomUtil.get('editLink').setAttribute('href', 'https://editor.openvegemap.netlib.re/' + e.target.feature.type + '/' + e.target.feature.id);
@@ -135,6 +138,9 @@ function openvegemapMain() {
             var hoursBtn = L.DomUtil.get('hoursBtn');
             L.DomEvent.on(hoursBtn, 'click', openDialog);
         }
+
+        loadReviews(e.target.feature);
+
         L.DomUtil.get('mapPopup').show();
     }
 
@@ -161,7 +167,7 @@ function openvegemapMain() {
             if (feature.tags.name) {
                 marker.bindTooltip(poi.getIcon() + '&nbsp;' + feature.tags.name, {direction: 'bottom'});
             }
-            layers.addMarker(marker, poi.getLayer());
+            layers.addMarker(marker, poi.getLayer(), poi.isShop());
         }
     }
 
@@ -209,14 +215,6 @@ function openvegemapMain() {
      */
     function openMenu() {
         menu.toggle();
-    }
-
-    /**
-     * Start the geocoder.
-     * @return {Void}
-     */
-    function geocode() {
-        geocoder._geocode();
     }
 
     /**
@@ -287,18 +285,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function geocodeDialogInit() {
-        geocoder = new L.Control.Geocoder(
-            {
-                geocoder: new L.Control.Geocoder.Nominatim({serviceUrl: 'https://nominatim.openstreetmap.org/'}),
-                position: 'topleft',
-                defaultMarkGeocode: false
-            }
-        ).on('markgeocode', addGeocodeMarker);
-        geocoder._alts = L.DomUtil.get('geocodeAlt');
-        geocoder._container = dialogs.geocodeDialog;
-        geocoder._errorElement = L.DomUtil.get('geocodeError');
-        geocoder._input = L.DomUtil.get('geocodeInput');
-        L.DomEvent.on(L.DomUtil.get('geocodeDialogBtn'), 'click', geocode);
+        geocoding.init(addGeocodeMarker, dialogs.geocodeDialog);
     }
 
     /**
@@ -502,7 +489,11 @@ function openvegemapMain() {
 
         // Layers control
         layers.createLayers(map);
-        layers.getCurFilter().forEach(layers.setFilter);
+        var curFilters = layers.getCurFilter();
+        curFilters.forEach(layers.setFilter);
+        if (curFilters.includes('shop')) {
+            curFilters.forEach(layers.setShopFilter);
+        }
 
         // Dialog functions
         dialogFunctions = {

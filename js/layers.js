@@ -9,13 +9,14 @@ var L = require('leaflet');
 
 /**
  * layers module constructor.
- * @return {Object} openingHours module
+ * @return {Object} layers module
  */
 function layers() {
     'use strict';
 
     var layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other', 'shop'],
         layerObjects = {},
+        shopLayerObjects = {},
         map;
 
     /**
@@ -41,6 +42,15 @@ function layers() {
     }
 
     /**
+     * Remove a shop layer from the map.
+     * @param  {string} layerName Layer name
+     * @return {Void}
+     */
+    function removeShopLayer(layerName) {
+        shopLayerObjects[layerName].removeFrom(map);
+    }
+
+    /**
      * Add a layer to the map.
      * @param {string} layerName Layer name
      * @return {Void}
@@ -50,12 +60,22 @@ function layers() {
     }
 
     /**
+     * Add a shop layer to the map.
+     * @param {string} layerName Layer name
+     * @return {Void}
+     */
+    function setShopFilter(layerName) {
+        shopLayerObjects[layerName].addTo(map);
+    }
+
+    /**
      * Apply the currently enabled filters.
      * @return {Void}
      */
     function applyFilters() {
         var activeFilters = [];
         layerNames.forEach(removeLayer);
+        layerNames.forEach(removeShopLayer);
         layerNames.forEach(function (layer) {
             var checkbox = L.DomUtil.get(layer + '-filter');
             if (checkbox && checkbox.checked) {
@@ -64,16 +84,31 @@ function layers() {
         });
         activeFilters.forEach(setFilter);
         localStorage.setItem('filters', JSON.stringify(activeFilters));
+
+        var shopCheckbox = L.DomUtil.get('shop-filter');
+        if (shopCheckbox && shopCheckbox.checked) {
+            activeFilters.forEach(setShopFilter);
+        }
     }
 
     /**
      * Create a new layer.
      * @param  {string} layerName Layer name
-     * @return {Object} Layer
+     * @return {Void}
      * @see http://leafletjs.com/reference-1.2.0.html#layergroup
      */
     function createLayer(layerName) {
         layerObjects[layerName] = L.layerGroup();
+    }
+
+    /**
+     * Create a new shop layer.
+     * @param  {string} layerName Layer name
+     * @return {Void}
+     * @see http://leafletjs.com/reference-1.2.0.html#layergroup
+     */
+    function createShopLayer(layerName) {
+        shopLayerObjects[layerName] = L.layerGroup();
     }
 
     /**
@@ -82,8 +117,15 @@ function layers() {
      * @param {string} layerName Layer name
      * @return {Void}
      */
-    function addMarker(marker, layerName) {
-        marker.addTo(layerObjects[layerName]);
+    function addMarker(marker, layerName, shop) {
+        var objects;
+        if (shop) {
+            objects = shopLayerObjects;
+        } else {
+            objects = layerObjects;
+        }
+
+        marker.addTo(objects[layerName]);
     }
 
     /**
@@ -94,6 +136,7 @@ function layers() {
     function createLayers(newMap) {
         map = newMap;
         layerNames.forEach(createLayer);
+        layerNames.forEach(createShopLayer);
     }
 
     return {
@@ -101,6 +144,7 @@ function layers() {
         getCurFilter: getCurFilter,
         applyFilters: applyFilters,
         setFilter: setFilter,
+        setShopFilter: setShopFilter,
         addMarker: addMarker
     };
 }

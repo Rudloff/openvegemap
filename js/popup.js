@@ -7,7 +7,8 @@ if (typeof window !== 'object') {
 
 var L = require('leaflet'),
     OH = require('opening_hours'),
-    PostalAddress = require('i18n-postal-address');
+    PostalAddress = require('i18n-postal-address'),
+    extractDomain = require('extract-domain');
 
 /**
  * Popup class constructor.
@@ -20,12 +21,27 @@ function Popup(tags) {
 
     /**
      * Generate an opening hours button to display in a marker popup.
-     * @param  {string} value Value of the opening_hours tag
      * @return {string} ons-list-item element
      */
-    function getOpeningHoursBtn(value) {
-        var oh = new OH(value, null);
-        return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
+    function getOpeningHoursBtn() {
+        if (tags.opening_hours) {
+            var oh = new OH(tags.opening_hours, null);
+            return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron nodivider"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
+        }
+
+        return '';
+    }
+
+    /**
+     * Get a popup row containing the description.
+     * @return {string} ons-list-item element
+     */
+    function getDescriptionBtn() {
+        if (tags.description) {
+            return '<ons-list-item expandable modifier="nodivider">Description<div class="expandable-content"><small>' + tags.description + '</small></div></ons-list-item>';
+        }
+
+        return '';
     }
 
     /**
@@ -42,7 +58,7 @@ function Popup(tags) {
     }
 
     /**
-     * Get a popup table row containing the phone number.
+     * Get a popup row containing the phone number.
      * @return {string} tr element
      */
     function getPhoneRow() {
@@ -58,7 +74,7 @@ function Popup(tags) {
     }
 
     /**
-     * Get a popup table row containing the website.
+     * Get a popup row containing the website.
      * @return {string} tr element
      */
     function getWebsiteRow() {
@@ -73,13 +89,13 @@ function Popup(tags) {
             if (url.hostname === 'localhost') {
                 tags.website = 'http://' + tags.website;
             }
-            row = getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + tags.website + '</a>');
+            row = getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + extractDomain(tags.website) + '</a>');
         }
         return row;
     }
 
     /**
-     * Get a popup table row containing the address.
+     * Get a popup row containing the address.
      * @return {string} tr element
      */
     function getAddressRow() {
@@ -105,25 +121,24 @@ function Popup(tags) {
     }
 
     /**
-     * Get table rows to display in a marker popup.
+     * Get rows to display in a marker popup.
      * @return {string} Set of tr elements
      */
     function getPopupRows() {
-        var rows = '';
-        rows += getPropertyRow('Vegan', tags['diet:vegan']);
-        rows += getPropertyRow('Vegetarian', tags['diet:vegetarian']);
+        var rows = getPropertyRow('Vegan', tags['diet:vegan'])
+                + getPropertyRow('Vegetarian', tags['diet:vegetarian']);
+
         if (tags.cuisine) {
             rows += getPropertyRow('Cuisine', tags.cuisine.replace(/;/g, ', '));
         }
-        rows += getPropertyRow('Take away', tags.takeaway);
 
-        rows += getAddressRow();
-        rows += getPhoneRow();
-        rows += getWebsiteRow();
+        rows += getPropertyRow('Take away', tags.takeaway)
+                + getAddressRow()
+                + getPhoneRow()
+                + getWebsiteRow()
+                + getOpeningHoursBtn()
+                + getDescriptionBtn();
 
-        if (tags.opening_hours) {
-            rows += getOpeningHoursBtn(tags.opening_hours);
-        }
         return rows;
     }
 
