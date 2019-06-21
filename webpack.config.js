@@ -1,10 +1,22 @@
 /*jslint node: true*/
+
+try {
+    var qunit = require('qunit');
+} catch (e) {
+    console.log("This is a production environment.");
+}
+
+var entry = {
+    main: './js/main.js',
+    style: './js/style.js'
+};
+
+if (qunit) {
+    entry.test = './tests/test.js';
+}
+
 module.exports = {
-    entry: {
-        main: './js/main.js',
-        style: './js/style.js',
-        test: './tests/test.js'
-    },
+    entry: entry,
     output: {
         filename: '[name].bundle.js',
         publicPath: 'dist/'
