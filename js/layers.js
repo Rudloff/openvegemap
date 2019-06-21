@@ -2,7 +2,7 @@
 /*global window, localStorage*/
 
 if (typeof window !== 'object') {
-    throw 'OpenVegeMap must be used in a browser.';
+    throw new Error('OpenVegeMap must be used in a browser.');
 }
 
 var L = require('leaflet');

@@ -1,3 +1,7 @@
+if (typeof window !== 'object') {
+    throw new Error('OpenVegeMap must be used in a browser.');
+}
+
 // Leaflet
 require('leaflet/dist/leaflet.css');
 require('leaflet-loader/leaflet-loader.css');

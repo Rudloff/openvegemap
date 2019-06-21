@@ -2,7 +2,7 @@
 /*global window, localStorage, universalLinks*/
 
 if (typeof window !== 'object') {
-    throw 'OpenVegeMap must be used in a browser.';
+    throw new Error('OpenVegeMap must be used in a browser.');
 }
 
 // Check old browsers
@@ -542,5 +542,5 @@ var openvegemap = openvegemapMain();
 if (typeof ons === 'object') {
     ons.ready(openvegemap.init);
 } else {
-    throw 'Onsen is not loaded';
+    throw new Error('Onsen is not loaded');
 }
