@@ -25,7 +25,7 @@
     "webpack-cli": "~3.1.2"
   },
   "devDependencies": {
-    "doxdox": "~2.0.3",
+    "doxdox": "~3.0.0",
     "grunt": "~1.0.1",
     "grunt-contrib-csslint": "~2.0.0",
     "grunt-contrib-qunit": "~3.0.1 ",
