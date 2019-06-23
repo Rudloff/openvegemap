@@ -1,3 +1,4 @@
+/*global window*/
 if (typeof window !== 'object') {
     throw new Error('OpenVegeMap must be used in a browser.');
 }

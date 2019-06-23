@@ -1,4 +1,5 @@
 /*jslint node: true*/
+/*global window*/
 if (typeof window !== 'object') {
     throw new Error('qunit must be used in a browser.');
 }
