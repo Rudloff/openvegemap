@@ -58,6 +58,15 @@ function Popup(tags) {
     }
 
     /**
+     * Format a phone number correctly.
+     * @param  {string} phone Phone number
+     * @return {string} a element
+     */
+    function formatPhone(phone) {
+        return '<a href="tel:' + phone + '">' + phone.replace(/\s/g, '&nbsp;') + '</a>';
+    }
+
+    /**
      * Get a popup row containing the phone number.
      * @return {string} tr element
      */
@@ -68,7 +77,10 @@ function Popup(tags) {
             tags.phone = tags['contact:phone'];
         }
         if (tags.phone) {
-            row = getPropertyRow('Phone number', '<a href="tel:' + tags.phone + '">' + tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
+            return getPropertyRow(
+                'Phone number',
+                '<div>' + tags.phone.split(';').map(formatPhone).join('<br/>') + '</div>'
+            );
         }
         return row;
     }
