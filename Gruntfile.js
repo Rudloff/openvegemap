@@ -55,6 +55,11 @@ module.exports = function (grunt) {
             },
             qunit: {
                 files: ['tests/index.html']
+            },
+            githooks: {
+                all: {
+                    'pre-commit': 'lint'
+                }
             }
         }
     );
@@ -67,6 +72,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-githooks');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
     grunt.registerTask('default', ['webpack:prod']);
