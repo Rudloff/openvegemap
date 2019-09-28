@@ -28,7 +28,7 @@
     "doxdox": "~3.0.0",
     "grunt": "~1.0.1",
     "grunt-contrib-csslint": "~2.0.0",
-    "grunt-contrib-qunit": "~3.0.1 ",
+    "grunt-contrib-qunit": "^3.1.0",
     "grunt-fixpack": "~0.1.0",
     "grunt-githooks": "^0.6.0",
     "grunt-jslint": "~1.2.0",
