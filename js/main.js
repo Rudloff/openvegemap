@@ -15,7 +15,8 @@ padStart.shim();
 
 // JS
 var ons = require('onsenui'),
-    L = require('leaflet');
+    L = require('leaflet'),
+    OH = require('opening_hours');
 require('leaflet-loader/leaflet-loader.js');
 require('leaflet-plugins/control/Permalink.js');
 require('leaflet-overpass-layer/dist/OverPassLayer.bundle.js');
@@ -48,7 +49,9 @@ function openvegemapMain() {
             google: 'https://www.google.com/maps/dir//{LAT},{LON}',
             graphhopper: 'https://graphhopper.com/maps/?point=&point={LAT},{LON}',
             openroute: 'https://openrouteservice.org/directions?a=null,null,{LAT},{LON}'
-        };
+        },
+        overpassLayer,
+        overpassQuery = 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;';
 
     /**
      * Open a dialog.
@@ -149,6 +152,16 @@ function openvegemapMain() {
      * @param {Object} feature POI
      */
     function addMarker(feature) {
+        // Does the user want to hide closed restaurants?
+        if (JSON.parse(localStorage.getItem('hide-closed')) && feature.tags.opening_hours) {
+            var oh = new OH(feature.tags.opening_hours, null);
+
+            if (!oh.getState()) {
+                // Don't add markers for closed restaurants.
+                return;
+            }
+        }
+
         if (curFeatures.indexOf(feature.id) === -1) {
             curFeatures.push(feature.id);
             if (feature.center) {
@@ -347,8 +360,32 @@ function openvegemapMain() {
         });
 
         localStorage.setItem('routing-provider', curProvider);
+    }
+
+    /**
+     * Remove every marker from the map and reload them.
+     * @return {Void}
+     */
+    function clearMap() {
+        curFeatures = [];
+        layers.clearLayers();
+        overpassLayer.setQuery(overpassQuery);
+    }
+
+    /**
+     * Save the preferences.
+     * @return {Void}
+     */
+    function savePreferences() {
+        setRoutingProvider();
+
+        localStorage.setItem('hide-closed', L.DomUtil.get('hide-closed').checked);
+
         dialogs.preferencesDialog.hide();
         menu.close();
+
+        // Reload markers to apply changes.
+        clearMap();
     }
 
     /**
@@ -356,7 +393,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function preferencesDialogInit() {
-        L.DomEvent.on(L.DomUtil.get('preferencesDialogBtn'), 'click', setRoutingProvider);
+        L.DomEvent.on(L.DomUtil.get('preferencesDialogBtn'), 'click', savePreferences);
     }
 
     /**
@@ -383,6 +420,8 @@ function openvegemapMain() {
             curProvider = 'google';
         }
         L.DomUtil.get(curProvider + '-routingprovider').checked = true;
+
+        L.DomUtil.get('hide-closed').checked = JSON.parse(localStorage.getItem('hide-closed'));
     }
 
     /**
@@ -480,9 +519,9 @@ function openvegemapMain() {
         );
 
         // Overpass
-        var overpassLayer = new L.OverPassLayer({
+        overpassLayer = new L.OverPassLayer({
             endPoint: 'https://overpass-api.de/api/',
-            query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
+            query: overpassQuery,
             beforeRequest: showLoader,
             afterRequest: hideLoader,
             onSuccess: addMarkers,
@@ -493,11 +532,7 @@ function openvegemapMain() {
 
         // Layers control
         layers.createLayers(map);
-        var curFilters = layers.getCurFilter();
-        curFilters.forEach(layers.setFilter);
-        if (curFilters.includes('shop')) {
-            curFilters.forEach(layers.setShopFilter);
-        }
+        layers.refreshFilters();
 
         // Dialog functions
         dialogFunctions = {

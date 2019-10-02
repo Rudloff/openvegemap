@@ -139,13 +139,46 @@ function layers() {
         layerNames.forEach(createShopLayer);
     }
 
+    /**
+     * Reapply filters.
+     * @return {Void}
+     */
+    function refreshFilters() {
+        layerNames.forEach(removeLayer);
+
+        var curFilters = getCurFilter();
+        curFilters.forEach(setFilter);
+
+        if (curFilters.includes('shop')) {
+            curFilters.forEach(setShopFilter);
+        }
+    }
+
+    /**
+     * Delete and recreate layers.
+     * @return {Void}
+     */
+    function clearLayers() {
+        // Delete layers.
+        layerNames.forEach(removeLayer);
+        layerObjects = [];
+
+        // Recreate them.
+        createLayers(map);
+
+        // Re-apply filters.
+        refreshFilters();
+    }
+
     return {
         createLayers: createLayers,
         getCurFilter: getCurFilter,
         applyFilters: applyFilters,
         setFilter: setFilter,
         setShopFilter: setShopFilter,
-        addMarker: addMarker
+        addMarker: addMarker,
+        clearLayers: clearLayers,
+        refreshFilters: refreshFilters
     };
 }
 
