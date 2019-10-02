@@ -25,8 +25,15 @@ function Popup(tags) {
      */
     function getOpeningHoursBtn() {
         if (tags.opening_hours) {
-            var oh = new OH(tags.opening_hours, null);
-            return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron nodivider"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
+            try {
+                var oh = new OH(tags.opening_hours, null);
+
+                return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron nodivider"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
+            } catch (error) {
+                console.error(
+                    'Malformed opening hours data: ' + error
+                );
+            }
         }
 
         return '';

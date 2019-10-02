@@ -128,7 +128,13 @@ function openvegemapMain() {
             popup = new Popup(e.target.feature.tags),
             html = popup.getPopupRows();
         if (e.target.feature.tags.opening_hours) {
-            L.DomUtil.get('hoursTable').innerHTML = openingHours.getOpeningHoursTable(e.target.feature.tags.opening_hours);
+            try {
+                L.DomUtil.get('hoursTable').innerHTML = openingHours.getOpeningHoursTable(e.target.feature.tags.opening_hours);
+            } catch (error) {
+                console.error(
+                    'Malformed opening hours data for ' + e.target.feature.type + ' ' + e.target.feature.id + ': ' + error
+                );
+            }
         }
         if (!e.target.feature.tags.name) {
             e.target.feature.tags.name = '';
@@ -139,7 +145,9 @@ function openvegemapMain() {
         L.DomUtil.get('editLink').setAttribute('href', 'https://editor.openvegemap.netlib.re/' + e.target.feature.type + '/' + e.target.feature.id);
         if (e.target.feature.tags.opening_hours) {
             var hoursBtn = L.DomUtil.get('hoursBtn');
-            L.DomEvent.on(hoursBtn, 'click', openDialog);
+            if (hoursBtn) {
+                L.DomEvent.on(hoursBtn, 'click', openDialog);
+            }
         }
 
         loadReviews(e.target.feature);
@@ -154,11 +162,17 @@ function openvegemapMain() {
     function addMarker(feature) {
         // Does the user want to hide closed restaurants?
         if (JSON.parse(localStorage.getItem('hide-closed')) && feature.tags.opening_hours) {
-            var oh = new OH(feature.tags.opening_hours, null);
+            try {
+                var oh = new OH(feature.tags.opening_hours, null);
 
-            if (!oh.getState()) {
-                // Don't add markers for closed restaurants.
-                return;
+                if (!oh.getState()) {
+                    // Don't add markers for closed restaurants.
+                    return;
+                }
+            } catch (error) {
+                console.error(
+                    'Malformed opening hours data for ' + feature.type + ' ' + feature.id + ': ' + error
+                );
             }
         }
 
