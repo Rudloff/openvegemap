@@ -12,7 +12,8 @@ require('leaflet-control-geocoder/dist/Control.Geocoder.css');
 // Onsen
 require('onsenui/css/onsenui-core.css');
 require('onsenui/css/onsen-css-components.css');
-require('onsenui/css/font_awesome/css/all.css');
+require('onsenui/css/font_awesome/css/fontawesome.css');
+require('onsenui/css/font_awesome/css/solid.css');
 
 // Custom CSS
 require('../css/map.css');
