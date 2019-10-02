@@ -164,9 +164,13 @@ function openvegemapMain() {
                 markerColor: poi.getColor()
             }));
             marker.on('click', showPopup);
+
+            var tooltip = poi.getIcon();
             if (feature.tags.name) {
-                marker.bindTooltip(poi.getIcon() + '&nbsp;' + feature.tags.name, {direction: 'bottom'});
+                tooltip += '&nbsp;' + feature.tags.name;
             }
+            marker.bindTooltip(tooltip, {direction: 'bottom'});
+
             layers.addMarker(marker, poi.getLayer(), poi.isShop());
         }
     }
