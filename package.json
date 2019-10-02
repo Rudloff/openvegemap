@@ -17,7 +17,7 @@
     "leaflet-loader": "~0.0.1",
     "leaflet-overpass-layer": "~2.8.0",
     "leaflet-plugins": "~3.0.0",
-    "onsenui": "2.10.4",
+    "onsenui": "^2.10.10",
     "opening_hours": "~3.5.0",
     "string.prototype.padstart": "~3.0.0",
     "style-loader": "~0.23.1",

@@ -2238,7 +2238,7 @@ grunt@~1.0.1:
     path-is-absolute "~1.0.0"
     rimraf "~2.6.2"
 
-gulp-protractor@^4.1.0:
+gulp-protractor@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/gulp-protractor/-/gulp-protractor-4.1.1.tgz#c63c6b3e932ca9cd6d7b9e98fbef80673a6e8984"
   integrity sha512-VijKZtwgF6R2u8jcKCSRaryaCB83+XbBndqolRxExSdS0gajQ9vVeLOrYvRlCtGKTzqX1Rn998hhQ9CugqzDcQ==
@@ -3670,15 +3670,15 @@ once@~1.3.0:
   dependencies:
     wrappy "1"
 
-onsenui@2.10.4:
-  version "2.10.4"
-  resolved "https://registry.yarnpkg.com/onsenui/-/onsenui-2.10.4.tgz#3cfd9bf21c0c084165b6f57664f8c607feba399f"
-  integrity sha512-qHlPNWBonqjiqWU4b+HyRrC34rjMCHBnrqeub8TSKiit9BxO9Gox8xD4jaDAOruDdXn98/rVoOnQ+J0/2N0n8g==
+onsenui@^2.10.10:
+  version "2.10.10"
+  resolved "https://registry.yarnpkg.com/onsenui/-/onsenui-2.10.10.tgz#6ef924e1bc29f0c44c07cc0bddc83092d9403bc3"
+  integrity sha512-TEWRsUQsi8XXmAiwEeAbA14tncxyVwdZyqC145HfXL1zIS8oqWleijkkZEjADESobIWiOR2CDkeA6CzpTjGk4w==
   dependencies:
     "@onsenui/custom-elements" "1.0.0"
     "@onsenui/fastclick" "1.1.1"
     core-js "^2.5.1"
-    gulp-protractor "^4.1.0"
+    gulp-protractor "^4.1.1"
 
 opening_hours@~3.5.0:
   version "3.5.0"
