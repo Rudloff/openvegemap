@@ -19,7 +19,7 @@ var ons = require('onsenui'),
     OH = require('opening_hours');
 require('leaflet-loader/leaflet-loader.js');
 require('leaflet-plugins/control/Permalink.js');
-require('leaflet-overpass-layer/dist/OverPassLayer.bundle.js');
+require('leaflet-overpass-layer');
 require('leaflet-control-geocoder');
 require('drmonty-leaflet-awesome-markers');
 require('leaflet-info-control');
