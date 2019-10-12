@@ -3010,10 +3010,10 @@ leaflet-overpass-layer@~2.8.0:
     js-clipper "^1.0.1"
     leaflet "^1.2.0"
 
-leaflet-plugins@~3.0.0:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/leaflet-plugins/-/leaflet-plugins-3.0.3.tgz#7c727ac79a37636b245dd1adc64e10c61b425864"
-  integrity sha512-J2dfJxrq7ETmciGq01syYmB0zG1Ogzy5FioIFJjJB82jFqxHZJDFUMiPFGJn+gfJnWhv/LobbPQYqHdaJSxR9w==
+leaflet-plugins@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/leaflet-plugins/-/leaflet-plugins-3.3.1.tgz#fbe0c9ab043af1a3766766c7829d892b8b222acd"
+  integrity sha512-LiB9waFn1NVdiqLUffKUr59k8qoPv/41U7cw4fYBK82mZu672hTlEzUzgSpLNE6JN1O5ruWVrjUsX83MQZxEGA==
 
 leaflet@^1.0.0, leaflet@^1.2.0, leaflet@^1.5.1:
   version "1.5.1"
