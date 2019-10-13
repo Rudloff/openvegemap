@@ -1,4 +1,9 @@
 /*jslint node: true*/
+/*global window*/
+if (typeof window !== 'object') {
+    throw new Error('qunit must be used in a browser.');
+}
+
 require('qunit/qunit/qunit.css');
 
 var qunit = require('qunit'),

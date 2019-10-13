@@ -104,16 +104,16 @@ function POI(tags) {
      */
     function getMarkerIcon() {
         if (isOnlyDiet('vegan')) {
-            return 'dot-circle-o';
+            return 'bullseye';
         }
         if (isDiet('vegan')) {
             return 'circle';
         }
         if (isOnlyDiet('vegetarian')) {
-            return 'circle-thin';
+            return 'circle-notch';
         }
         if (isDiet('vegetarian')) {
-            return 'circle-o';
+            return 'dot-circle';
         }
         if (isNotDiet('vegetarian')) {
             return 'ban';
@@ -164,6 +164,8 @@ function POI(tags) {
             return '🍸';
         case 'pub':
             return '🍺';
+        case 'vending_machine':
+            return 'Vending machine';
         default:
             return '';
         }

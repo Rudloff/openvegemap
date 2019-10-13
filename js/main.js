@@ -2,7 +2,7 @@
 /*global window, localStorage, universalLinks*/
 
 if (typeof window !== 'object') {
-    throw 'OpenVegeMap must be used in a browser.';
+    throw new Error('OpenVegeMap must be used in a browser.');
 }
 
 // Check old browsers
@@ -15,10 +15,11 @@ padStart.shim();
 
 // JS
 var ons = require('onsenui'),
-    L = require('leaflet');
+    L = require('leaflet'),
+    OH = require('opening_hours');
 require('leaflet-loader/leaflet-loader.js');
 require('leaflet-plugins/control/Permalink.js');
-require('leaflet-overpass-layer/dist/OverPassLayer.bundle.js');
+require('leaflet-overpass-layer');
 require('leaflet-control-geocoder');
 require('drmonty-leaflet-awesome-markers');
 require('leaflet-info-control');
@@ -48,7 +49,9 @@ function openvegemapMain() {
             google: 'https://www.google.com/maps/dir//{LAT},{LON}',
             graphhopper: 'https://graphhopper.com/maps/?point=&point={LAT},{LON}',
             openroute: 'https://openrouteservice.org/directions?a=null,null,{LAT},{LON}'
-        };
+        },
+        overpassLayer,
+        overpassQuery = 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;';
 
     /**
      * Open a dialog.
@@ -125,7 +128,13 @@ function openvegemapMain() {
             popup = new Popup(e.target.feature.tags),
             html = popup.getPopupRows();
         if (e.target.feature.tags.opening_hours) {
-            L.DomUtil.get('hoursTable').innerHTML = openingHours.getOpeningHoursTable(e.target.feature.tags.opening_hours);
+            try {
+                L.DomUtil.get('hoursTable').innerHTML = openingHours.getOpeningHoursTable(e.target.feature.tags.opening_hours);
+            } catch (error) {
+                console.error(
+                    'Malformed opening hours data for ' + e.target.feature.type + ' ' + e.target.feature.id + ': ' + error
+                );
+            }
         }
         if (!e.target.feature.tags.name) {
             e.target.feature.tags.name = '';
@@ -136,7 +145,9 @@ function openvegemapMain() {
         L.DomUtil.get('editLink').setAttribute('href', 'https://editor.openvegemap.netlib.re/' + e.target.feature.type + '/' + e.target.feature.id);
         if (e.target.feature.tags.opening_hours) {
             var hoursBtn = L.DomUtil.get('hoursBtn');
-            L.DomEvent.on(hoursBtn, 'click', openDialog);
+            if (hoursBtn) {
+                L.DomEvent.on(hoursBtn, 'click', openDialog);
+            }
         }
 
         loadReviews(e.target.feature);
@@ -149,6 +160,22 @@ function openvegemapMain() {
      * @param {Object} feature POI
      */
     function addMarker(feature) {
+        // Does the user want to hide closed restaurants?
+        if (JSON.parse(localStorage.getItem('hide-closed')) && feature.tags.opening_hours) {
+            try {
+                var oh = new OH(feature.tags.opening_hours, null);
+
+                if (!oh.getState()) {
+                    // Don't add markers for closed restaurants.
+                    return;
+                }
+            } catch (error) {
+                console.error(
+                    'Malformed opening hours data for ' + feature.type + ' ' + feature.id + ': ' + error
+                );
+            }
+        }
+
         if (curFeatures.indexOf(feature.id) === -1) {
             curFeatures.push(feature.id);
             if (feature.center) {
@@ -164,9 +191,13 @@ function openvegemapMain() {
                 markerColor: poi.getColor()
             }));
             marker.on('click', showPopup);
+
+            var tooltip = poi.getIcon();
             if (feature.tags.name) {
-                marker.bindTooltip(poi.getIcon() + '&nbsp;' + feature.tags.name, {direction: 'bottom'});
+                tooltip += '&nbsp;' + feature.tags.name;
             }
+            marker.bindTooltip(tooltip, {direction: 'bottom'});
+
             layers.addMarker(marker, poi.getLayer(), poi.isShop());
         }
     }
@@ -343,8 +374,32 @@ function openvegemapMain() {
         });
 
         localStorage.setItem('routing-provider', curProvider);
+    }
+
+    /**
+     * Remove every marker from the map and reload them.
+     * @return {Void}
+     */
+    function clearMap() {
+        curFeatures = [];
+        layers.clearLayers();
+        overpassLayer.setQuery(overpassQuery);
+    }
+
+    /**
+     * Save the preferences.
+     * @return {Void}
+     */
+    function savePreferences() {
+        setRoutingProvider();
+
+        localStorage.setItem('hide-closed', L.DomUtil.get('hide-closed').checked);
+
         dialogs.preferencesDialog.hide();
         menu.close();
+
+        // Reload markers to apply changes.
+        clearMap();
     }
 
     /**
@@ -352,7 +407,7 @@ function openvegemapMain() {
      * @return {Void}
      */
     function preferencesDialogInit() {
-        L.DomEvent.on(L.DomUtil.get('preferencesDialogBtn'), 'click', setRoutingProvider);
+        L.DomEvent.on(L.DomUtil.get('preferencesDialogBtn'), 'click', savePreferences);
     }
 
     /**
@@ -379,6 +434,8 @@ function openvegemapMain() {
             curProvider = 'google';
         }
         L.DomUtil.get(curProvider + '-routingprovider').checked = true;
+
+        L.DomUtil.get('hide-closed').checked = JSON.parse(localStorage.getItem('hide-closed'));
     }
 
     /**
@@ -465,10 +522,10 @@ function openvegemapMain() {
             new L.Control.InfoControl(
                 {
                     position: 'bottomright',
-                    content: '<div title="Restaurants that serve only vegan food"><i class="fa fa-dot-circle-o" style="background-color: #72AF26"></i> Vegan only</div>'
+                    content: '<div title="Restaurants that serve only vegan food"><i class="fa fa-bullseye" style="background-color: #72AF26"></i> Vegan only</div>'
                             + '<div title="Restaurants that serve vegan food and other food"><i class="fa fa-circle" style="background-color: #72AF26"></i> Vegan friendly</div>'
-                            + '<div title="Restaurants that serve only vegetarian food but no vegan food"><i class="fa fa-circle-thin" style="background-color: #728224"></i> Vegetarian only</div>'
-                            + '<div title="Restaurants that serve vegetarian food and meat but no vegan food"><i class="fa fa-circle-o" style="background-color: #728224"></i> Vegetarian friendly</div>'
+                            + '<div title="Restaurants that serve only vegetarian food but no vegan food"><i class="fa fa-circle-notch" style="background-color: #728224"></i> Vegetarian only</div>'
+                            + '<div title="Restaurants that serve vegetarian food and meat but no vegan food"><i class="fa fa-dot-circle" style="background-color: #728224"></i> Vegetarian friendly</div>'
                             + '<div title="Restaurants that serve meat"><i class="fa fa-ban" style="background-color: #D63E2A"></i> Not vegetarian</div>'
                             + '<div title="Restaurants we don\'t have enough information about"><i class="fa fa-question" style="background-color: #575757"></i> Unknown</div>'
                 }
@@ -476,9 +533,9 @@ function openvegemapMain() {
         );
 
         // Overpass
-        var overpassLayer = new L.OverPassLayer({
+        overpassLayer = new L.OverPassLayer({
             endPoint: 'https://overpass-api.de/api/',
-            query: 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;',
+            query: overpassQuery,
             beforeRequest: showLoader,
             afterRequest: hideLoader,
             onSuccess: addMarkers,
@@ -489,11 +546,7 @@ function openvegemapMain() {
 
         // Layers control
         layers.createLayers(map);
-        var curFilters = layers.getCurFilter();
-        curFilters.forEach(layers.setFilter);
-        if (curFilters.includes('shop')) {
-            curFilters.forEach(layers.setShopFilter);
-        }
+        layers.refreshFilters();
 
         // Dialog functions
         dialogFunctions = {
@@ -542,5 +595,5 @@ var openvegemap = openvegemapMain();
 if (typeof ons === 'object') {
     ons.ready(openvegemap.init);
 } else {
-    throw 'Onsen is not loaded';
+    throw new Error('Onsen is not loaded');
 }

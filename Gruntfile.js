@@ -42,19 +42,17 @@ module.exports = function (grunt) {
                     tasks: ['webpack']
                 }
             },
-            shipit: {
-                prod: {
-                    deployTo: '/var/www/openvegemap/',
-                    servers: 'pierre@dev.rudloff.pro',
-                    postUpdateCmd: 'yarn install --prod'
-                }
-            },
             webpack: {
                 prod: require('./webpack.config.js'),
                 dev: Object.assign({watch: true, optimization: {minimize: false}}, require('./webpack.config.js'))
             },
             qunit: {
                 files: ['tests/index.html']
+            },
+            githooks: {
+                all: {
+                    'pre-commit': 'lint'
+                }
             }
         }
     );
@@ -62,15 +60,13 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-jslint');
     grunt.loadNpmTasks('grunt-jsonlint');
     grunt.loadNpmTasks('grunt-fixpack');
-    grunt.loadNpmTasks('grunt-shipit');
-    grunt.loadNpmTasks('shipit-git-update');
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-githooks');
 
     grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
     grunt.registerTask('default', ['webpack:prod']);
     grunt.registerTask('watch', ['webpack:dev']);
-    grunt.registerTask('prod', ['shipit:prod', 'update']);
     grunt.registerTask('test', ['qunit']);
 };

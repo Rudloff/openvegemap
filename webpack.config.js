@@ -1,18 +1,18 @@
 /*jslint node: true*/
 
-try {
-    var qunit = require('qunit');
-} catch (e) {
-    console.log("This is a production environment.");
-}
-
 var entry = {
     main: './js/main.js',
     style: './js/style.js'
 };
 
-if (qunit) {
-    entry.test = './tests/test.js';
+try {
+    var qunit = require('qunit');
+    if (qunit) {
+        entry.test = './tests/test.js';
+    }
+} catch (e) {
+    process.stdout.write('Could not load qunit: "' + e + '"\n');
+    process.stdout.write("This is probably a production environment.\n");
 }
 
 module.exports = {

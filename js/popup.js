@@ -2,7 +2,7 @@
 /*global window*/
 
 if (typeof window !== 'object') {
-    throw 'OpenVegeMap must be used in a browser.';
+    throw new Error('OpenVegeMap must be used in a browser.');
 }
 
 var L = require('leaflet'),
@@ -25,8 +25,15 @@ function Popup(tags) {
      */
     function getOpeningHoursBtn() {
         if (tags.opening_hours) {
-            var oh = new OH(tags.opening_hours, null);
-            return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron nodivider"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
+            try {
+                var oh = new OH(tags.opening_hours, null);
+
+                return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron nodivider"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
+            } catch (error) {
+                console.error(
+                    'Malformed opening hours data: ' + error
+                );
+            }
         }
 
         return '';
@@ -58,6 +65,15 @@ function Popup(tags) {
     }
 
     /**
+     * Format a phone number correctly.
+     * @param  {string} phone Phone number
+     * @return {string} a element
+     */
+    function formatPhone(phone) {
+        return '<a href="tel:' + phone + '">' + phone.replace(/\s/g, '&nbsp;') + '</a>';
+    }
+
+    /**
      * Get a popup row containing the phone number.
      * @return {string} tr element
      */
@@ -68,7 +84,10 @@ function Popup(tags) {
             tags.phone = tags['contact:phone'];
         }
         if (tags.phone) {
-            row = getPropertyRow('Phone number', '<a href="tel:' + tags.phone + '">' + tags.phone.replace(/\s/g, '&nbsp;') + '</a>');
+            return getPropertyRow(
+                'Phone number',
+                '<div>' + tags.phone.split(';').map(formatPhone).join('<br/>') + '</div>'
+            );
         }
         return row;
     }
