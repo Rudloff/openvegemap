@@ -10,6 +10,7 @@
         <link rel="manifest" href="manifest.json">
         <link rel="icon" href="img/logo_32.png">
         <link rel="canonical" href="https://openvegemap.netlib.re/">
+        <link rel="preconnect" href="https://overpass-api.de/">
         <meta name="description" content="Find vegetarian and vegan restaurants in your city">
         <meta name="referrer" content="no-referrer">
         <meta name="twitter:creator" content="@Tael67">
@@ -23,7 +24,7 @@
     <body>
         <ons-toolbar class="toolbar">
             <div class="left">
-                <ons-toolbar-button title="Menu" id="menuBtn" class="menu-button" icon="fa-navicon"></ons-toolbar-button>
+                <ons-toolbar-button title="Menu" id="menuBtn" class="menu-button" icon="fa-bars"></ons-toolbar-button>
             </div>
             <div class="center">OpenVegeMap</div>
         </ons-toolbar>
@@ -33,7 +34,7 @@
                     <div id="map" class="map"></div>
                 </ons-page>
             </ons-splitter-content>
-            <ons-splitter-side id="menu" collapse="(max-width: 1023px)" class="menu" side="left" width="220px" swipeable swipe-target-width="1" collapse page="templates/menu.html"></ons-splitter-side>
+            <ons-splitter-side id="menu" collapse="(max-width: 1023px)" class="menu" side="left" width="220px" swipeable swipe-target-width="1" page="templates/menu.html"></ons-splitter-side>
         </ons-splitter>
         <noscript><div>This application requires JavaScript, sorry &macr;\_(&#12484;)_/&macr;</div></noscript>
     </body>
