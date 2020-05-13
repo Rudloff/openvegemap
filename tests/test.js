@@ -1,4 +1,4 @@
-/*jslint node: true*/
+/*jslint node, es6*/
 /*global window*/
 if (typeof window !== 'object') {
     throw new Error('qunit must be used in a browser.');
@@ -6,11 +6,11 @@ if (typeof window !== 'object') {
 
 require('qunit/qunit/qunit.css');
 
-var qunit = require('qunit'),
-    layers = require('../js/layers.js'),
-    openingHours = require('../js/opening_hours.js'),
-    Popup = require('../js/popup.js'),
-    POI = require('../js/poi.js');
+const qunit = require('qunit');
+const layers = require('../js/layers.js');
+const openingHours = require('../js/opening_hours.js');
+const Popup = require('../js/popup.js');
+const POI = require('../js/poi.js');
 
 qunit.start();
 
@@ -28,7 +28,7 @@ qunit.test('openingHours', function (assert) {
 
 qunit.test('POI vegan cafe', function (assert) {
     'use strict';
-    var poi = new POI({'diet:vegan': 'yes', amenity: 'cafe'});
+    const poi = new POI({'diet:vegan': 'yes', amenity: 'cafe'});
 
     assert.equal('green', poi.getColor(), 'getColor');
     assert.equal('circle', poi.getMarkerIcon(), 'getMarkerIcon');
@@ -39,7 +39,7 @@ qunit.test('POI vegan cafe', function (assert) {
 
 qunit.test('POI foo shop', function (assert) {
     'use strict';
-    var poi = new POI({'diet:vegan': 'foo', shop: 'bar'});
+    const poi = new POI({'diet:vegan': 'foo', shop: 'bar'});
 
     assert.equal('gray', poi.getColor(), 'getColor');
     assert.equal('question', poi.getMarkerIcon(), 'getMarkerIcon');
@@ -50,7 +50,7 @@ qunit.test('POI foo shop', function (assert) {
 
 qunit.test('Popup', function (assert) {
     'use strict';
-    var popup = new Popup({'diet:vegan': 'foo'});
+    const popup = new Popup({'diet:vegan': 'foo'});
 
     assert.equal('<ons-list-item modifier="nodivider"><div class="left list-item__title">Vegan</div> <div class="right list-item__subtitle">foo</div></ons-list-item>', popup.getPopupRows(), 'getPopupRows');
 });

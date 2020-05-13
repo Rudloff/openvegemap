@@ -1,14 +1,14 @@
-/*jslint browser: true, node: true*/
+/*jslint browser, node, es6*/
 /*global window*/
 
 if (typeof window !== 'object') {
     throw new Error('OpenVegeMap must be used in a browser.');
 }
 
-var L = require('leaflet'),
-    OH = require('opening_hours'),
-    PostalAddress = require('i18n-postal-address'),
-    extractDomain = require('extract-domain');
+const L = require('leaflet');
+const OH = require('opening_hours');
+const PostalAddress = require('i18n-postal-address');
+const extractDomain = require('extract-domain');
 
 /**
  * Popup class constructor.
@@ -26,7 +26,7 @@ function Popup(tags) {
     function getOpeningHoursBtn() {
         if (tags.opening_hours) {
             try {
-                var oh = new OH(tags.opening_hours, null);
+                const oh = new OH(tags.opening_hours, null);
 
                 return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron nodivider"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
             } catch (error) {
@@ -78,7 +78,7 @@ function Popup(tags) {
      * @return {string} tr element
      */
     function getPhoneRow() {
-        var row = '';
+        const row = '';
 
         if (tags['contact:phone'] && !tags.phone) {
             tags.phone = tags['contact:phone'];
@@ -89,6 +89,7 @@ function Popup(tags) {
                 '<div>' + tags.phone.split(';').map(formatPhone).join('<br/>') + '</div>'
             );
         }
+
         return row;
     }
 
@@ -97,8 +98,8 @@ function Popup(tags) {
      * @return {string} tr element
      */
     function getWebsiteRow() {
-        var row = '',
-            url = L.DomUtil.create('a');
+        let row = '';
+        const url = L.DomUtil.create('a');
 
         if (tags['contact:website'] && !tags.website) {
             tags.website = tags['contact:website'];
@@ -110,6 +111,7 @@ function Popup(tags) {
             }
             row = getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + extractDomain(tags.website) + '</a>');
         }
+
         return row;
     }
 
@@ -118,8 +120,8 @@ function Popup(tags) {
      * @return {string} tr element
      */
     function getAddressRow() {
-        var street = '',
-            address = new PostalAddress.default();
+        let street = '';
+        const address = new PostalAddress.default();
 
         if (tags['addr:housenumber']) {
             street += tags['addr:housenumber'] + ' ';
@@ -144,7 +146,7 @@ function Popup(tags) {
      * @return {string} Set of tr elements
      */
     function getPopupRows() {
-        var rows = getPropertyRow('Vegan', tags['diet:vegan'])
+        let rows = getPropertyRow('Vegan', tags['diet:vegan'])
                 + getPropertyRow('Vegetarian', tags['diet:vegetarian']);
 
         if (tags.cuisine) {

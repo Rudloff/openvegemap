@@ -1,5 +1,6 @@
-/*jslint browser: true, node: true*/
+/*jslint browser, node, es6*/
 /*global L*/
+
 /*property
     Control, Geocoder, geocoder, Nominatim, serviceUrl, position, defaultMarkGeocode,
     on, DomUtil, get, DomEvent, init, exports,
@@ -13,11 +14,11 @@
 function geocoding() {
     'use strict';
 
-    var geocoder;
+    let geocoder;
 
     /**
      * Start the geocoder.
-     * @return {Void}
+     * @return {void}
      */
     function geocode() {
         geocoder._geocode();
@@ -27,7 +28,7 @@ function geocoding() {
      * Initialize the geocoder.
      * @param  {Function} callback  Callback called when a result is clicked.
      * @param  {Element}  container HTML Element containing the results.
-     * @return {Void}
+     * @return {void}
      */
     function init(callback, container) {
         geocoder = new L.Control.Geocoder(

@@ -1,4 +1,4 @@
-/*jslint browser: true, node: true*/
+/*jslint browser, node, es6*/
 
 /**
  * POI class constructor.
@@ -15,11 +15,8 @@ function POI(tags) {
      * @return {Boolean}
      */
     function isDiet(diet) {
-        var key = 'diet:' + diet;
-        if (tags[key] && (tags[key] === 'yes' || tags[key] === 'only')) {
-            return true;
-        }
-        return false;
+        const key = 'diet:' + diet;
+        return !!(tags[key] && (tags[key] === 'yes' || tags[key] === 'only'));
     }
 
     /**
@@ -28,11 +25,8 @@ function POI(tags) {
      * @return {Boolean}
      */
     function isNotDiet(diet) {
-        var key = 'diet:' + diet;
-        if (tags[key] && tags[key] === 'no') {
-            return true;
-        }
-        return false;
+        const key = 'diet:' + diet;
+        return !!(tags[key] && tags[key] === 'no');
     }
 
     /**
@@ -41,11 +35,8 @@ function POI(tags) {
      * @return {Boolean}
      */
     function isOnlyDiet(diet) {
-        var key = 'diet:' + diet;
-        if (tags[key] && tags[key] === 'only') {
-            return true;
-        }
-        return false;
+        const key = 'diet:' + diet;
+        return !!(tags[key] && tags[key] === 'only');
     }
 
     /**
@@ -53,11 +44,7 @@ function POI(tags) {
      * @return {Boolean}
      */
     function isShop() {
-        if (tags.shop) {
-            return true;
-        }
-
-        return false;
+        return !!tags.shop;
     }
 
     /**

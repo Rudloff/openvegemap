@@ -1,6 +1,6 @@
-/*jslint browser: true, node: true*/
+/*jslint browser, node, es6*/
 
-var OH = require('opening_hours');
+const OH = require('opening_hours');
 
 /**
  * openingHours module constructor.
@@ -9,8 +9,8 @@ var OH = require('opening_hours');
 function openingHours() {
     'use strict';
 
-    var dayInterval = 24 * 60 * 60 * 1000,
-        weekInterval = dayInterval * 7;
+    const dayInterval = 24 * 60 * 60 * 1000;
+    const weekInterval = dayInterval * 7;
 
     /**
      * Format an hour as HH:MM.
@@ -37,10 +37,10 @@ function openingHours() {
      * @return {string} Set of tr elements
      */
     function getClosedDates(curDate, prevDate) {
-        var result = '';
+        let result = '';
         if (curDate - prevDate > dayInterval) {
             // If we advanced more than a day, it means we have to display one or more closed days
-            var closedDate = prevDate;
+            let closedDate = prevDate;
             while (closedDate.getDay() < curDate.getDay()) {
                 if (closedDate.getDay() === 1 || closedDate.getDay() > prevDate.getDay()) {
                     result += '<tr><th>' + formatDay(closedDate) + '</th><td colspan="2">Closed</td></tr>';
@@ -61,7 +61,7 @@ function openingHours() {
      * @return {string} tr element
      */
     function getOpeningHoursRow(oh, curDate, prevDate, curDay, prevOpenDay) {
-        var row = '';
+        let row = '';
         if (oh.getState(prevDate) && prevDate !== curDate) {
             row += '<tr><th>';
             if (prevOpenDay !== curDay) {
@@ -78,15 +78,15 @@ function openingHours() {
      * @return {string}       Set of tr elements
      */
     function getOpeningHoursTable(value) {
-        var oh = new OH(value, null),
-            it = oh.getIterator(),
-            table = '',
-            // We use a fake date to start a monday
-            curDate = new Date(2017, 0, 2),
-            prevDate = curDate,
-            curDay,
-            prevOpenDay = new Date(2017, 0, 1),
-            endDate;
+        const oh = new OH(value, null);
+        const it = oh.getIterator();
+        let table = '';
+        // We use a fake date to start a monday
+        let curDate = new Date(2017, 0, 2);
+        let prevDate = curDate;
+        let curDay;
+        let prevOpenDay = new Date(2017, 0, 1);
+        let endDate;
         it.setDate(curDate);
         endDate = new Date(curDate.getTime() + weekInterval);
 

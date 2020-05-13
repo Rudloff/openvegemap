@@ -1,11 +1,11 @@
-/*jslint browser: true, node: true*/
+/*jslint browser, node, es6*/
 /*global window, localStorage*/
 
 if (typeof window !== 'object') {
     throw new Error('OpenVegeMap must be used in a browser.');
 }
 
-var L = require('leaflet');
+const L = require('leaflet');
 
 /**
  * layers module constructor.
@@ -14,17 +14,17 @@ var L = require('leaflet');
 function layers() {
     'use strict';
 
-    var layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other', 'shop'],
-        layerObjects = {},
-        shopLayerObjects = {},
-        map;
+    const layerNames = ['vegan-only', 'vegan', 'vegetarian-only', 'vegetarian', 'other', 'shop'];
+    let layerObjects = {};
+    const shopLayerObjects = {};
+    let map;
 
     /**
      * Get the currently enabled filters.
      * @return {Array} Filters
      */
     function getCurFilter() {
-        var curFilters = JSON.parse(localStorage.getItem('filters'));
+        let curFilters = JSON.parse(localStorage.getItem('filters'));
         if (!curFilters) {
             curFilters = ['vegan', 'vegan-only', 'vegetarian', 'vegetarian-only'];
         }
@@ -35,7 +35,7 @@ function layers() {
     /**
      * Remove a layer from the map.
      * @param  {string} layerName Layer name
-     * @return {Void}
+     * @return {void}
      */
     function removeLayer(layerName) {
         layerObjects[layerName].removeFrom(map);
@@ -44,7 +44,7 @@ function layers() {
     /**
      * Remove a shop layer from the map.
      * @param  {string} layerName Layer name
-     * @return {Void}
+     * @return {void}
      */
     function removeShopLayer(layerName) {
         shopLayerObjects[layerName].removeFrom(map);
@@ -53,7 +53,7 @@ function layers() {
     /**
      * Add a layer to the map.
      * @param {string} layerName Layer name
-     * @return {Void}
+     * @return {void}
      */
     function setFilter(layerName) {
         layerObjects[layerName].addTo(map);
@@ -62,7 +62,7 @@ function layers() {
     /**
      * Add a shop layer to the map.
      * @param {string} layerName Layer name
-     * @return {Void}
+     * @return {void}
      */
     function setShopFilter(layerName) {
         shopLayerObjects[layerName].addTo(map);
@@ -70,14 +70,14 @@ function layers() {
 
     /**
      * Apply the currently enabled filters.
-     * @return {Void}
+     * @return {void}
      */
     function applyFilters() {
-        var activeFilters = [];
+        const activeFilters = [];
         layerNames.forEach(removeLayer);
         layerNames.forEach(removeShopLayer);
         layerNames.forEach(function (layer) {
-            var checkbox = L.DomUtil.get(layer + '-filter');
+            const checkbox = L.DomUtil.get(layer + '-filter');
             if (checkbox && checkbox.checked) {
                 activeFilters.push(layer);
             }
@@ -85,7 +85,7 @@ function layers() {
         activeFilters.forEach(setFilter);
         localStorage.setItem('filters', JSON.stringify(activeFilters));
 
-        var shopCheckbox = L.DomUtil.get('shop-filter');
+        const shopCheckbox = L.DomUtil.get('shop-filter');
         if (shopCheckbox && shopCheckbox.checked) {
             activeFilters.forEach(setShopFilter);
         }
@@ -94,7 +94,7 @@ function layers() {
     /**
      * Create a new layer.
      * @param  {string} layerName Layer name
-     * @return {Void}
+     * @return {void}
      * @see http://leafletjs.com/reference-1.2.0.html#layergroup
      */
     function createLayer(layerName) {
@@ -104,7 +104,7 @@ function layers() {
     /**
      * Create a new shop layer.
      * @param  {string} layerName Layer name
-     * @return {Void}
+     * @return {void}
      * @see http://leafletjs.com/reference-1.2.0.html#layergroup
      */
     function createShopLayer(layerName) {
@@ -115,10 +115,11 @@ function layers() {
      * Add a marker to a layer
      * @param {Object} marker    Leaflet marker
      * @param {string} layerName Layer name
-     * @return {Void}
+     * @param {bool} shop Is this a shop?
+     * @return {void}
      */
     function addMarker(marker, layerName, shop) {
-        var objects;
+        let objects;
         if (shop) {
             objects = shopLayerObjects;
         } else {
@@ -131,7 +132,7 @@ function layers() {
     /**
      * Create all the needed layers.
      * @param {Object} newMap Leaflet map
-     * @return {Void}
+     * @return {void}
      */
     function createLayers(newMap) {
         map = newMap;
@@ -141,12 +142,12 @@ function layers() {
 
     /**
      * Reapply filters.
-     * @return {Void}
+     * @return {void}
      */
     function refreshFilters() {
         layerNames.forEach(removeLayer);
 
-        var curFilters = getCurFilter();
+        const curFilters = getCurFilter();
         curFilters.forEach(setFilter);
 
         if (curFilters.includes('shop')) {
@@ -156,7 +157,7 @@ function layers() {
 
     /**
      * Delete and recreate layers.
-     * @return {Void}
+     * @return {void}
      */
     function clearLayers() {
         // Delete layers.

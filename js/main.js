@@ -1,4 +1,4 @@
-/*jslint browser: true, node: true*/
+/*jslint browser, node, es6*/
 /*global window, localStorage, universalLinks*/
 
 if (typeof window !== 'object') {
@@ -6,17 +6,17 @@ if (typeof window !== 'object') {
 }
 
 // Check old browsers
-var oldbrowsers = require('./oldbrowser.js');
+const oldbrowsers = require('./oldbrowser.js');
 oldbrowsers.init();
 
 // Polyfills
-var padStart = require('string.prototype.padstart');
+const padStart = require('string.prototype.padstart');
 padStart.shim();
 
 // JS
-var ons = require('onsenui'),
-    L = require('leaflet'),
-    OH = require('opening_hours');
+const ons = require('onsenui');
+const L = require('leaflet');
+const OH = require('opening_hours');
 require('leaflet-loader/leaflet-loader.js');
 require('leaflet-plugins/control/Permalink.js');
 require('leaflet-overpass-layer');
@@ -24,11 +24,11 @@ require('leaflet-control-geocoder');
 require('drmonty-leaflet-awesome-markers');
 require('leaflet-info-control');
 
-var openingHours = require('./opening_hours.js'),
-    layers = require('./layers.js'),
-    geocoding = require('./geocoding.js'),
-    POI = require('./poi.js'),
-    Popup = require('./popup.js');
+const openingHours = require('./opening_hours.js');
+const layers = require('./layers.js');
+const geocoding = require('./geocoding.js');
+const POI = require('./poi.js');
+const Popup = require('./popup.js');
 
 /**
  * Main module constructor.
@@ -37,26 +37,26 @@ var openingHours = require('./opening_hours.js'),
 function openvegemapMain() {
     'use strict';
 
-    var map,
-        controlLoader,
-        circle,
-        curFeatures = [],
-        menu,
-        dialogs = {},
-        dialogFunctions = {},
-        zoomWarningDisplayed = false,
-        routingProviders = {
-            google: 'https://www.google.com/maps/dir//{LAT},{LON}',
-            graphhopper: 'https://graphhopper.com/maps/?point=&point={LAT},{LON}',
-            openroute: 'https://openrouteservice.org/directions?a=null,null,{LAT},{LON}'
-        },
-        overpassLayer,
-        overpassQuery = 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;';
+    let map;
+    let controlLoader;
+    let circle;
+    let curFeatures = [];
+    let menu;
+    const dialogs = {};
+    let dialogFunctions = {};
+    let zoomWarningDisplayed = false;
+    const routingProviders = {
+        google: 'https://www.google.com/maps/dir//{LAT},{LON}',
+        graphhopper: 'https://graphhopper.com/maps/?point=&point={LAT},{LON}',
+        openroute: 'https://openrouteservice.org/directions?a=null,null,{LAT},{LON}'
+    };
+    let overpassLayer;
+    const overpassQuery = 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;';
 
     /**
      * Open a dialog.
      * @param  {MouseEvent} e Event that triggered the dialog
-     * @return {Void}
+     * @return {void}
      */
     function openDialog(e) {
         dialogs[e.currentTarget.dataset.dialog].show(e.currentTarget);
@@ -72,7 +72,7 @@ function openvegemapMain() {
      * @return {string} URL
      */
     function getRoutingUrl(lat, lon) {
-        var url = localStorage.getItem('routing-provider');
+        let url = localStorage.getItem('routing-provider');
         if (!url) {
             url = routingProviders.google;
         }
@@ -94,8 +94,8 @@ function openvegemapMain() {
     function addReviewLink(e) {
         if (e.target.readyState === XMLHttpRequest.DONE) {
             if (e.target.status === 200) {
-                var data = JSON.parse(e.target.response);
-                var reviewLink = L.DomUtil.get('reviewLink');
+                const data = JSON.parse(e.target.response);
+                const reviewLink = L.DomUtil.get('reviewLink');
                 reviewLink.setAttribute('href', 'https://lib.reviews/' + data.thing.urlID);
                 reviewLink.removeAttribute('disabled');
             }
@@ -105,14 +105,14 @@ function openvegemapMain() {
     /**
      * Start an AJAX request to get reviews from https://lib.reviews/.
      * @param  {Object} feature POI
-     * @return {Void}
+     * @return {void}
      */
     function loadReviews(feature) {
-        var reviewLink = L.DomUtil.get('reviewLink');
+        const reviewLink = L.DomUtil.get('reviewLink');
         reviewLink.removeAttribute('href');
         reviewLink.setAttribute('disabled', 'disabled');
 
-        var request = new XMLHttpRequest();
+        const request = new XMLHttpRequest();
         request.open('GET', 'https://lib.reviews/api/thing?url=https://www.openstreetmap.org/' + feature.type + '/' + feature.id, true);
         request.onreadystatechange = addReviewLink;
         request.send();
@@ -121,12 +121,12 @@ function openvegemapMain() {
     /**
      * Display a marker popup.
      * @param  {Object} e Leaflet DomEvent
-     * @return {Void}
+     * @return {void}
      */
     function showPopup(e) {
-        var poi = new POI(e.target.feature.tags),
-            popup = new Popup(e.target.feature.tags),
-            html = popup.getPopupRows();
+        const poi = new POI(e.target.feature.tags);
+        const popup = new Popup(e.target.feature.tags);
+        const html = popup.getPopupRows();
         if (e.target.feature.tags.opening_hours) {
             try {
                 L.DomUtil.get('hoursTable').innerHTML = openingHours.getOpeningHoursTable(e.target.feature.tags.opening_hours);
@@ -144,7 +144,7 @@ function openvegemapMain() {
         L.DomUtil.get('gmapsLink').setAttribute('href', getRoutingUrl(e.target.feature.lat, e.target.feature.lon));
         L.DomUtil.get('editLink').setAttribute('href', 'https://editor.openvegemap.netlib.re/' + e.target.feature.type + '/' + e.target.feature.id);
         if (e.target.feature.tags.opening_hours) {
-            var hoursBtn = L.DomUtil.get('hoursBtn');
+            const hoursBtn = L.DomUtil.get('hoursBtn');
             if (hoursBtn) {
                 L.DomEvent.on(hoursBtn, 'click', openDialog);
             }
@@ -163,7 +163,7 @@ function openvegemapMain() {
         // Does the user want to hide closed restaurants?
         if (JSON.parse(localStorage.getItem('hide-closed')) && feature.tags.opening_hours) {
             try {
-                var oh = new OH(feature.tags.opening_hours, null);
+                const oh = new OH(feature.tags.opening_hours, null);
 
                 if (!oh.getState()) {
                     // Don't add markers for closed restaurants.
@@ -182,8 +182,8 @@ function openvegemapMain() {
                 feature.lat = feature.center.lat;
                 feature.lon = feature.center.lon;
             }
-            var poi = new POI(feature.tags),
-                marker = L.marker([feature.lat, feature.lon]);
+            const poi = new POI(feature.tags);
+            const marker = L.marker([feature.lat, feature.lon]);
             marker.feature = feature;
             marker.setIcon(L.AwesomeMarkers.icon({
                 icon: poi.getMarkerIcon(),
@@ -192,7 +192,7 @@ function openvegemapMain() {
             }));
             marker.on('click', showPopup);
 
-            var tooltip = poi.getIcon();
+            let tooltip = poi.getIcon();
             if (feature.tags.name) {
                 tooltip += '&nbsp;' + feature.tags.name;
             }
@@ -204,7 +204,7 @@ function openvegemapMain() {
 
     /**
      * Hide the loader.
-     * @return {Void}
+     * @return {void}
      */
     function hideLoader() {
         controlLoader.hide();
@@ -212,7 +212,7 @@ function openvegemapMain() {
 
     /**
      * Show the loader.
-     * @return {Void}
+     * @return {void}
      */
     function showLoader() {
         controlLoader.show();
@@ -220,7 +220,7 @@ function openvegemapMain() {
 
     /**
      * Move the map to the location of the user.
-     * @return {Void}
+     * @return {void}
      */
     function locateMe() {
         map.locate({setView: true, enableHighAccuracy: true});
@@ -229,7 +229,7 @@ function openvegemapMain() {
 
     /**
      * Initilize menu buttons
-     * @return {Void}
+     * @return {void}
      */
     function initMenu() {
         // We should probably initialize this when the template is loaded instead.
@@ -242,7 +242,7 @@ function openvegemapMain() {
 
     /**
      * Open the main menu.
-     * @return {Void}
+     * @return {void}
      */
     function openMenu() {
         menu.toggle();
@@ -252,7 +252,7 @@ function openvegemapMain() {
      * Display a circle on the map
      * @param  {Object} latLng Leaflet LatLng
      * @param  {int}    radius Circle radius
-     * @return {Void}
+     * @return {void}
      */
     function showCircle(latLng, radius) {
         if (circle === undefined) {
@@ -286,7 +286,7 @@ function openvegemapMain() {
     /**
      * Initialize a dialog.
      * @param  {Element} dialog Dialog element
-     * @return {Void}
+     * @return {void}
      */
     function initDialog(dialog) {
         dialogs[dialog.id] = dialog;
@@ -298,10 +298,10 @@ function openvegemapMain() {
     /**
      * Display a warning if the current zoom level is too low.
      * @param  {Object} e Object returned by the zoom event
-     * @return {Void}
+     * @return {void}
      */
     function checkZoomLevel(e) {
-        var zoom = e.target.getZoom();
+        const zoom = e.target.getZoom();
         if (zoom >= 13 && zoomWarningDisplayed) {
             dialogs.zoomToast.hide();
             zoomWarningDisplayed = false;
@@ -313,7 +313,7 @@ function openvegemapMain() {
 
     /**
      * Initialize the geocoder dialog.
-     * @return {Void}
+     * @return {void}
      */
     function geocodeDialogInit() {
         geocoding.init(addGeocodeMarker, dialogs.geocodeDialog);
@@ -321,7 +321,7 @@ function openvegemapMain() {
 
     /**
      * Function called when the apply button in the filters dialog is clicked
-     * @return {Void}
+     * @return {void}
      */
     function applyFilters() {
         layers.applyFilters();
@@ -331,7 +331,7 @@ function openvegemapMain() {
 
     /**
      * Initialize the filters dialog.
-     * @return {Void}
+     * @return {void}
      */
     function filtersDialogInit() {
         L.DomEvent.on(L.DomUtil.get('filtersDialogBtn'), 'click', applyFilters);
@@ -340,7 +340,7 @@ function openvegemapMain() {
     /**
      * Check the checkbox for the specified filter in the filters dialog.
      * @param  {string} layer Layer name
-     * @return {Void}
+     * @return {void}
      */
     function filtersDialogCheckbox(layer) {
         L.DomUtil.get(layer + '-filter').checked = true;
@@ -348,7 +348,7 @@ function openvegemapMain() {
 
     /**
      * Function called when displaying the filters dialog.
-     * @return {Void}
+     * @return {void}
      */
     function filtersDialogShow() {
         layers.getCurFilter().forEach(filtersDialogCheckbox);
@@ -356,10 +356,10 @@ function openvegemapMain() {
 
     /**
      * Set the routing provider from the preferences.
-     * @return {Void}
+     * @return {void}
      */
     function setRoutingProvider() {
-        var curProvider = routingProviders.google;
+        let curProvider = routingProviders.google;
         if (L.DomUtil.get('custom-routingprovider').checked) {
             curProvider = L.DomUtil.get('custom-routingprovider-url').value;
         }
@@ -378,7 +378,7 @@ function openvegemapMain() {
 
     /**
      * Remove every marker from the map and reload them.
-     * @return {Void}
+     * @return {void}
      */
     function clearMap() {
         curFeatures = [];
@@ -388,7 +388,7 @@ function openvegemapMain() {
 
     /**
      * Save the preferences.
-     * @return {Void}
+     * @return {void}
      */
     function savePreferences() {
         setRoutingProvider();
@@ -404,7 +404,7 @@ function openvegemapMain() {
 
     /**
      * Initialize the preferences dialog.
-     * @return {Void}
+     * @return {void}
      */
     function preferencesDialogInit() {
         L.DomEvent.on(L.DomUtil.get('preferencesDialogBtn'), 'click', savePreferences);
@@ -412,11 +412,11 @@ function openvegemapMain() {
 
     /**
      * Function called when displaying the preferences dialog.
-     * @return {Void}
+     * @return {void}
      */
     function preferencesDialogShow() {
-        var url = localStorage.getItem('routing-provider'),
-            curProvider;
+        const url = localStorage.getItem('routing-provider');
+        let curProvider;
         Object.keys(routingProviders).some(function (provider) {
             if (url === routingProviders[provider]) {
                 curProvider = provider;
@@ -440,7 +440,7 @@ function openvegemapMain() {
 
     /**
      * Initialize the zoom level warning toast.
-     * @return {Void}
+     * @return {void}
      */
     function zoomToastInit() {
         checkZoomLevel({target: map});
@@ -449,17 +449,17 @@ function openvegemapMain() {
     /**
      * Called when the app is opened from a deep link.
      * @param  {Object} e Event data
-     * @return {Void}
+     * @return {void}
      */
     function handleDeepLink(e) {
-        var params = L.UrlUtil.queryParse(e.hash);
+        const params = L.UrlUtil.queryParse(e.hash);
         map.setView(params, params.zoom);
     }
 
     /**
      * Called when a page template is loaded
      * @param  {Object} e Event
-     * @return {Void}
+     * @return {void}
      */
     function pageInit(e) {
         if (e.target.id === 'menuPage') {
@@ -470,7 +470,7 @@ function openvegemapMain() {
     /**
      * Called when a new location is found
      * @param  {Object} e Leaflet LocationEvent
-     * @return {Void}
+     * @return {void}
      */
     function newLocation(e) {
         showCircle(e.latlng, e.accuracy);
@@ -478,7 +478,7 @@ function openvegemapMain() {
 
     /**
      * Initialize the app.
-     * @return {Void}
+     * @return {void}
      */
     function init() {
         // Variables
@@ -495,7 +495,7 @@ function openvegemapMain() {
             }
         );
         controlLoader = L.control.loader().addTo(map);
-        var hash = L.UrlUtil.hash();
+        const hash = L.UrlUtil.hash();
 
         // Generic event called when a page template is loaded
         L.DomEvent.on(document, 'init', pageInit);
@@ -561,7 +561,7 @@ function openvegemapMain() {
                 init: preferencesDialogInit,
                 show: preferencesDialogShow
             },
-            zoomToast: {
+            zoomToast: {
                 init: zoomToastInit
             }
         };
@@ -590,7 +590,7 @@ function openvegemapMain() {
     };
 }
 
-var openvegemap = openvegemapMain();
+const openvegemap = openvegemapMain();
 
 if (typeof ons === 'object') {
     ons.ready(openvegemap.init);

@@ -1,4 +1,5 @@
-/*jslint browser: true, node: true*/
+/*jslint browser, node, es6*/
+
 /*global MutationObserver, window*/
 
 /**
@@ -10,7 +11,7 @@ function oldbrowsers() {
 
     /**
      * Display an error if MutationObserver is not supported.
-     * @return {Void}
+     * @return {void}
      */
     function testMutationObserver() {
         if (typeof MutationObserver !== 'function') {
@@ -20,7 +21,7 @@ function oldbrowsers() {
 
     /**
      * Init checks for old browsers
-     * @return {Void}
+     * @return {void}
      */
     function init() {
         testMutationObserver();
