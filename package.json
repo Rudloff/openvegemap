@@ -23,7 +23,7 @@
     "string.prototype.padstart": "~3.0.0",
     "style-loader": "~0.23.1",
     "webpack": "~4.27.1",
-    "webpack-cli": "~3.1.2"
+    "webpack-cli": "^3.3.11"
   },
   "devDependencies": {
     "grunt": "~1.0.1",
