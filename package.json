@@ -47,10 +47,6 @@
     "type": "git",
     "url": "https://github.com/Rudloff/openvegemap.git"
   },
-  "resolutions": {
-    "grunt-fixpack/fixpack/rc": "^1.2.8",
-    "grunt-githooks/handlebars": "^4.3.0"
-  },
   "scripts": {
     "postinstall": "webpack",
     "prepare": "grunt githooks",
