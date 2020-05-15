@@ -44,7 +44,7 @@ function getClosedDates(curDate, prevDate) {
 
 /**
  * Get opening hours in the specified date interval.
- * @param  {Object} oh          opening_hours.js object
+ * @param  {Object} oh          openingHours.js object
  * @param  {Date}   curDate     Current date in the loop
  * @param  {Date}   prevDate    Previous date in the loop
  * @param  {number} curDay      Current day in the loop
@@ -72,12 +72,14 @@ function getOpeningHoursTable(value) {
     const oh = new OH(value, null);
     const it = oh.getIterator();
     let table = '';
+
     // We use a fake date to start a monday
     let curDate = new Date(2017, 0, 2);
     let prevDate = curDate;
     let curDay;
-    let prevOpenDay = new Date(2017, 0, 1);
+    let prevOpenDay = new Date(2017, 0, 1).getDay();
     let endDate;
+
     it.setDate(curDate);
     endDate = new Date(curDate.getTime() + weekInterval);
 

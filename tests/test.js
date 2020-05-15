@@ -6,7 +6,7 @@ import 'qunit/qunit/qunit.css';
 
 import qunit from 'qunit';
 import layers from '../js/layers.js';
-import openingHours from '../js/opening_hours.js';
+import openingHours from '../js/openingHours.js';
 import Popup from '../js/popup.js';
 import POI from '../js/poi.js';
 

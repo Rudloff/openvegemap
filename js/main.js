@@ -21,7 +21,7 @@ import 'leaflet-control-geocoder';
 import 'drmonty-leaflet-awesome-markers';
 import 'leaflet-info-control';
 
-import openingHours from './opening_hours.js';
+import openingHours from './openingHours.js';
 import layers from './layers.js';
 import geocoding from './geocoding.js';
 import POI from './poi.js';
