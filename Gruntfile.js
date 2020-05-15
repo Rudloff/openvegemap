@@ -1,5 +1,11 @@
-/*jslint node: true */
-module.exports = function (grunt) {
+/**
+ * Initialize Grunt config.
+ * @param {Object} grunt
+ * @param {Function} grunt.initConfig
+ * @param {Function} grunt.loadNpmTasks
+ * @param {Function} grunt.registerTask
+ */
+function initGruntConfig(grunt) {
     'use strict';
     grunt.initConfig(
         {
@@ -66,4 +72,6 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['webpack:prod']);
     grunt.registerTask('watch', ['webpack:dev']);
     grunt.registerTask('test', ['qunit']);
-};
+}
+
+module.exports = initGruntConfig;
