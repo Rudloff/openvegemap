@@ -79,3 +79,7 @@ ons-toolbar-button {
         display: none;
     }
 }
+
+.about-logo {
+    text-align: center;
+}
