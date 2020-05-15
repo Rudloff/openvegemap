@@ -1,5 +1,3 @@
-/*jslint node, es6*/
-
 const entry = {
     main: './js/main.js',
     style: './js/style.js'

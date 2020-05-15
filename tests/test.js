@@ -1,23 +1,21 @@
-/*jslint node, es6*/
-/*global window*/
 if (typeof window !== 'object') {
     throw new Error('qunit must be used in a browser.');
 }
 
-require('qunit/qunit/qunit.css');
+import 'qunit/qunit/qunit.css';
 
-const qunit = require('qunit');
-const layers = require('../js/layers.js');
-const openingHours = require('../js/opening_hours.js');
-const Popup = require('../js/popup.js');
-const POI = require('../js/poi.js');
+import qunit from 'qunit';
+import layers from '../js/layers.js';
+import openingHours from '../js/opening_hours.js';
+import Popup from '../js/popup.js';
+import POI from '../js/poi.js';
 
 qunit.start();
 
 qunit.test('layers', function (assert) {
     'use strict';
     assert.ok(Array.isArray(layers.getCurFilter()), 'getCurFilter');
-    assert.equal(undefined, layers.createLayers(), 'createLayers');
+    assert.equal(undefined, layers.createLayers(null), 'createLayers');
     assert.equal(undefined, layers.applyFilters(), 'applyFilters');
 });
 
@@ -25,6 +23,7 @@ qunit.test('openingHours', function (assert) {
     'use strict';
     assert.equal('<tr><th>Monday</th><td>08:30</td><td>20:00</td></tr><tr><th>Tuesday</th><td>08:30</td><td>20:00</td></tr><tr><th>Wednesday</th><td>08:30</td><td>20:00</td></tr><tr><th>Thursday</th><td>08:30</td><td>20:00</td></tr><tr><th>Friday</th><td>08:30</td><td>20:00</td></tr><tr><th>Sunday</th><td colspan="2">Closed<td></tr>', openingHours.getOpeningHoursTable('Mo-Fr 08:30-20:00'), 'getOpeningHoursTable');
 });
+
 
 qunit.test('POI vegan cafe', function (assert) {
     'use strict';
