@@ -3,7 +3,6 @@ export default class POI {
     /**
      * POI class constructor.
      * @param {Object} tags POI tags
-     * @param {Object} tags POI tags
      * @param {string} tags.craft
      * @param {string} tags.amenity
      * @param {string} tags.shop
