@@ -14,9 +14,7 @@ yarn install
 
 OpenVegeMap is also available as [an Android app](https://github.com/Rudloff/openvegemap-cordova).
 
-[![Get it on Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=pro.rudloff.openvegemap)
-
-[![Get it on F-Droid](https://f-droid.org/badge/get-it-on.png)](https://f-droid.org/packages/pro.rudloff.openvegemap/)
+[![Get it on F-Droid](https://fdroid.gitlab.io/artwork/badge/get-it-on.png)](https://f-droid.org/packages/pro.rudloff.openvegemap/)
 
 ## How to contribute
 
