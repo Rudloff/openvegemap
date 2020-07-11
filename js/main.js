@@ -42,7 +42,7 @@ const routingProviders = {
     openroute: 'https://openrouteservice.org/directions?a=null,null,{LAT},{LON}'
 };
 let overpassLayer;
-const overpassQuery = 'node({{bbox}})[~"^diet:.*$"~"."];out;way({{bbox}})[~"^diet:.*$"~"."];out center;';
+const overpassQuery = 'nwr({{bbox}})[~"^diet:.*$"~"."];out center;';
 
 /**
  * Open a dialog.
