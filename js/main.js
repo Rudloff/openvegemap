@@ -13,7 +13,7 @@ padStart.shim();
 // JS
 import ons from 'onsenui';
 import L from 'leaflet';
-import OH from 'opening_hours';
+import {SimpleOpeningHours} from 'simple-opening-hours';
 import 'leaflet-loader/leaflet-loader.js';
 import 'leaflet-plugins/control/Permalink.js';
 import 'leaflet-overpass-layer';
@@ -154,9 +154,9 @@ function addMarker(feature) {
     // Does the user want to hide closed restaurants?
     if (JSON.parse(localStorage.getItem('hide-closed')) && feature.tags.opening_hours) {
         try {
-            const oh = new OH(feature.tags.opening_hours, null);
+            const opening = new SimpleOpeningHours(feature.tags.opening_hours);
 
-            if (!oh.getState()) {
+            if (!opening.isOpenNow()) {
                 // Don't add markers for closed restaurants.
                 return;
             }

@@ -1,7 +1,7 @@
 import L from 'leaflet';
-import OH from 'opening_hours';
 import PostalAddress from 'i18n-postal-address';
 import extractDomain from 'extract-domain';
+import {SimpleOpeningHours} from 'simple-opening-hours';
 
 export default class Popup {
 
@@ -30,9 +30,16 @@ export default class Popup {
     getOpeningHoursBtn() {
         if (this.tags.opening_hours) {
             try {
-                const oh = new OH(this.tags.opening_hours, null);
+                const opening = new SimpleOpeningHours(this.tags.opening_hours);
 
-                return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron nodivider"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
+                let state;
+                if (opening.isOpenNow()) {
+                    state = 'Open';
+                } else {
+                    state = 'Closed';
+                }
+
+                return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron nodivider"><div class="left">Opening hours<br/>(' + state + ')</div></ons-list-item>';
             } catch (error) {
                 console.error(
                     'Malformed opening hours data: ' + error

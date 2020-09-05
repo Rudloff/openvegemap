@@ -6,6 +6,7 @@
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "dependencies": {
     "css-loader": "~2.0.0",
+    "days": "^1.1.1",
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "extract-domain": "~2.0.4",
     "file-loader": "~2.0.0",
@@ -19,7 +20,7 @@
     "leaflet-overpass-layer": "~2.8.0",
     "leaflet-plugins": "^3.3.1",
     "onsenui": "^2.10.10",
-    "opening_hours": "~3.5.0",
+    "simple-opening-hours": "^0.1.1",
     "string.prototype.padstart": "~3.0.0",
     "style-loader": "~0.23.1",
     "webpack": "~4.27.1",
