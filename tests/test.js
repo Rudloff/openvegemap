@@ -21,7 +21,7 @@ qunit.test('layers', function (assert) {
 
 qunit.test('openingHours', function (assert) {
     'use strict';
-    assert.equal('<tr><th>Monday</th><td>08:30</td><td>20:00</td></tr><tr><th>Tuesday</th><td>08:30</td><td>20:00</td></tr><tr><th>Wednesday</th><td>08:30</td><td>20:00</td></tr><tr><th>Thursday</th><td>08:30</td><td>20:00</td></tr><tr><th>Friday</th><td>08:30</td><td>20:00</td></tr><tr><th>Sunday</th><td colspan="2">Closed<td></tr>', openingHours.getOpeningHoursTable('Mo-Fr 08:30-20:00'), 'getOpeningHoursTable');
+    assert.equal('<tr><th>Sunday</th><td>Closed</td></tr><tr><th>Monday</th><td>08:30-20:00</td></tr><tr><th>Tuesday</th><td>08:30-20:00</td></tr><tr><th>Wednesday</th><td>08:30-20:00</td></tr><tr><th>Thursday</th><td>08:30-20:00</td></tr><tr><th>Friday</th><td>08:30-20:00</td></tr><tr><th>Saturday</th><td>Closed</td></tr>', openingHours.getOpeningHoursTable('Mo-Fr 08:30-20:00'), 'getOpeningHoursTable');
 });
 
 
