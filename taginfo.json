@@ -144,6 +144,15 @@
       "description": "🍺 Displayed as an emoji in tooltip"
     },
     {
+      "key": "amenity",
+      "value": "ice_cream",
+      "object_types": [
+        "node",
+        "area"
+      ],
+      "description": "🍨 Displayed as an emoji in tooltip"
+    },
+    {
       "key": "contact:phone",
       "object_types": [
         "node",
