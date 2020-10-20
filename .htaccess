@@ -19,5 +19,5 @@ Header set X-XSS-Protection "1; mode=block"
 Header set Content-Security-Policy "default-src 'self'; img-src 'self' maps.wikimedia.org data:; style-src 'self' 'unsafe-inline'; connect-src 'self' overpass-api.de nominatim.openstreetmap.org lib.reviews; object-src 'none'; script-src 'self' nominatim.openstreetmap.org"
 Header set Referrer-Policy strict-origin
 <FilesMatch "\.(x?html?)$">
-    Header add Link "</dist/main.bundle.js>; rel=preload, </dist/style.bundle.js>; rel=preload"
+    Header add Link "</dist/main.bundle.js>; rel=preload; as=script, </dist/style.bundle.js>; rel=preload; as=script"
 </FilesMatch>
