@@ -4,8 +4,8 @@
   "start_url": "./index.html",
   "description": "Find vegetarian and vegan restaurants in your city",
   "display": "standalone",
-  "theme_color": "#00aba9",
-  "background_color": "#00aba9",
+  "theme_color": "#119352",
+  "background_color": "#119352",
   "icons": [
     {
       "src": "img/android-chrome-192x192.png",
