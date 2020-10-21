@@ -1,14 +1,16 @@
 {
   "name": "openvegemap",
   "description": "Find vegetarian and vegan restaurants in your city",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "author": "Pierre Rudloff",
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "dependencies": {
     "css-loader": "~2.0.0",
+    "days": "^1.1.1",
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "extract-domain": "~2.0.4",
     "file-loader": "~2.0.0",
+    "handlebars": "^4.3.0",
     "i18n-postal-address": "~0.0.6",
     "i18next-client": "~1.11.4",
     "leaflet": "^1.5.1",
@@ -18,24 +20,29 @@
     "leaflet-overpass-layer": "~2.8.0",
     "leaflet-plugins": "^3.3.1",
     "onsenui": "^2.10.10",
-    "opening_hours": "~3.5.0",
+    "simple-opening-hours": "^0.1.1",
     "string.prototype.padstart": "~3.0.0",
     "style-loader": "~0.23.1",
     "webpack": "~4.27.1",
-    "webpack-cli": "~3.1.2"
+    "webpack-cli": "^3.3.12"
   },
   "devDependencies": {
     "grunt": "~1.0.1",
     "grunt-contrib-csslint": "~2.0.0",
+    "grunt-contrib-jshint": "^2.1.0",
     "grunt-contrib-qunit": "^3.1.0",
-    "grunt-fixpack": "~0.1.0",
-    "grunt-githooks": "^0.6.0",
-    "grunt-jslint": "~1.2.0",
+    "grunt-fixpack": "^0.2.1",
     "grunt-jsonlint": "~1.1.0",
     "grunt-webpack": "~3.1.2",
+    "husky": "^4.2.5",
     "qunit": "~2.9.2"
   },
   "homepage": "https://github.com/Rudloff/openvegemap",
+  "husky": {
+    "hooks": {
+      "pre-commit": "grunt lint"
+    }
+  },
   "keywords": [
     "map",
     "openstreemap"
@@ -46,13 +53,8 @@
     "type": "git",
     "url": "https://github.com/Rudloff/openvegemap.git"
   },
-  "resolutions": {
-    "grunt-fixpack/fixpack/rc": "^1.2.8",
-    "grunt-githooks/handlebars": "^4.3.0"
-  },
   "scripts": {
     "postinstall": "webpack",
-    "prepare": "grunt githooks",
     "test": "grunt test"
   }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html><body>
+<html lang="en">
+<body>
 <ons-alert-dialog id="filtersDialog" cancelable>
     <div class="alert-dialog-title">Filters</div>
     <div class="alert-dialog-content">
@@ -9,6 +10,7 @@
                 <div class="left">
                     <ons-checkbox input-id="vegan-only-filter"></ons-checkbox>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="vegan-only-filter" class="center">
                     Vegan only
                 </label>
@@ -17,6 +19,7 @@
                 <div class="left">
                     <ons-checkbox input-id="vegan-filter"></ons-checkbox>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="vegan-filter" class="center">
                     Vegan friendly
                 </label>
@@ -25,14 +28,17 @@
                 <div class="left">
                     <ons-checkbox input-id="vegetarian-only-filter"></ons-checkbox>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="vegetarian-only-filter" class="center">
                     Vegetarian only
                 </label>
             </ons-list-item>
-            <ons-list-item modifier="longdivider" title="Restaurants that serve vegetarian food and meat but no vegan food">
+            <ons-list-item modifier="longdivider"
+                           title="Restaurants that serve vegetarian food and meat but no vegan food">
                 <div class="left">
                     <ons-checkbox input-id="vegetarian-filter"></ons-checkbox>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="vegetarian-filter" class="center">
                     Vegetarian friendly
                 </label>
@@ -41,6 +47,7 @@
                 <div class="left">
                     <ons-checkbox input-id="other-filter"></ons-checkbox>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="other-filter" class="center">
                     Not vegetarian/unknown
                 </label>
@@ -50,6 +57,7 @@
                 <div class="left">
                     <ons-checkbox input-id="shop-filter"></ons-checkbox>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="shop-filter" class="center">
                     Shops
                 </label>
@@ -60,4 +68,5 @@
         <button class="alert-dialog-button" id="filtersDialogBtn">Apply</button>
     </div>
 </ons-alert-dialog>
-</body></html>
+</body>
+</html>

@@ -1,34 +1,45 @@
-/*jslint browser: true, node: true*/
-/*global window*/
+import L from 'leaflet';
+import PostalAddress from 'i18n-postal-address';
+import extractDomain from 'extract-domain';
+import {SimpleOpeningHours} from 'simple-opening-hours';
 
-if (typeof window !== 'object') {
-    throw new Error('OpenVegeMap must be used in a browser.');
-}
+export default class Popup {
 
-var L = require('leaflet'),
-    OH = require('opening_hours'),
-    PostalAddress = require('i18n-postal-address'),
-    extractDomain = require('extract-domain');
-
-/**
- * Popup class constructor.
- * @param {Object} tags POI tags
- * @constructor
- * @returns {Object} Popup object
- */
-function Popup(tags) {
-    'use strict';
+    /**
+     * Popup class constructor.
+     * @param {Object} tags POI tags
+     * @param {string} tags.craft
+     * @param {string} tags.amenity
+     * @param {string} tags.shop
+     * @param {string} tags.cuisine
+     * @param {string} tags.takeaway
+     * @param {string} tags.description
+     * @param {string} tags.opening_hours
+     * @param {string} tags.phone
+     * @param {string} tags.website
+     * @returns {void} Popup object
+     */
+    constructor(tags) {
+        this.tags = tags;
+    }
 
     /**
      * Generate an opening hours button to display in a marker popup.
      * @return {string} ons-list-item element
      */
-    function getOpeningHoursBtn() {
-        if (tags.opening_hours) {
+    getOpeningHoursBtn() {
+        if (this.tags.opening_hours) {
             try {
-                var oh = new OH(tags.opening_hours, null);
+                const opening = new SimpleOpeningHours(this.tags.opening_hours);
 
-                return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron nodivider"><div class="left">Opening hours<br/>(' + oh.getStateString(new Date(), true) + ')</div></ons-list-item>';
+                let state;
+                if (opening.isOpenNow()) {
+                    state = 'Open';
+                } else {
+                    state = 'Closed';
+                }
+
+                return '<ons-list-item id="hoursBtn" data-dialog="hoursPopup" tappable modifier="chevron nodivider"><div class="left">Opening hours<br/>(' + state + ')</div></ons-list-item>';
             } catch (error) {
                 console.error(
                     'Malformed opening hours data: ' + error
@@ -43,9 +54,9 @@ function Popup(tags) {
      * Get a popup row containing the description.
      * @return {string} ons-list-item element
      */
-    function getDescriptionBtn() {
-        if (tags.description) {
-            return '<ons-list-item expandable modifier="nodivider">Description<div class="expandable-content"><small>' + tags.description + '</small></div></ons-list-item>';
+    getDescriptionBtn() {
+        if (this.tags.description) {
+            return '<ons-list-item expandable modifier="nodivider">Description<div class="expandable-content"><small>' + this.tags.description + '</small></div></ons-list-item>';
         }
 
         return '';
@@ -57,7 +68,7 @@ function Popup(tags) {
      * @param  {string} value Value of the property
      * @return {string} ons-list-item element
      */
-    function getPropertyRow(name, value) {
+    getPropertyRow(name, value) {
         if (value) {
             return '<ons-list-item modifier="nodivider"><div class="left list-item__title">' + name + '</div> <div class="right list-item__subtitle">' + value.replace(/_/g, ' ') + '</div></ons-list-item>';
         }
@@ -69,7 +80,7 @@ function Popup(tags) {
      * @param  {string} phone Phone number
      * @return {string} a element
      */
-    function formatPhone(phone) {
+    formatPhone(phone) {
         return '<a href="tel:' + phone + '">' + phone.replace(/\s/g, '&nbsp;') + '</a>';
     }
 
@@ -77,18 +88,19 @@ function Popup(tags) {
      * Get a popup row containing the phone number.
      * @return {string} tr element
      */
-    function getPhoneRow() {
-        var row = '';
+    getPhoneRow() {
+        const row = '';
 
-        if (tags['contact:phone'] && !tags.phone) {
-            tags.phone = tags['contact:phone'];
+        if (this.tags['contact:phone'] && !this.tags.phone) {
+            this.tags.phone = this.tags['contact:phone'];
         }
-        if (tags.phone) {
-            return getPropertyRow(
+        if (this.tags.phone) {
+            return this.getPropertyRow(
                 'Phone number',
-                '<div>' + tags.phone.split(';').map(formatPhone).join('<br/>') + '</div>'
+                '<div>' + this.tags.phone.split(';').map(this.formatPhone).join('<br/>') + '</div>'
             );
         }
+
         return row;
     }
 
@@ -96,20 +108,21 @@ function Popup(tags) {
      * Get a popup row containing the website.
      * @return {string} tr element
      */
-    function getWebsiteRow() {
-        var row = '',
-            url = L.DomUtil.create('a');
+    getWebsiteRow() {
+        let row = '';
+        const url = L.DomUtil.create('a');
 
-        if (tags['contact:website'] && !tags.website) {
-            tags.website = tags['contact:website'];
+        if (this.tags['contact:website'] && !this.tags.website) {
+            this.tags.website = this.tags['contact:website'];
         }
-        if (tags.website) {
-            url.href = tags.website;
+        if (this.tags.website) {
+            url.href = this.tags.website;
             if (url.hostname === 'localhost') {
-                tags.website = 'http://' + tags.website;
+                this.tags.website = 'http://' + this.tags.website;
             }
-            row = getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + tags.website + '">' + extractDomain(tags.website) + '</a>');
+            row = this.getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + this.tags.website + '">' + extractDomain(this.tags.website) + '</a>');
         }
+
         return row;
     }
 
@@ -117,53 +130,47 @@ function Popup(tags) {
      * Get a popup row containing the address.
      * @return {string} tr element
      */
-    function getAddressRow() {
-        var street = '',
-            address = new PostalAddress.default();
+    getAddressRow() {
+        let street = '';
+        const address = new PostalAddress();
 
-        if (tags['addr:housenumber']) {
-            street += tags['addr:housenumber'] + ' ';
+        if (this.tags['addr:housenumber']) {
+            street += this.tags['addr:housenumber'] + ' ';
         }
-        if (tags['addr:street']) {
-            street += tags['addr:street'];
+        if (this.tags['addr:street']) {
+            street += this.tags['addr:street'];
         }
 
         address.setAddress1(street);
-        address.setCity(tags['addr:city']);
-        address.setPostalCode(tags['addr:postcode']);
+        address.setCity(this.tags['addr:city']);
+        address.setPostalCode(this.tags['addr:postcode']);
         address.setFormat({
-            country: tags['addr:country'],
+            country: this.tags['addr:country'],
             type: 'business'
         });
 
-        return getPropertyRow('Address', address.toString());
+        return this.getPropertyRow('Address', address.toString());
     }
 
     /**
      * Get rows to display in a marker popup.
      * @return {string} Set of tr elements
      */
-    function getPopupRows() {
-        var rows = getPropertyRow('Vegan', tags['diet:vegan'])
-                + getPropertyRow('Vegetarian', tags['diet:vegetarian']);
+    getPopupRows() {
+        let rows = this.getPropertyRow('Vegan', this.tags['diet:vegan']) +
+            this.getPropertyRow('Vegetarian', this.tags['diet:vegetarian']);
 
-        if (tags.cuisine) {
-            rows += getPropertyRow('Cuisine', tags.cuisine.replace(/;/g, ', '));
+        if (this.tags.cuisine) {
+            rows += this.getPropertyRow('Cuisine', this.tags.cuisine.replace(/;/g, ', '));
         }
 
-        rows += getPropertyRow('Take away', tags.takeaway)
-                + getAddressRow()
-                + getPhoneRow()
-                + getWebsiteRow()
-                + getOpeningHoursBtn()
-                + getDescriptionBtn();
+        rows += this.getPropertyRow('Take away', this.tags.takeaway) +
+            this.getAddressRow() +
+            this.getPhoneRow() +
+            this.getWebsiteRow() +
+            this.getOpeningHoursBtn() +
+            this.getDescriptionBtn();
 
         return rows;
     }
-
-    return {
-        getPopupRows: getPopupRows
-    };
 }
-
-module.exports = Popup;

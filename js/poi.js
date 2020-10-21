@@ -1,25 +1,31 @@
-/*jslint browser: true, node: true*/
+export default class POI {
 
-/**
- * POI class constructor.
- * @param {Object} tags POI tags
- * @constructor
- * @returns {Object} POI object
- */
-function POI(tags) {
-    'use strict';
+    /**
+     * POI class constructor.
+     * @param {Object} tags POI tags
+     * @param {string} tags.craft
+     * @param {string} tags.amenity
+     * @param {string} tags.shop
+     * @param {string} tags.cuisine
+     * @param {string} tags.takeaway
+     * @param {string} tags.description
+     * @param {string} tags.opening_hours
+     * @param {string} tags.phone
+     * @param {string} tags.website
+     * @returns {Object} POI object
+     */
+    constructor(tags) {
+        this.tags = tags;
+    }
 
     /**
      * Check if a POI is OK for the specified diet.
      * @param  {string}  diet Diet (vegan, vegetarian)
      * @return {Boolean}
      */
-    function isDiet(diet) {
-        var key = 'diet:' + diet;
-        if (tags[key] && (tags[key] === 'yes' || tags[key] === 'only')) {
-            return true;
-        }
-        return false;
+    isDiet(diet) {
+        const key = 'diet:' + diet;
+        return !!(this.tags[key] && (this.tags[key] === 'yes' || this.tags[key] === 'only'));
     }
 
     /**
@@ -27,12 +33,9 @@ function POI(tags) {
      * @param  {string}  diet Diet (vegan, vegetarian)
      * @return {Boolean}
      */
-    function isNotDiet(diet) {
-        var key = 'diet:' + diet;
-        if (tags[key] && tags[key] === 'no') {
-            return true;
-        }
-        return false;
+    isNotDiet(diet) {
+        const key = 'diet:' + diet;
+        return !!(this.tags[key] && this.tags[key] === 'no');
     }
 
     /**
@@ -40,41 +43,34 @@ function POI(tags) {
      * @param  {string}  diet Diet (vegan, vegetarian)
      * @return {Boolean}
      */
-    function isOnlyDiet(diet) {
-        var key = 'diet:' + diet;
-        if (tags[key] && tags[key] === 'only') {
-            return true;
-        }
-        return false;
+    isOnlyDiet(diet) {
+        const key = 'diet:' + diet;
+        return !!(this.tags[key] && this.tags[key] === 'only');
     }
 
     /**
      * Check if a POI is a shop.
      * @return {Boolean}
      */
-    function isShop() {
-        if (tags.shop) {
-            return true;
-        }
-
-        return false;
+    isShop() {
+        return !!this.tags.shop;
     }
 
     /**
      * Get the map layer in which a POI should be added.
      * @return {string} Layer name
      */
-    function getLayer() {
-        if (isOnlyDiet('vegan')) {
+    getLayer() {
+        if (this.isOnlyDiet('vegan')) {
             return 'vegan-only';
         }
-        if (isDiet('vegan')) {
+        if (this.isDiet('vegan')) {
             return 'vegan';
         }
-        if (isOnlyDiet('vegetarian')) {
+        if (this.isOnlyDiet('vegetarian')) {
             return 'vegetarian-only';
         }
-        if (isDiet('vegetarian')) {
+        if (this.isDiet('vegetarian')) {
             return 'vegetarian';
         }
 
@@ -85,14 +81,14 @@ function POI(tags) {
      * Get the correct color for the marker of a POI.
      * @return {string} Color name
      */
-    function getColor() {
-        if (isDiet('vegan')) {
+    getColor() {
+        if (this.isDiet('vegan')) {
             return 'green';
         }
-        if (isDiet('vegetarian')) {
+        if (this.isDiet('vegetarian')) {
             return 'darkgreen';
         }
-        if (isNotDiet('vegetarian')) {
+        if (this.isNotDiet('vegetarian')) {
             return 'red';
         }
         return 'gray';
@@ -102,20 +98,20 @@ function POI(tags) {
      * Get the correct icon for the marker of a POI.
      * @return {string} Font Awesome icon name
      */
-    function getMarkerIcon() {
-        if (isOnlyDiet('vegan')) {
+    getMarkerIcon() {
+        if (this.isOnlyDiet('vegan')) {
             return 'bullseye';
         }
-        if (isDiet('vegan')) {
+        if (this.isDiet('vegan')) {
             return 'circle';
         }
-        if (isOnlyDiet('vegetarian')) {
+        if (this.isOnlyDiet('vegetarian')) {
             return 'circle-notch';
         }
-        if (isDiet('vegetarian')) {
+        if (this.isDiet('vegetarian')) {
             return 'dot-circle';
         }
-        if (isNotDiet('vegetarian')) {
+        if (this.isNotDiet('vegetarian')) {
             return 'ban';
         }
         return 'question';
@@ -126,12 +122,12 @@ function POI(tags) {
      * Get the correct icon for a shop POI.
      * @return {string} Emoji
      */
-    function getShopIcon() {
-        switch (tags.shop) {
-        case 'bakery':
-            return '🥖';
-        default:
-            return '🛒';
+    getShopIcon() {
+        switch (this.tags.shop) {
+            case 'bakery':
+                return '🥖';
+            default:
+                return '🛒';
         }
     }
 
@@ -139,12 +135,12 @@ function POI(tags) {
      * Get the correct icon for a craft POI.
      * @return {string} Emoji
      */
-    function getCraftIcon() {
-        switch (tags.craft) {
-        case 'caterer':
-            return '🍴';
-        default:
-            return '';
+    getCraftIcon() {
+        switch (this.tags.craft) {
+            case 'caterer':
+                return '🍴';
+            default:
+                return '';
         }
     }
 
@@ -152,24 +148,24 @@ function POI(tags) {
      * Get the correct icon for an amenity POI.
      * @return {string} Emoji
      */
-    function getAmenityIcon() {
-        switch (tags.amenity) {
-        case 'fast_food':
-            return '🍔';
-        case 'restaurant':
-            return '🍴';
-        case 'cafe':
-            return '🍵';
-        case 'bar':
-            return '🍸';
-        case 'pub':
-            return '🍺';
-        case 'ice_cream':
-            return '🍨';
-        case 'vending_machine':
-            return 'Vending machine';
-        default:
-            return '';
+    getAmenityIcon() {
+        switch (this.tags.amenity) {
+            case 'fast_food':
+                return '🍔';
+            case 'restaurant':
+                return '🍴';
+            case 'cafe':
+                return '🍵';
+            case 'bar':
+                return '🍸';
+            case 'pub':
+                return '🍺';
+            case 'ice_cream':
+                return '🍨';
+            case 'vending_machine':
+                return 'Vending machine';
+            default:
+                return '';
         }
     }
 
@@ -177,26 +173,16 @@ function POI(tags) {
      * Get the correct icon for a POI.
      * @return {string} Emoji
      */
-    function getIcon() {
-        if (tags.shop) {
-            return getShopIcon();
+    getIcon() {
+        if (this.tags.shop) {
+            return this.getShopIcon();
         }
-        if (tags.craft) {
-            return getCraftIcon();
+        if (this.tags.craft) {
+            return this.getCraftIcon();
         }
-        if (tags.amenity) {
-            return getAmenityIcon();
+        if (this.tags.amenity) {
+            return this.getAmenityIcon();
         }
         return '';
     }
-
-    return {
-        getMarkerIcon: getMarkerIcon,
-        getColor: getColor,
-        getLayer: getLayer,
-        getIcon: getIcon,
-        isShop: isShop
-    };
 }
-
-module.exports = POI;

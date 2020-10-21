@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html><body>
+<html lang="en">
+<body>
 <ons-alert-dialog id="preferencesDialog" cancelable>
     <div class="alert-dialog-title">Preferences</div>
     <div class="alert-dialog-content">
@@ -9,22 +10,27 @@
                 <div class="left">
                     <ons-radio name="routing-provider" input-id="google-routingprovider" value="google"></ons-radio>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="google-routingprovider" class="center">
                     Google Maps
                 </label>
             </ons-list-item>
             <ons-list-item>
                 <div class="left">
-                    <ons-radio name="routing-provider" input-id="graphhopper-routingprovider" value="graphhopper"></ons-radio>
+                    <ons-radio name="routing-provider" input-id="graphhopper-routingprovider"
+                               value="graphhopper"></ons-radio>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="graphhopper-routingprovider" class="center">
                     GraphHopper
                 </label>
             </ons-list-item>
             <ons-list-item>
                 <div class="left">
-                    <ons-radio name="routing-provider" input-id="openroute-routingprovider" value="openroute"></ons-radio>
+                    <ons-radio name="routing-provider" input-id="openroute-routingprovider"
+                               value="openroute"></ons-radio>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="openroute-routingprovider" class="center">
                     OpenRouteService
                 </label>
@@ -33,6 +39,7 @@
                 <div class="left">
                     <ons-radio name="routing-provider" input-id="custom-routingprovider" value="openroute"></ons-radio>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="custom-routingprovider" class="center">
                     Custom:
                 </label>
@@ -50,6 +57,7 @@
                 <div class="left">
                     <ons-checkbox input-id="hide-closed"></ons-checkbox>
                 </div>
+                <!--suppress XmlInvalidId -->
                 <label for="hide-closed" class="center">
                     Hide closed restaurants
                 </label>
@@ -60,4 +68,5 @@
         <button class="alert-dialog-button" id="preferencesDialogBtn">Apply</button>
     </div>
 </ons-alert-dialog>
-</body></html>
+</body>
+</html>
