@@ -164,6 +164,8 @@ function POI(tags) {
             return '🍸';
         case 'pub':
             return '🍺';
+        case 'ice_cream':
+            return '🍨';
         case 'vending_machine':
             return 'Vending machine';
         default:
