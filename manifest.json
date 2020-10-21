@@ -19,6 +19,7 @@
     },
     {
       "src": "img/logo.svg",
+      "sizes": "151x151",
       "type": "image/svg+xml"
     }
   ]

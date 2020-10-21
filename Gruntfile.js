@@ -1,9 +1,18 @@
-/*jslint node: true */
-module.exports = function (grunt) {
+/**
+ * Initialize Grunt config.
+ * @param {Object} grunt
+ * @param {Function} grunt.initConfig
+ * @param {Function} grunt.loadNpmTasks
+ * @param {Function} grunt.registerTask
+ */
+function initGruntConfig(grunt) {
     'use strict';
     grunt.initConfig(
         {
-            jslint: {
+            jshint: {
+                options: {
+                    esversion: 6
+                },
                 js: {
                     src: 'js/*.js'
                 },
@@ -48,25 +57,21 @@ module.exports = function (grunt) {
             },
             qunit: {
                 files: ['tests/index.html']
-            },
-            githooks: {
-                all: {
-                    'pre-commit': 'lint'
-                }
             }
         }
     );
 
-    grunt.loadNpmTasks('grunt-jslint');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-jsonlint');
     grunt.loadNpmTasks('grunt-fixpack');
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-contrib-qunit');
-    grunt.loadNpmTasks('grunt-githooks');
 
-    grunt.registerTask('lint', ['jslint', 'fixpack', 'jsonlint', 'csslint']);
+    grunt.registerTask('lint', ['jshint', 'fixpack', 'jsonlint', 'csslint']);
     grunt.registerTask('default', ['webpack:prod']);
     grunt.registerTask('watch', ['webpack:dev']);
     grunt.registerTask('test', ['qunit']);
-};
+}
+
+module.exports = initGruntConfig;
