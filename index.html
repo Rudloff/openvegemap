@@ -1,41 +1,51 @@
 <!DOCTYPE HTML>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>OpenVegeMap</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
-        <script src="cordova.js" defer></script>
-        <script src="dist/style.bundle.js" defer></script>
-        <script src="dist/main.bundle.js" defer></script>
-        <link rel="manifest" href="manifest.json">
-        <link rel="icon" href="img/logo_32.png">
-        <link rel="canonical" href="https://openvegemap.netlib.re/">
-        <link rel="preconnect" href="https://overpass-api.de/">
-        <meta name="description" content="Find vegetarian and vegan restaurants in your city">
-        <meta name="referrer" content="no-referrer">
-        <meta name="twitter:creator" content="@Tael67">
-        <meta name="twitter:image" content="https://openvegemap.netlib.re/img/logo_512.png">
-        <meta property="og:title" content="OpenVegeMap">
-        <meta property="og:url" content="https://openvegemap.netlib.re/">
-        <meta property="og:image" content="https://openvegemap.netlib.re/img/banner.png">
-        <meta property="og:type" content="website">
-        <meta property="og:description" content="Find vegetarian and vegan restaurants in your city">
-    </head>
-    <body>
-        <ons-toolbar class="toolbar">
-            <div class="left">
-                <ons-toolbar-button title="Menu" id="menuBtn" class="menu-button" icon="fa-bars"></ons-toolbar-button>
-            </div>
-            <div class="center">OpenVegeMap</div>
-        </ons-toolbar>
-        <ons-splitter>
-            <ons-splitter-content id="content">
-                <ons-page>
-                    <div id="map" class="map"></div>
-                </ons-page>
-            </ons-splitter-content>
-            <ons-splitter-side id="menu" collapse="(max-width: 1023px)" class="menu" side="left" width="220px" swipeable swipe-target-width="1" page="templates/menu.html"></ons-splitter-side>
-        </ons-splitter>
-        <noscript><div>This application requires JavaScript, sorry &macr;\_(&#12484;)_/&macr;</div></noscript>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <title>OpenVegeMap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+    <script src="cordova.js" defer></script>
+    <script src="dist/style.bundle.js" defer></script>
+    <script src="dist/main.bundle.js" defer></script>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
+    <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#119352">
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <link rel="canonical" href="https://openvegemap.netlib.re/">
+    <link rel="preconnect" href="https://overpass-api.de/">
+    <meta name="description" content="Find vegetarian and vegan restaurants in your city">
+    <meta name="referrer" content="no-referrer">
+    <meta name="twitter:creator" content="@Tael67">
+    <meta name="twitter:image" content="https://openvegemap.netlib.re/img/android-chrome-512x512.png">
+    <meta property="og:title" content="OpenVegeMap">
+    <meta property="og:url" content="https://openvegemap.netlib.re/">
+    <meta property="og:image" content="https://openvegemap.netlib.re/img/banner.png">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Find vegetarian and vegan restaurants in your city">
+    <meta name="msapplication-TileColor" content="#119352">
+    <meta name="msapplication-config" content="img/browserconfig.xml">
+    <meta name="theme-color" content="#119352">
+</head>
+<body>
+<ons-toolbar class="toolbar">
+    <div class="left">
+        <ons-toolbar-button title="Menu" id="menuBtn" class="menu-button" icon="fa-bars"></ons-toolbar-button>
+    </div>
+    <div class="center">OpenVegeMap</div>
+</ons-toolbar>
+<ons-splitter>
+    <ons-splitter-content id="content">
+        <ons-page>
+            <div id="map" class="map"></div>
+        </ons-page>
+    </ons-splitter-content>
+    <ons-splitter-side id="menu" collapse="(max-width: 1023px)" class="menu" side="left" width="220px" swipeable
+                       swipe-target-width="1" page="templates/menu.html"></ons-splitter-side>
+</ons-splitter>
+<noscript>
+    <div>This application requires JavaScript, sorry &macr;\_(&#12484;)_/&macr;</div>
+</noscript>
+</body>
 </html>

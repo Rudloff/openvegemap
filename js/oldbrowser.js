@@ -1,18 +1,10 @@
-/*jslint browser: true, node: true*/
-/*global MutationObserver, window*/
 
-/**
- * oldbrowsers module constructor.
- * @return {Object} oldbrowsers module
- */
-function oldbrowsers() {
-    'use strict';
-
+export default class oldbrowsers {
     /**
      * Display an error if MutationObserver is not supported.
-     * @return {Void}
+     * @return {void}
      */
-    function testMutationObserver() {
+    static testMutationObserver() {
         if (typeof MutationObserver !== 'function') {
             document.getElementsByTagName('body')[0].innerHTML = 'Your browser does not support <a href="https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver">MutationObserver</a>. Please update your browser.';
         }
@@ -20,15 +12,9 @@ function oldbrowsers() {
 
     /**
      * Init checks for old browsers
-     * @return {Void}
+     * @return {void}
      */
-    function init() {
-        testMutationObserver();
+    static init() {
+        this.testMutationObserver();
     }
-
-    return {
-        init: init
-    };
 }
-
-module.exports = oldbrowsers();

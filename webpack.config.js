@@ -1,12 +1,10 @@
-/*jslint node: true*/
-
-var entry = {
+const entry = {
     main: './js/main.js',
     style: './js/style.js'
 };
 
 try {
-    var qunit = require('qunit');
+    const qunit = require('qunit');
     if (qunit) {
         entry.test = './tests/test.js';
     }

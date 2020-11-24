@@ -6,7 +6,7 @@
     "description": "Find vegetarian and vegan restaurants in your city",
     "project_url": "https://github.com/Rudloff/openvegemap",
     "doc_url": "https://wiki.openstreetmap.org/wiki/OpenVegeMap",
-    "icon_url": "https://raw.githubusercontent.com/Rudloff/openvegemap/master/img/logo_32.png",
+    "icon_url": "https://raw.githubusercontent.com/Rudloff/openvegemap/master/img/favicon-32x32.png",
     "contact_name": "Pierre Rudloff",
     "contact_email": "openvegemap@rudloff.pro"
   },
@@ -142,6 +142,15 @@
         "area"
       ],
       "description": "🍺 Displayed as an emoji in tooltip"
+    },
+    {
+      "key": "amenity",
+      "value": "ice_cream",
+      "object_types": [
+        "node",
+        "area"
+      ],
+      "description": "🍨 Displayed as an emoji in tooltip"
     },
     {
       "key": "contact:phone",
