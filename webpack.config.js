@@ -1,3 +1,5 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const entry = {
     main: './js/main.js',
     style: './js/style.js'
@@ -41,5 +43,21 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'templates/index.html',
+            filename: '../index.html',
+            scriptLoading: 'defer',
+            inject: 'head',
+            excludeChunks: ['test']
+        }),
+        new HtmlWebpackPlugin({
+            template: 'templates/tests.html',
+            filename: '../tests/index.html',
+            publicPath: '../dist/',
+            inject: 'head',
+            chunks: ['test']
+        })
+    ]
 };

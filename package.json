@@ -11,6 +11,7 @@
     "extract-domain": "~2.0.4",
     "file-loader": "~2.0.0",
     "handlebars": "^4.3.0",
+    "html-webpack-plugin": "^4.5.0",
     "i18n-postal-address": "~0.0.6",
     "i18next-client": "~1.11.4",
     "leaflet": "^1.5.1",
