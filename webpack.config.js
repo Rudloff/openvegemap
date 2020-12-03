@@ -25,6 +25,9 @@ module.exports = {
     },
     mode: 'production',
     stats: 'minimal',
+    optimization: {
+        runtimeChunk: 'single',
+    },
     module: {
         rules: [
             {
