@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const FontminPlugin = require('fontmin-webpack');
 
 const entry = {
     main: './js/main.js',
@@ -74,6 +75,14 @@ module.exports = {
             chunks: ['test']
         }),
         new MiniCssExtractPlugin(),
-        new OptimizeCssAssetsPlugin()
+        new OptimizeCssAssetsPlugin(),
+        new FontminPlugin({
+            autodetect: false,
+            // Taken from https://fontawesome.com/cheatsheet.
+            glyphs: [
+                '\uf002', '\uf0b0', '\uf041', '\uf013', '\uf055', '\uf188', '\uf129', '\uf140',
+                '\uf111', '\uf1ce', '\uf192', '\uf05e', '\uf0c9', '\uf128',
+            ],
+        }),
     ],
 };

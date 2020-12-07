@@ -10,6 +10,7 @@
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "extract-domain": "~2.0.4",
     "file-loader": "~2.0.0",
+    "fontmin-webpack": "^2.0.1",
     "handlebars": "^4.3.0",
     "html-webpack-plugin": "^4.5.0",
     "i18n-postal-address": "~0.0.6",
