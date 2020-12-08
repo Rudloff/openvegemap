@@ -1,7 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const FontminPlugin = require('fontmin-webpack');
+
+/** @var {any} MiniCssExtractPlugin*/
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const entry = {
     main: './js/main.js',
@@ -33,7 +35,7 @@ module.exports = {
         rules: [
             {
                 test: /\.css$/,
-                loader: [
+                use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
