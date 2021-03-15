@@ -21,3 +21,5 @@ Header set Referrer-Policy strict-origin
 <Files "index.html">
     Header add Link "<dist/main.bundle.js>; rel=preload; as=script, <dist/style.bundle.js>; rel=preload; as=script"
 </Files>
+
+RedirectMatch 403 /\.git
