@@ -5,7 +5,7 @@
   "author": "Pierre Rudloff",
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "dependencies": {
-    "css-loader": "~5.0.0",
+    "css-loader": "~2.0.0",
     "days": "^1.1.1",
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "extract-domain": "~2.0.4",
