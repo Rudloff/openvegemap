@@ -19,13 +19,40 @@ export default class POI {
     }
 
     /**
+     * Check if a tag for a given key and optional subkey has the `yes` or `only` values.
+     * @param {string} key
+     * @param {string} subkey
+     * @return {Boolean}
+     */
+    isOK(key, subkey) {
+       var tag = key;
+        if (subkey) {
+          tag += ':' + subkey;
+        }
+        return !!(this.tags[tag] && (this.tags[tag] === 'yes' || this.tags[key] === 'only'));
+    }
+
+    /**
+     * Check if a tag for a given key and subkey has the `no` value set.
+     * @param {string} key
+     * @param {string} subkey
+     * @return {Boolean}
+     */
+    isNotOK(key, subkey) {
+        var tag = key;
+        if (subkey) {
+          tag += ':' + subkey;
+        }
+        return !!(this.tags[key] && this.tags[key] === 'no');
+    }
+
+    /**
      * Check if a POI is OK for the specified diet.
      * @param  {string}  diet Diet (vegan, vegetarian)
      * @return {Boolean}
      */
     isDiet(diet) {
-        const key = 'diet:' + diet;
-        return !!(this.tags[key] && (this.tags[key] === 'yes' || this.tags[key] === 'only'));
+        return this.isOK('diet', diet);
     }
 
     /**
@@ -34,8 +61,7 @@ export default class POI {
      * @return {Boolean}
      */
     isNotDiet(diet) {
-        const key = 'diet:' + diet;
-        return !!(this.tags[key] && this.tags[key] === 'no');
+        return this.isNotOK('diet', diet);
     }
 
     /**
