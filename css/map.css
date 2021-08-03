@@ -37,6 +37,11 @@ ons-toolbar-button {
     cursor: pointer;
 }
 
+#mapPopupList {
+    max-height: 60vh;
+    overflow-y: scroll;
+}
+
 .list__item:first-child {
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
