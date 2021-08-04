@@ -191,10 +191,10 @@ export default class Popup {
             rows += this.getPropertyRow('Toilet access policy', this.tags['toilets:access'], 'access');
         }
         if (this.tags['toilets:gender_segregated']) { // A rare but sometimes used tag.
-            rows += this.getPropertyRow('Gender segregated', this.tags['toilets:gender_segregated'], 'gender_segregated');
+            rows += this.getPropertyRow('Gender segregated toilets', this.tags['toilets:gender_segregated'], 'gender_segregated');
         }
         if (this.tags['toilets:unisex']) {
-            rows += this.getPropertyRow('Unisex', this.tags['toilets:unisex'], 'unisex');
+            rows += this.getPropertyRow('Unisex toilets', this.tags['toilets:unisex'], 'unisex');
         }
         if (this.tags['toilets:wheelchair']) {
             rows += this.getPropertyRow('Wheelchair accessible toilet', this.tags['toilets:wheelchair'], 'wheelchair');
