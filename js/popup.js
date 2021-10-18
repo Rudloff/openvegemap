@@ -68,7 +68,7 @@ export default class Popup {
      * Generate a row to display in a marker popup.
      * @param  {string} name  Name of the property
      * @param  {string} value Value of the property
-     * @param  {string} key Key as used for title of OSM Wiki.
+     * @param  {?string} key Key as used for title of OSM Wiki.
      * @return {string} ons-list-item element
      */
     getPropertyRow(name, value, key = null) {
