@@ -173,32 +173,16 @@ export default class Popup {
         if (this.tags.cuisine) {
             rows += this.getPropertyRow('Cuisine', this.tags.cuisine.replace(/;/g, ', '), 'cuisine');
         }
-        if (this.tags['diet:vegan']) {
-            rows += this.getPropertyRow('Vegan', this.tags['diet:vegan'], 'diet:vegan');
-        }
-        if (this.tags['diet:vegetarian']) {
-            rows += this.getPropertyRow('Vegetarian', this.tags['diet:vegetarian'], 'diet:vegetarian');
-        }
-        if (this.tags.takeaway) {
-            rows += this.getPropertyRow('Take away', this.tags.takeaway, 'takeaway');
-        }
+        rows += this.getPropertyRow('Vegan', this.tags['diet:vegan'], 'diet:vegan');
+        rows += this.getPropertyRow('Vegetarian', this.tags['diet:vegetarian'], 'diet:vegetarian');
+        rows += this.getPropertyRow('Take away', this.tags.takeaway, 'takeaway');
 
         // Toilet facility metadata.
-        if (this.tags.changing_table) {
-            rows += this.getPropertyRow('Baby changing table', this.tags.changing_table, 'changing_table');
-        }
-        if (this.tags['toilets:access']) {
-            rows += this.getPropertyRow('Toilet access policy', this.tags['toilets:access'], 'access');
-        }
-        if (this.tags['toilets:gender_segregated']) { // A rare but sometimes used tag.
-            rows += this.getPropertyRow('Gender segregated toilets', this.tags['toilets:gender_segregated'], 'gender_segregated');
-        }
-        if (this.tags['toilets:unisex']) {
-            rows += this.getPropertyRow('Unisex toilets', this.tags['toilets:unisex'], 'unisex');
-        }
-        if (this.tags['toilets:wheelchair']) {
-            rows += this.getPropertyRow('Wheelchair accessible toilet', this.tags['toilets:wheelchair'], 'wheelchair');
-        }
+        rows += this.getPropertyRow('Baby changing table', this.tags.changing_table, 'changing_table');
+        rows += this.getPropertyRow('Toilet access policy', this.tags['toilets:access'], 'access');
+        rows += this.getPropertyRow('Gender segregated toilets', this.tags['toilets:gender_segregated'], 'gender_segregated');
+        rows += this.getPropertyRow('Unisex toilets', this.tags['toilets:unisex'], 'unisex');
+        rows += this.getPropertyRow('Wheelchair accessible toilet', this.tags['toilets:wheelchair'], 'wheelchair');
 
         // Basic information.
         rows += this.getAddressRow() +
