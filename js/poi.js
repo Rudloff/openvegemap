@@ -38,9 +38,8 @@ export default class POI {
      * @return {Boolean}
      */
     isNotOK(key, subkey) {
-        var tag = key;
         if (subkey) {
-          tag += ':' + subkey;
+          key += ':' + subkey;
         }
         return !!(this.tags[key] && this.tags[key] === 'no');
     }
