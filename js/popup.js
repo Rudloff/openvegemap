@@ -76,7 +76,7 @@ export default class Popup {
         if (value) {
             html += '<ons-list-item modifier="nodivider"><div class="left list-item__title">';
             if (key) {
-                html += '<a href="https://wiki.openstreetmap.org/wiki/Key%3A' + key + '">' + name + '</a>';
+                html += '<a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3A' + key + '">' + name + '</a>';
             } else {
                 html += name;
             }
