@@ -71,7 +71,7 @@ export default class Popup {
      * @param  {string} key Key as used for title of OSM Wiki.
      * @return {string} ons-list-item element
      */
-    getPropertyRow(name, value, key) {
+    getPropertyRow(name, value, key = null) {
         let html = '';
         if (value) {
             html += '<ons-list-item modifier="nodivider"><div class="left list-item__title">';
