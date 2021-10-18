@@ -163,6 +163,34 @@ export default class Popup {
     }
 
     /**
+     * Get a popup row containing various restroom metadata.
+     * @return {string} tr element
+     */
+    getToiletRow() {
+        let toilet = [];
+
+        if (this.tags.changing_table) {
+            toilet.push('Changing table: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Achanging_table">' + this.tags.changing_table + '</a>');
+        }
+        if (this.tags['toilets:access']) {
+            toilet.push('Access: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Aaccess">' + this.tags['toilets:access'] + '</a>');
+        }
+        if (this.tags['toilets:gender_segregated']) {
+            toilet.push('Gender segregated: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Agender_segregated">' + this.tags['toilets:gender_segregated'] + '</a>');
+        }
+        if (this.tags['toilets:unisex']) {
+            toilet.push('Unisex: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Aunisex">' + this.tags['toilets:unisex'] + '</a>');
+        }
+        if (this.tags['toilets:wheelchair']) {
+            toilet.push('Wheelchair: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Awheelchair">' + this.tags['toilets:wheelchair'] + '</a>');
+        }
+        return this.getPropertyRow(
+            'Toilet',
+            '<div>' + toilet.join(',<br />') + '</div>'
+        );
+    }
+
+    /**
      * Get rows to display in a marker popup.
      * @return {string} Set of tr elements
      */
@@ -178,11 +206,7 @@ export default class Popup {
         rows += this.getPropertyRow('Take away', this.tags.takeaway, 'takeaway');
 
         // Toilet facility metadata.
-        rows += this.getPropertyRow('Baby changing table', this.tags.changing_table, 'changing_table');
-        rows += this.getPropertyRow('Toilet access policy', this.tags['toilets:access'], 'access');
-        rows += this.getPropertyRow('Gender segregated toilets', this.tags['toilets:gender_segregated'], 'gender_segregated');
-        rows += this.getPropertyRow('Unisex toilets', this.tags['toilets:unisex'], 'unisex');
-        rows += this.getPropertyRow('Wheelchair accessible toilet', this.tags['toilets:wheelchair'], 'wheelchair');
+        rows += this.getToiletRow();
 
         // Basic information.
         rows += this.getAddressRow() +
