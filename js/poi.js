@@ -21,10 +21,10 @@ export default class POI {
     /**
      * Check if a tag for a given key and optional subkey has the `yes` or `only` values.
      * @param {string} key
-     * @param {string} subkey
+     * @param {?string} subkey
      * @return {Boolean}
      */
-    isOK(key, subkey) {
+    isOK(key, subkey = null) {
         if (subkey) {
           key += ':' + subkey;
         }
