@@ -34,10 +34,10 @@ export default class POI {
     /**
      * Check if a tag for a given key and subkey has the `no` value set.
      * @param {string} key
-     * @param {string} subkey
+     * @param {?string} subkey
      * @return {Boolean}
      */
-    isNotOK(key, subkey) {
+    isNotOK(key, subkey = null) {
         if (subkey) {
           key += ':' + subkey;
         }
