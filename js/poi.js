@@ -25,11 +25,10 @@ export default class POI {
      * @return {Boolean}
      */
     isOK(key, subkey) {
-       var tag = key;
         if (subkey) {
-          tag += ':' + subkey;
+          key += ':' + subkey;
         }
-        return !!(this.tags[tag] && (this.tags[tag] === 'yes' || this.tags[key] === 'only'));
+        return !!(this.tags[key] && (this.tags[key] === 'yes' || this.tags[key] === 'only'));
     }
 
     /**
