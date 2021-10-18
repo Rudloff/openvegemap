@@ -72,7 +72,7 @@ export default class Popup {
      * @return {string} ons-list-item element
      */
     getPropertyRow(name, value, key) {
-        var html = '';
+        let html = '';
         if (value) {
             html += '<ons-list-item modifier="nodivider"><div class="left list-item__title">';
             if (key) {
