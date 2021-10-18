@@ -177,7 +177,7 @@ export default class Popup {
             rows += this.getPropertyRow('Vegan', this.tags['diet:vegan'], 'diet:vegan');
         }
         if (this.tags['diet:vegetarian']) {
-            rows += this.getPropertyRow('Vegetarian', this.tags['diet:vegetarian'], 'diet');
+            rows += this.getPropertyRow('Vegetarian', this.tags['diet:vegetarian'], 'diet:vegetarian');
         }
         if (this.tags.takeaway) {
             rows += this.getPropertyRow('Take away', this.tags.takeaway, 'takeaway');
