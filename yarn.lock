@@ -2735,11 +2735,6 @@ i18n-postal-address@~0.0.6:
   resolved "https://registry.yarnpkg.com/i18n-postal-address/-/i18n-postal-address-0.0.7.tgz#c6ff6624f0f5113bde1233a10a86f175680b3150"
   integrity sha512-Mmbk//+y8oL3jwH0YbJOeSG6ySBxNf12WlG+dsLLJO7YkUp7F7jQeM0FcKIe337J4ozFh0Q4koDKvgHz4/8Oeg==
 
-i18next-client@~1.11.4:
-  version "1.11.4"
-  resolved "https://registry.yarnpkg.com/i18next-client/-/i18next-client-1.11.4.tgz#0482eb1b643ecf7a8404f7b592eba328e5f09ae7"
-  integrity sha1-BILrG2Q+z3qEBPe1kuujKOXwmuc=
-
 iconv-lite@~0.4.13:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
