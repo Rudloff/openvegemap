@@ -26,7 +26,7 @@ export default class POI {
      */
     isOK(key, subkey = null) {
         if (subkey) {
-          key += ':' + subkey;
+            key += ':' + subkey;
         }
         return !!(this.tags[key] && (this.tags[key] === 'yes' || this.tags[key] === 'only'));
     }
