@@ -13,6 +13,8 @@ export default class Popup {
      * @param {string} tags.shop
      * @param {string} tags.cuisine
      * @param {string} tags.takeaway
+     * @param {string} tags.toilets
+     * @param {string} tags.changing_table
      * @param {string} tags.description
      * @param {string} tags.opening_hours
      * @param {string} tags.phone
@@ -66,13 +68,21 @@ export default class Popup {
      * Generate a row to display in a marker popup.
      * @param  {string} name  Name of the property
      * @param  {string} value Value of the property
+     * @param  {?string} key Key as used for title of OSM Wiki.
      * @return {string} ons-list-item element
      */
-    getPropertyRow(name, value) {
+    getPropertyRow(name, value, key = null) {
+        let html = '';
         if (value) {
-            return '<ons-list-item modifier="nodivider"><div class="left list-item__title">' + name + '</div> <div class="right list-item__subtitle">' + value.replace(/_/g, ' ') + '</div></ons-list-item>';
+            html += '<ons-list-item modifier="nodivider"><div class="left list-item__title">';
+            if (key) {
+                html += '<a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3A' + key + '">' + name + '</a>';
+            } else {
+                html += name;
+            }
+            html += '</div> <div class="right list-item__subtitle">' + value.replace(/_/g, ' ') + '</div></ons-list-item>';
         }
-        return '';
+        return html;
     }
 
     /**
@@ -153,19 +163,53 @@ export default class Popup {
     }
 
     /**
+     * Get a popup row containing various restroom metadata.
+     * @return {string} tr element
+     */
+    getToiletRow() {
+        let toilet = [];
+
+        if (this.tags.changing_table) {
+            toilet.push('Changing table: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Achanging_table">' + this.tags.changing_table + '</a>');
+        }
+        if (this.tags['toilets:access']) {
+            toilet.push('Access: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Aaccess">' + this.tags['toilets:access'] + '</a>');
+        }
+        if (this.tags['toilets:gender_segregated']) {
+            toilet.push('Gender segregated: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Agender_segregated">' + this.tags['toilets:gender_segregated'] + '</a>');
+        }
+        if (this.tags['toilets:unisex']) {
+            toilet.push('Unisex: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Aunisex">' + this.tags['toilets:unisex'] + '</a>');
+        }
+        if (this.tags['toilets:wheelchair']) {
+            toilet.push('Wheelchair: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Awheelchair">' + this.tags['toilets:wheelchair'] + '</a>');
+        }
+        return (toilet.length) ? this.getPropertyRow(
+            'Toilet',
+            '<div>' + toilet.join(',<br />') + '</div>'
+        ) : '';
+    }
+
+    /**
      * Get rows to display in a marker popup.
      * @return {string} Set of tr elements
      */
     getPopupRows() {
-        let rows = this.getPropertyRow('Vegan', this.tags['diet:vegan']) +
-            this.getPropertyRow('Vegetarian', this.tags['diet:vegetarian']);
+        let rows = '';
 
+        // Cuisine and food-related metadata.
         if (this.tags.cuisine) {
-            rows += this.getPropertyRow('Cuisine', this.tags.cuisine.replace(/;/g, ', '));
+            rows += this.getPropertyRow('Cuisine', this.tags.cuisine.replace(/;/g, ', '), 'cuisine');
         }
+        rows += this.getPropertyRow('Vegan', this.tags['diet:vegan'], 'diet:vegan');
+        rows += this.getPropertyRow('Vegetarian', this.tags['diet:vegetarian'], 'diet:vegetarian');
+        rows += this.getPropertyRow('Take away', this.tags.takeaway, 'takeaway');
 
-        rows += this.getPropertyRow('Take away', this.tags.takeaway) +
-            this.getAddressRow() +
+        // Toilet facility metadata.
+        rows += this.getToiletRow();
+
+        // Basic information.
+        rows += this.getAddressRow() +
             this.getPhoneRow() +
             this.getWebsiteRow() +
             this.getOpeningHoursBtn() +
