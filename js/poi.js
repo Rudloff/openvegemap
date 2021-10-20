@@ -39,7 +39,7 @@ export default class POI {
      */
     isNotOK(key, subkey = null) {
         if (subkey) {
-          key += ':' + subkey;
+            key += ':' + subkey;
         }
         return !!(this.tags[key] && this.tags[key] === 'no');
     }
