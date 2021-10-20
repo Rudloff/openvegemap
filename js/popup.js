@@ -184,10 +184,10 @@ export default class Popup {
         if (this.tags['toilets:wheelchair']) {
             toilet.push('Wheelchair: <a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Awheelchair">' + this.tags['toilets:wheelchair'] + '</a>');
         }
-        return this.getPropertyRow(
+        return (toilet.length) ? this.getPropertyRow(
             'Toilet',
             '<div>' + toilet.join(',<br />') + '</div>'
-        );
+        ) : '';
     }
 
     /**
