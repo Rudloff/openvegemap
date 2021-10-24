@@ -142,6 +142,8 @@ export default class Popup {
      */
     getAddressRow() {
         let street = '';
+
+        /** @var {PostalAddress} address */
         const address = new PostalAddress();
 
         if (this.tags['addr:housenumber']) {
