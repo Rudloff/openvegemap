@@ -1924,10 +1924,12 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-domain@~2.0.4:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/extract-domain/-/extract-domain-2.0.6.tgz#9869988a7a839fd680ae8d62e296b5be2b046048"
-  integrity sha512-l9NfrJ45nUE6xih+1r/hl5giIEJA59jP7k7mPvWd6woNcBvB5JQvo+yB9SlT7nwO9hVhln/Po26OU7a7SKuVGg==
+extract-domain@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/extract-domain/-/extract-domain-2.4.0.tgz#d37c62ffbe466744a72953107a1c723f0ca82b92"
+  integrity sha512-mOaay8vhFGXKWUDx8WNzFZi17XBxjy7i8u33x50hlHxMQ7o3kXuVydVVSQQ6ndEPjcJYfD3D2rSUo1Y+GiIBrg==
+  optionalDependencies:
+    psl "^1.8.0"
 
 extract-zip@^1.6.6:
   version "1.7.0"
@@ -4619,7 +4621,7 @@ prr@~1.0.1:
   resolved "https://registry.yarnpkg.com/prr/-/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
   integrity sha1-0/wRS6BplaRexok/SEzrHXj19HY=
 
-psl@^1.1.28:
+psl@^1.1.28, psl@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.8.0.tgz#9326f8bcfb013adcc005fdff056acce020e51c24"
   integrity sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==
