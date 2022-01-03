@@ -53,3 +53,17 @@ qunit.test('Popup', function (assert) {
 
     assert.equal('<ons-list-item modifier="nodivider"><div class="left list-item__title">Vegan</div> <div class="right list-item__subtitle">foo</div></ons-list-item>', popup.getPopupRows(), 'getPopupRows');
 });
+
+qunit.test('Popup website', function (assert) {
+    'use strict';
+    const popup = new Popup({'diet:vegan': 'foo', 'website': 'https://www.example.com/bar', 'contact:website': 'http://foo.com/'});
+
+    assert.equal('<ons-list-item modifier="nodivider"><div class="left list-item__title">Vegan</div> <div class="right list-item__subtitle">foo</div></ons-list-item><ons-list-item modifier="nodivider"><div class="left list-item__title">Website</div> <div class="right list-item__subtitle"><a target=" blank" rel="noopener" href="https://www.example.com/bar">example.com</a></div></ons-list-item>', popup.getPopupRows(), 'getPopupRows');
+});
+
+qunit.test('Popup UK website', function (assert) {
+    'use strict';
+    const popup = new Popup({'diet:vegan': 'foo', 'contact:website': 'http://www.example.co.uk/baz'});
+
+    assert.equal('<ons-list-item modifier="nodivider"><div class="left list-item__title">Vegan</div> <div class="right list-item__subtitle">foo</div></ons-list-item><ons-list-item modifier="nodivider"><div class="left list-item__title">Website</div> <div class="right list-item__subtitle"><a target=" blank" rel="noopener" href="http://www.example.co.uk/baz">example.co.uk</a></div></ons-list-item>', popup.getPopupRows(), 'getPopupRows');
+});
