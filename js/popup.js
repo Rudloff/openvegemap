@@ -120,7 +120,7 @@ export default class Popup {
             if (url.hostname === 'localhost') {
                 this.tags.website = 'http://' + this.tags.website;
             }
-            row = this.getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + this.tags.website + '">' + extractDomain(this.tags.website) + '</a>');
+            row = this.getPropertyRow('Website', '<a target="_blank" rel="noopener" href="' + this.tags.website + '">' + extractDomain(this.tags.website, { tld: true }) + '</a>');
         }
 
         return row;
