@@ -1,3 +1,10 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const FontminPlugin = require('fontmin-webpack');
+
+/** @var {any} MiniCssExtractPlugin*/
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const entry = {
     main: './js/main.js',
     style: './js/style.js'
@@ -20,11 +27,23 @@ module.exports = {
         publicPath: 'dist/'
     },
     mode: 'production',
+    stats: 'minimal',
+    optimization: {
+        runtimeChunk: 'single',
+    },
     module: {
         rules: [
             {
                 test: /\.css$/,
-                loader: ["style-loader", "css-loader"]
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            publicPath: './',
+                        },
+                    },
+                    'css-loader',
+                ],
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
@@ -41,5 +60,31 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'templates/index.html',
+            filename: '../index.html',
+            scriptLoading: 'defer',
+            inject: 'head',
+            excludeChunks: ['test']
+        }),
+        new HtmlWebpackPlugin({
+            template: 'templates/tests.html',
+            filename: '../tests/index.html',
+            publicPath: '../dist/',
+            inject: 'head',
+            chunks: ['test']
+        }),
+        new MiniCssExtractPlugin(),
+        new OptimizeCssAssetsPlugin(),
+        new FontminPlugin({
+            autodetect: false,
+            // Taken from https://fontawesome.com/cheatsheet.
+            glyphs: [
+                '\uf002', '\uf0b0', '\uf041', '\uf013', '\uf055', '\uf188', '\uf129', '\uf140',
+                '\uf111', '\uf1ce', '\uf192', '\uf05e', '\uf0c9', '\uf128',
+            ],
+        }),
+    ],
 };
