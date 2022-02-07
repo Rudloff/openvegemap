@@ -18,8 +18,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build
-      run: |
-        yarn install
-        grunt lint
-        grunt test
+    - run: yarn install
+    - run: grunt lint
+    - run: grunt test
