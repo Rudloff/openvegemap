@@ -51,5 +51,5 @@ qunit.test('Popup', function (assert) {
     'use strict';
     const popup = new Popup({'diet:vegan': 'foo'});
 
-    assert.equal('<ons-list-item modifier="nodivider"><div class="left list-item__title">Vegan</div> <div class="right list-item__subtitle">foo</div></ons-list-item>', popup.getPopupRows(), 'getPopupRows');
+    assert.equal('<ons-list-item modifier="nodivider"><div class="left list-item__title"><a target="_blank" href="https://wiki.openstreetmap.org/wiki/Key%3Adiet:vegan">Vegan</a></div> <div class="right list-item__subtitle">foo</div></ons-list-item>', popup.getPopupRows(), 'getPopupRows');
 });
