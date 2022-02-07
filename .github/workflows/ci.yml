@@ -20,6 +20,6 @@ jobs:
 
     - name: Build
       run: |
-        npm install
+        yarn install
         grunt lint
         grunt test
