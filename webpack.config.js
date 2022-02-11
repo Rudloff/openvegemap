@@ -1,5 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const FontminPlugin = require('fontmin-webpack');
 
 /** @var {any} MiniCssExtractPlugin*/
@@ -72,7 +72,7 @@ module.exports = {
             chunks: ['test']
         }),
         new MiniCssExtractPlugin(),
-        new OptimizeCssAssetsPlugin(),
+        new CssMinimizerPlugin(),
         new FontminPlugin({
             autodetect: false,
             // Taken from https://fontawesome.com/cheatsheet.
