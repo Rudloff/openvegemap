@@ -5,12 +5,11 @@
   "author": "Pierre Rudloff",
   "bugs": "https://github.com/Rudloff/openvegemap/issues",
   "dependencies": {
-    "css-loader": "~2.0.0",
+    "css-loader": "^6.6.0",
     "days": "^1.1.1",
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "extract-domain": "^2.4.0",
-    "file-loader": "~2.0.0",
-    "fontmin-webpack": "^2.0.1",
+    "fontmin-webpack": "^3.2.0",
     "html-webpack-plugin": "^4.5.0",
     "i18n-postal-address": "~0.0.6",
     "leaflet": "^1.5.1",
@@ -19,14 +18,14 @@
     "leaflet-loader": "~0.0.1",
     "leaflet-overpass-layer": "~2.8.0",
     "leaflet-plugins": "^3.3.1",
-    "mini-css-extract-plugin": "^1.3.1",
+    "mini-css-extract-plugin": "^2.5.3",
     "onsenui": "^2.11.1",
     "optimize-css-assets-webpack-plugin": "^5.0.4",
     "simple-opening-hours": "^0.1.1",
     "string.prototype.padstart": "~3.0.0",
     "style-loader": "~0.23.1",
-    "webpack": "^4.27.1",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
   },
   "devDependencies": {
     "grunt": "~1.3.0",
@@ -35,7 +34,7 @@
     "grunt-contrib-qunit": "^3.1.0",
     "grunt-fixpack": "^0.2.1",
     "grunt-jsonlint": "~1.1.0",
-    "grunt-webpack": "~3.1.2",
+    "grunt-webpack": "^5.0.0",
     "husky": "^4.2.5",
     "qunit": "~2.9.2"
   },

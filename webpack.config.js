@@ -24,7 +24,8 @@ module.exports = {
     entry: entry,
     output: {
         filename: '[name].bundle.js',
-        publicPath: 'dist/'
+        publicPath: 'dist/',
+        clean: true
     },
     mode: 'production',
     stats: 'minimal',
@@ -47,17 +48,11 @@ module.exports = {
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2)$/,
-                loader: 'file-loader',
-                options: {
-                    name: 'fonts/[name].[ext]'
-                }
+                type: 'asset/resource'
             },
             {
                 test: /\.(png|gif)$/,
-                loader: 'file-loader',
-                options: {
-                    name: 'img/[name].[ext]'
-                }
+                type: 'asset/resource'
             }
         ]
     },
