@@ -28,14 +28,6 @@ function initGruntConfig(grunt) {
                     src: ['css/*.css']
                 }
             },
-            jsonlint: {
-                manifests: {
-                    src: ['*.json'],
-                    options: {
-                        format: true
-                    }
-                }
-            },
             fixpack: {
                 package: {
                     src: 'package.json'
@@ -62,13 +54,12 @@ function initGruntConfig(grunt) {
     );
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-jsonlint');
     grunt.loadNpmTasks('grunt-fixpack');
     grunt.loadNpmTasks('grunt-contrib-csslint');
     grunt.loadNpmTasks('grunt-webpack');
     grunt.loadNpmTasks('grunt-contrib-qunit');
 
-    grunt.registerTask('lint', ['jshint', 'fixpack', 'jsonlint', 'csslint']);
+    grunt.registerTask('lint', ['jshint', 'fixpack', 'csslint']);
     grunt.registerTask('default', ['webpack:prod']);
     grunt.registerTask('watch', ['webpack:dev']);
     grunt.registerTask('test', ['qunit']);

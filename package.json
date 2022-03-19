@@ -32,7 +32,6 @@
     "grunt-contrib-jshint": "^2.1.0",
     "grunt-contrib-qunit": "^3.1.0",
     "grunt-fixpack": "^0.2.1",
-    "grunt-jsonlint": "~1.1.0",
     "grunt-webpack": "^5.0.0",
     "husky": "^4.2.5",
     "qunit": "~2.9.2"
