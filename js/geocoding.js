@@ -7,7 +7,7 @@ export default class geocoding {
      * @return {void}
      */
     static geocode() {
-        this.geocoder._geocode();
+        geocoding.geocoder._geocode();
     }
 
     /**

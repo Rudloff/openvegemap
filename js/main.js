@@ -6,10 +6,6 @@ if (typeof window !== 'object') {
 import oldbrowsers from './oldbrowser.js';
 oldbrowsers.init();
 
-// Polyfills
-import padStart from 'string.prototype.padstart';
-padStart.shim();
-
 // JS
 import ons from 'onsenui';
 import L from 'leaflet';
