@@ -2112,6 +2112,11 @@ icss-utils@^5.0.0, icss-utils@^5.1.0:
   resolved "https://registry.yarnpkg.com/icss-utils/-/icss-utils-5.1.0.tgz#c6be6858abd013d768e98366ae47e25d5887b1ae"
   integrity sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==
 
+idb@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/idb/-/idb-4.0.5.tgz#23b930fbb0abce391e939c35b7b31a669e74041f"
+  integrity sha512-P+Fk9HT2h1DhXoE1YNK183SY+CRh2GHNh28de94sGwhe0bUA75JJeVJWt3SenE5p0BXK7maflIq29dl6UZHrFw==
+
 import-fresh@^3.2.1:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-3.3.0.tgz#37162c25fcb9ebaa2e6e53d5b4d88ce17d9e0c2b"
@@ -2527,11 +2532,12 @@ leaflet-loader@~0.0.1:
   resolved "https://registry.yarnpkg.com/leaflet-loader/-/leaflet-loader-0.0.3.tgz#d5e34dddc0eea5240ee806cb4f5d8d908a879b1e"
   integrity sha512-xtxPJvi5rhQ0JN7G72ivPnbTSi79MtHk1+KxAh1rvrGU4SuY2cQ2+Iu4AU+A2SKpczfnIkFFCCRaVI0n2/hxKA==
 
-leaflet-overpass-layer@~2.8.0:
-  version "2.8.4"
-  resolved "https://registry.yarnpkg.com/leaflet-overpass-layer/-/leaflet-overpass-layer-2.8.4.tgz#6b292c31afcb3bf9d1f37e67aaa6b91035686ba9"
-  integrity sha512-+/15Np/dnrNIZS5IgkzcAWFVI0kYlfIbjF+epADB1G9jsh2gA3Gw4HhhJaoH4qyfyLR7ab1zZVIBnPmed1qCSg==
+leaflet-overpass-layer@^2.9.0:
+  version "2.9.0"
+  resolved "https://registry.yarnpkg.com/leaflet-overpass-layer/-/leaflet-overpass-layer-2.9.0.tgz#2cdf5c2a7d643ecfec52e87dbc335a9e1c94fae0"
+  integrity sha512-r6V4qfTp4yXhjeRu07wyRFg3cJh+ZdL/zqDVdHd6MdqZDnBjbDhV/NwstTMz1kP6PwXckOPDD5aWtkogfron1g==
   dependencies:
+    idb "^4.0.5"
     js-clipper "^1.0.1"
     leaflet "^1.2.0"
 
