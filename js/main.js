@@ -527,7 +527,8 @@ function init() {
         afterRequest: hideLoader,
         onSuccess: addMarkers,
         minZoomIndicatorEnabled: false,
-        minZoom: 13
+        minZoom: 13,
+        cacheEnabled: true
     });
     overpassLayer.addTo(map);
 
