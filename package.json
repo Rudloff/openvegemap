@@ -11,7 +11,7 @@
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "extract-domain": "^2.4.0",
     "fontmin-webpack": "^3.2.0",
-    "html-webpack-plugin": "^4.5.0",
+    "html-webpack-plugin": "^5.5.0",
     "i18n-postal-address": "~0.0.6",
     "leaflet": "^1.5.1",
     "leaflet-control-geocoder": "~1.5.5",
