@@ -10,7 +10,7 @@
     "days": "^1.1.1",
     "drmonty-leaflet-awesome-markers": "~2.0.2",
     "extract-domain": "^2.4.0",
-    "fontmin-webpack": "^3.2.0",
+    "fontmin-webpack": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "i18n-postal-address": "~0.0.6",
     "leaflet": "^1.5.1",

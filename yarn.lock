@@ -1547,18 +1547,17 @@ fonteditor-core@^2.1.5:
   dependencies:
     xmldom "^0.5.0"
 
-fontmin-webpack@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/fontmin-webpack/-/fontmin-webpack-3.2.0.tgz#80a51d7c6b5c19ac57059c594bbeca83afc2fd29"
-  integrity sha512-Hlm4azHv57oMWdFY5fkXrLQIeNKszVNEbYt3F4Zr9D5uKIR7ihGuMxedwl6jC8r55eAct3MXsmaQZoglzeczHA==
+fontmin-webpack@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/fontmin-webpack/-/fontmin-webpack-4.0.0.tgz#0ee7a76207a1abe603619dc7e79ccbd8dc767303"
+  integrity sha512-v2FD4M1AIaP1Rs0acTxPxP1YkeHoeluajELSuOhU0fWno0ka1f/Tb0iAgPsB1vVPs36T9DmJfqG/+6CyWso/qQ==
   dependencies:
     debug "^4.3.1"
-    fontmin "^0.9.8"
+    fontmin "^0.9.9"
     lodash "^4.17.21"
-    ttf2woff2 "^4.0.1"
     webpack-sources "^2.2.0"
 
-fontmin@^0.9.8:
+fontmin@^0.9.9:
   version "0.9.9"
   resolved "https://registry.yarnpkg.com/fontmin/-/fontmin-0.9.9.tgz#dd073750e00225feb46ba26bdeb1173b15d5418b"
   integrity sha512-OHMq6/C6FQpedEo+2aXNTrZBAtCJJSy6slYip1gaBtUpwkILkPjDzBKdLu5OgQWIe75lHZHL491/dGJnUi1R2g==
