@@ -34,7 +34,7 @@
     "grunt-fixpack": "^0.2.1",
     "grunt-webpack": "^5.0.0",
     "husky": "^4.2.5",
-    "qunit": "~2.9.2"
+    "qunit": "^2.19.3"
   },
   "homepage": "https://github.com/Rudloff/openvegemap",
   "husky": {
