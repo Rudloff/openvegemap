@@ -23,7 +23,7 @@ try {
 module.exports = {
     entry: entry,
     output: {
-        filename: '[name].bundle.js',
+        filename: '[name].[fullhash].bundle.js',
         publicPath: 'dist/',
         clean: true
     },
@@ -71,7 +71,9 @@ module.exports = {
             inject: 'head',
             chunks: ['test']
         }),
-        new MiniCssExtractPlugin(),
+        new MiniCssExtractPlugin({
+            filename: '[name].[fullhash].css',
+        }),
         new CssMinimizerPlugin(),
         new FontminPlugin({
             autodetect: false,
