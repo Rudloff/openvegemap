@@ -3,14 +3,14 @@ AddOutputFilterByType DEFLATE text/css text/html application/javascript font/tru
 
 <ifmodule mod_expires.c>
     ExpiresActive On
-    ExpiresByType application/javascript "access plus 1 week"
-    ExpiresByType text/css "access plus 1 week"
-    ExpiresByType image/png "access plus 1 week"
-    ExpiresByType image/jpeg "access plus 1 week"
-    ExpiresByType image/gif "access plus 1 week"
-    ExpiresByType image/svg+xml "access plus 1 week"
-    ExpiresByType font/truetype "access plus 1 week"
-    ExpiresByType font/woff2 "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType font/truetype "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
 </ifmodule>
 
 Header set X-Frame-Options DENY
